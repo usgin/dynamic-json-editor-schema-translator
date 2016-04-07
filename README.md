@@ -26,14 +26,17 @@ Navigation
 
 Navigation Indicators
 
-  End Nodes 	- containing values - Blue Circle shows the data value
-  		- empty value - small white cirle show the field name
+  End Nodes 	
+  	- containing values - Blue Circle shows the data value
+  	- - empty value - small white cirle show the field name
 
-  Parent Nodes  - Object Nodes - Dark Blue show node name only
-  		- Array Nodes - Green 
+  Parent Nodes  
+  	- Object Nodes - Dark Blue show node name only
+  	- Array Nodes - Green 
   
-  Links 	- gold links nodes containing data
-  		- grey links nodes with no data
+  Links 	
+	- gold links nodes containing data
+	- grey links nodes with no data
 
 #Installation
 

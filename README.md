@@ -4,25 +4,23 @@ This Metadata Editor is based on a D3 SVG tree graphic, using a local json file 
 
 The transform function iterates through a provided schema, and looks up all reference attribute values from the source json, returning a json object that has the structure of the provided schema populated with data from the source json. This allows the same transform functions to be used for both exports and imports, only requiring accurate json schemas to provide correct json output.
 
-#User Interface Capabilities
+User Interface Capabilities
 
     Pan and Zoom - double click to zoom in 
     Collapse and Expand Tree -click on nodes to collapse or expand
-
     Drag and Drop - allows modification of the json tree
-
     Right click on a node to edit
 
     Editor Menu - Data Type sensitive edit widgets
-	  Text 
-	  Large Text - text area widget
-	  Date - date picker
-	  Spatial - Bounding Box with map widget
-	  Array - Create, edit, delete items.
+	Text 
+	Large Text - text area widget
+	Date - date picker
+	Spatial - Bounding Box with map widget
+	Array - Create, edit, delete items.
 
 Navigation Legend
 
-  End Nodes - containing values - Blue Circle shows the dat value
+  End Nodes - containing values - Blue Circle shows the data value
             - empty value - small white cirle show the field name
 
    Parent Nodes  Object Nodes - Dark Blue show node name only

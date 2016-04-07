@@ -8,6 +8,10 @@ Note: This tool is in development and not yet fully functional.
 
 User Interface Capabilities
 
+User interface functions have not been entitrely conceived or designed, but this is the intial target
+
+Navigation
+
     Pan and Zoom - double click to zoom in 
     Collapse and Expand Tree -click on nodes to collapse or expand
     Drag and Drop - allows modification of the json tree
@@ -20,16 +24,16 @@ User Interface Capabilities
 	Spatial - Bounding Box with map widget
 	Array - Create, edit, delete items.
 
-Navigation Legend
+Navigation Indicators
 
-  End Nodes - containing values - Blue Circle shows the data value
-            - empty value - small white cirle show the field name
+  End Nodes 	- containing values - Blue Circle shows the data value
+  		- empty value - small white cirle show the field name
 
-   Parent Nodes  Object Nodes - Dark Blue show node name only
-                 Array Nodes - Green 
+  Parent Nodes  - Object Nodes - Dark Blue show node name only
+  		- Array Nodes - Green 
   
-  Links - gold links nodes containing data
-        - grey links nodes with no data
+  Links 	- gold links nodes containing data
+  		- grey links nodes with no data
 
 #Installation
 

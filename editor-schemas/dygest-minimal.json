@@ -1,0 +1,155 @@
+{  "name":"MetadataEditor",
+    "children":[
+        {
+        "name":"contacts",
+        "datatype"  : "array",
+        "children": [{"name": "ContactName",
+                      "value": "Default contact name"}] },
+        {
+         "name":"metadataInfo",
+         "datatype": "object",
+         "required" : " true",
+         "children": [
+            {"name": "metadataIdentifier", 
+              "value" : "identifier",
+              "ref" : "harvestInformation.originalFileIdentifier"  },
+            {"name":"metadataLastUpdate", 
+             "ref" : "harvestInformation.indexDate",
+             "datatype" : "date", 
+             "value": "2016-03-31T12:00:00"},
+            {"name":"metadataContacts",
+             "datatype"  : "array",
+             "children": [{
+                    "name":"agentRole",
+                    "datatype"  : "array",
+                    "children": [{
+                        "name":"conceptPrefLabel",
+                        "value": "point of contact"
+                    }]},{
+                    "name": "agent",
+                    "datatype"  : "array",
+                    "children":[{
+                        "name":"personName",  
+                        "ref": "metadataProperties.metadataContact.relatedAgent.agentRole.indvidual.personName",
+                        "value": "default personName" 
+                        },{
+                        "name":"contactEmails", 
+                         "ref": "metadataProperties.metadataContact.relatedAgent.agentRole.contactEmail",
+                         "value": "default@email.com" 
+                    }]
+                }]
+            },{
+            "name": "metadataSpecification",
+             "required" : " true",
+            "children": [ {
+                    "name": "referenceLabel",
+                    "value": "label string that identifies the spec"
+                    },
+                    { "name":"metadataLanguage",
+                      "children": [{ "name": "LanguageCode",
+                                    "datatype": "dictlist",
+                                    "value":"eng"}]
+                    }]
+            }]},
+        {
+        "name": "describedResource",
+        "datatype": "object",
+        "children": [
+            {
+                "name": "resourceTitle",
+                 "required" : " true",
+                 "ref": "resourceDescription.resourceTitle",
+                "value": "This is the resource title"
+            },
+            {
+                "name": "resourceAbstract",
+                "ref": "resourceDescription.resourceDescription",
+                "datatype" : "textarea",
+                "value": ""
+            },
+            {
+                "name": "citationResponsibleParties",
+                "datatype" : "array",
+                "children": [ { "name": "citationResponsibleParty", 
+                                "ref": "resourceDescription.citedSourceAgents.0.relatedAgent.agentRole.individual.personName",
+                               "datatype": "string"} ]
+            },
+            {
+                "name": "citationDates",
+                "datatype"   : "array",
+                "children": [{ "name": "citationDate", 
+                               "ref": "metadataProperties.citationDates.EventDateObject.dateTime",
+                               "datatype": "date"}]
+            },
+            {
+                "name": "resourceSpatialExtents",
+                "children": [
+                    {
+                        "name": "boundingBoxesWGS84",
+                        "datatype" : "bbox",
+                        "children": [
+                            {
+                                "name": "northBoundLatitude",
+                                "ref": "resourceDescription.geographicExtent.0.northBoundLatitude",
+                                "value": 31.6
+                            },
+                            {
+                                "name": "southBoundLatitude",
+                                "ref": "resourceDescription.geographicExtent.0.southBoundLatitude",
+                                "value": 28.3
+                            },
+                            {
+                                "name": "eastBoundLongitude",
+                                "ref": "resourceDescription.geographicExtent.0.eastBoundLongitude",
+                                "value": -107.7
+                            },
+                            {
+                                "name": "westBoundLongitude",
+                                "ref": "resourceDescription.geographicExtent.0.westBoundLongitude",
+                                "value": -110.1
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },{
+     "name":"resourceAccessOptions",
+     "required" : " true",
+     "datatype": "array",
+     "children": [{
+        "name":"distributor",
+        "value":"Distributor",
+        "required" : " true",
+        "children" : [{ "name": "responsibleParty",
+                        "children": [{
+                            "name":"agentRole",
+                            "datatype" : "dictlist",
+                            "value": "Pick Role"
+                            },{
+                            "name": "agent",
+                            "datatype" : "array",
+                            "children" : [{
+                                "name":"personName",
+                                "ref": "resourceDescription.citedSourceAgents.0.relatedAgent.agentRole.individual.personName",
+                                "value": "Host A. Dministrator"},
+                                {
+                                "name":"contactEmails",
+                                "datatype" : "array",
+                                "children": [ {"name":"email", 
+                                                 "ref": "resourceDescription.citedSourceAgents.0.relatedAgent.agentRole.contactEmail",
+                                                "value" : "administratorha@email.com"} ] }
+                            ]}
+                        ]},{
+                        "name":"accessLinks",
+                        "datatype"  : "array",
+                        "children": [{
+                                    "name": "linkURL",
+                                    "ref": "resourceDescription.resourceAccessOptions.accessLinks.0.linkObject.url",
+                                    "value": "http://azgs.az.gov/links/4347357"
+                                }]
+                        }
+                    ]}
+        ]
+    }]
+}

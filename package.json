@@ -1,0 +1,21 @@
+{
+  "name": "NodeApp",
+  "version": "1.0.0",
+  "description": "Dynamic Json Editor and Schema Translator",
+  "main": "nodeServer-d3-editor.js",
+  "dependencies": {
+    "body-parser": "~1.15.0",
+    "express": "~4.13.4",
+    "jquery": "~2.2.3",
+    "leaflet": "~0.7.7",
+    "request": "~2.72.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "dyjest"
+  ],
+  "author": "Gary Hudman"
+}

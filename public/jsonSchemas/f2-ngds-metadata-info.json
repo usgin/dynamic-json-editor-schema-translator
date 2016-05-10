@@ -1,0 +1,58 @@
+{
+    "name": "harvestInformation",
+    "display": "Harvest-Info",
+    "required": "true",
+    "datatype" : "object",
+    "expanded": "true",
+    "children": [
+        { "name": "metadataProperties",
+          "children": [{
+            "name": "metadataContact",
+            "children": [{
+                "name": "relatedAgent",
+                "children": [{ 
+                    "name": "agentRole",
+                     "datatype"  : "array",
+                    "children": [{  
+                        "name": "contactEmail",
+                        "datatype" : "string",
+                        "value": ""
+                         },
+                        {"name": "organizationURI",
+                         "datatype" : "string",
+                        "value": ""
+                        },
+                        {"name": "individual",
+                            "children": [{ "name": "personName", 
+                                            "datatype" : "string" },
+                                        { "name": "personPosition",
+                                          "datatype" : "string" },
+                                        { "name": "personURI",
+                                           "datatype" : "string" }
+                            ]},
+                        {"name": "organizationName",
+                        "datatype" : "string",
+                        "value": ""
+                        }, 
+                        {"name": "phoneNumber",
+                            "datatype" : "string",
+                            "value": ""
+                        }, 
+                        {"name": "agentRoleLabel",
+                             "datatype" : "string",
+                             "value": "No Organization Name Was Given"
+                        }, 
+                        {"name": "contactAddress", "datatype" : "string",
+                        "value": ""
+                        }, 
+                        {"name": "agentRoleURI", "datatype" : "string",
+                        "value": ""
+                        }
+                        ]
+
+                    }]
+                }]
+            }] 
+        }
+    ]
+}

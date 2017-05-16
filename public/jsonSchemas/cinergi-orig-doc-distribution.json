@@ -1,0 +1,157 @@
+{  "name":"root",
+   "root" : "DistributionInfo",
+    "datatype" : "subschema",
+   "display": "<< Back to Original Doc",
+    "xoffset": -430,
+   "ref" : "/jsonSchemas/cinergi-orig-doc.json",
+   "required" : "true",
+   "titleref" : "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
+   "titleval" : "",
+   "rootType" : "array",
+   "rootKey" : { "keyname" : "key", 
+                 "keyvalue" : "_id",
+                 "valuename" : "value" },
+    "children": [
+          { "name" : "Distributor Contact",
+           "display" : "Distributor Contact",
+            "xoffset": -400,
+            "yoffset" : -100,
+           "datatype" : "object",
+           "displayChild" : "gmd:organisationName",
+           "ref" : "OriginalDoc.gmd:MD_Metadata.gmd:contact",
+           "children" : [
+                {
+                "name" : "gmd:organisationName",
+                "display" : "Organization Name",
+                "xoffset": -400,
+                "yoffset" : 0,
+                "viewstate" : "collapse",
+                "datatype" : "string",
+                "ref" : "OriginalDoc.gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor.gmd:MD_Distributor.gmd:distributorContact.gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString._$"        
+                },
+                {
+                "name" : "gmd:positionName",
+                "display" : "Position Name",
+                "xoffset": -400,
+                "yoffset" : 0,
+                "viewstate" : "collapse",
+                "datatype" : "string",
+                "ref" : "OriginalDoc.gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor.gmd:MD_Distributor.gmd:distributorContact.gmd:CI_ResponsibleParty.gmd:positionName.gco:CharacterString._$"        
+                }, 
+                {
+                "name" : "Telephone",
+                "display" : "Telephone",
+                "xoffset":  -400,
+                "yoffset" : 0,
+                "datatype" : "string",
+                 "viewstate" : "collapse",
+                "ref" :  "OriginalDoc.gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor.gmd:MD_Distributor.gmd:distributorContact.gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:phone.gmd:CI_Telephone.gmd:voice.gco:CharacterString._$",
+                "value" : "() 000-0000"
+                },
+                {
+                "name" : "Address",
+                "display" : "Email Address",
+                "xoffset":  -400,
+                "yoffset" : 0,
+                "datatype" : "string",
+                 "viewstate" : "collapse",
+                "ref" :  "OriginalDoc.gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor.gmd:MD_Distributor.gmd:distributorContact.gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:electronicMailAddress.gco:CharacterString._$",
+                "value" : "Adddress"
+                }, 
+                {
+                "name" : "gmd:hoursOfService",
+                "display" : "Hours Of Service",
+                "xoffset":  -400,
+                "yoffset" : 0,
+                "datatype" : "string",
+                 "viewstate" : "collapse",
+                "ref" :  "OriginalDoc.gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor.gmd:MD_Distributor.gmd:distributorContact.gmd:CI_ResponsibleParty.gmd:hoursOfService.gco:CharacterString._$",
+                "value" : "Adddress"
+                }, 
+                {
+                "name" : "gmd:hoursOfService",
+                "display" : "Hours Of Service",
+                "xoffset":  -400,
+                "yoffset" : 0,
+                "datatype" : "string",
+                "viewstate" : "collapse",
+                "ref" :  "OriginalDoc.gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor.gmd:MD_Distributor.gmd:distributorContact.gmd:CI_ResponsibleParty.gmd:contactInstructions.gco:CharacterString._$",
+                "value" : "Adddress"
+                },     
+                {   "name" : "agentRole",
+                    "display" : "Role",
+                    "datatype" : "dictlist",
+                    "value": "Pick Role",
+                    "xoffset":  -400,
+                    "yoffset" : 0,
+                     "viewstate" : "collapse",
+                    "ref" : "OriginalDoc.gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor.gmd:MD_Distributor.gmd:distributorContact.gmd:CI_ResponsibleParty.gmd:role.gmd:CI_RoleCode._$"
+                }]
+
+              },
+              { "name": "gmd:transferOptions",
+                "display" : "Transfer Options",
+                "datatype" : "array",
+                "required" : "true",
+                "xoffset": -300,
+                 "yoffset":-100,
+                "ref":  "OriginalDoc.gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine",
+                "children": [ 
+                    {  "name" : "gmd:CI_OnlineResource",
+                        "display" : "Online Resource",
+                        "datatype" : "object",
+                        "required" : "false",
+                        "viewstate" : "parent-collapse",
+                        "displayChild" : "gmd:linkage",
+                        "xoffset": -300,
+                        "ref":  "OriginalDoc.gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine",
+                        "children" : [
+                            { "name" :"gmd:linkage",
+                              "display" : "Linkage",
+                              "datatype" : "string",
+                              "required" : "false",
+                              "xoffset": -100,
+                              "ref": "gmd:CI_OnlineResource.gmd:linkage.gmd:URL._$"
+                            },
+                            { "name" :"gmd:protocol",
+                              "display" : "Protocol",
+                              "datatype" : "string",
+                              "required" : "false",
+                              "xoffset": -100,
+                              "ref":  "gmd:CI_OnlineResource.gmd:protocol.gco:CharacterString._$"
+                            },
+                            { "name" :"gmd:applicationProfile",
+                              "display" : "Application Profile",
+                              "datatype" : "string",
+                              "required" : "false",
+                              "xoffset": -100,
+                              "ref":  "gmd:CI_OnlineResource.gmd:applicationProfile.gmd:CharacterString._$"
+                            },
+                            { "name" :"gmd:Name",
+                              "display" : "Name",
+                              "datatype" : "string",
+                              "required" : "false",
+                              "xoffset": -100,
+                              "ref":  "gmd:CI_OnlineResource.gmd:name.gmd:CharacterString._$"
+                            },
+                            { "name" :"gmd:description",
+                              "display" : "Description",
+                              "datatype" : "string",
+                              "required" : "false",
+                              "xoffset": -100,
+                              "ref":  "gmd:CI_OnlineResource.gmd:description.gmd:CharacterString._$"
+                            },
+                            { "name" :"gmd:function",
+                              "display" : "Function",
+                              "datatype" : "string",
+                              "required" : "false",
+                              "xoffset": -100,
+                              "ref":  "gmd:CI_OnlineResource.gmd:function.gmd:CI_OnLineFunctionCode._$"
+                            }
+
+                        ]
+                    }
+                 ]
+              }
+            ]
+        }

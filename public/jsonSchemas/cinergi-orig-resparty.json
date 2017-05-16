@@ -1,0 +1,105 @@
+{  "name":"root",
+   "root" : "OriginalDoc.gmd:MD_Metadata.gmd:contact",
+   "xoffset": 160,
+   "datatype" : "subschema",
+   "status" : "good",
+   "titleref" : [ "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
+                 "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$" ],
+   "titleval" : "",
+   "display":"<< Back to Orginal Doc",
+   "ref" : "/jsonSchemas/cinergi-orig-doc.json",
+   "required" : "true",
+   "rootType" : "array",
+   "rootKey" : { "keyname" : "key", 
+                 "keyvalue" : "gmd:MD_Metadata",
+                 "valuename" : "value" },
+    "children": [
+         { "name" : "Responsible Parties",
+           "display" : "Responsible Parties",
+           "xoffset": 160,
+           "yoffset" : -100,
+           "datatype" : "array",
+           "ref" : [ "OriginalDoc.gmd:MD_Metadata.gmd:contact",
+                     "OriginalDoc.gmi:MI_Metadata.gmd:contact" ],
+           "array_index" : "0",
+           "children" : [
+           { "name" : "gmd:CI_ResponsibleParty",
+             "display" : "Responsible Party",
+              "datatype" : "object",
+              "viewstate" : "parent-collapse",
+              "displayChild" : "agentRole",
+              "ref" : [ "OriginalDoc.gmd:MD_Metadata.gmd:contact",
+                       "OriginalDoc.gmi:MI_Metadata.gmd:contact" ],
+              "xoffset": 100,
+              "value" : "",
+              "children" : [
+                {
+                "name" : "gmd:organisationName",
+                "display" : "Organization Name",
+                "xoffset": 240,
+                "yoffset" : 80,
+                "viewstate" : "collapse",
+                "datatype" : "string",
+                "ref" : "gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString._$"        
+                }, 
+                {
+                "name" : "gmd:positionName",
+                "display" : "Position Name",
+                "xoffset": 240,
+                "yoffset" : 80,
+                "viewstate" : "collapse",
+                "datatype" :  "string",
+                "ref" : "gmd:CI_ResponsibleParty.gmd:positionName.gco:CharacterString._$"        
+                }, 
+                {
+                "name" : "Telephone",
+                "display" : "Telephone",
+                "xoffset": 240,
+                "yoffset" : 80,
+                "datatype" : "string",
+                 "viewstate" : "collapse",
+                "ref" :  "gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:phone.gmd:CI_Telephone.gmd:voice.gco:CharacterString._$",
+                "value" : ""
+                },
+                {
+                "name" : "Address",
+                "display" : "Address",
+                "xoffset": 240,
+                "yoffset" : 80,
+                "datatype" : "string",
+                 "viewstate" : "collapse",
+                "ref" :  "gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:electronicMailAddress.gco:CharacterString._$",
+                "value" : ""
+                }, 
+                {
+                  "name" : "HoursOfService",
+                  "display" : "Hours Of Service",
+                  "xoffset": 240,
+                  "yoffset" : 80,
+                  "datatype" : "string",
+                   "viewstate" : "collapse",
+                  "ref" :  "gmd:CI_ResponsibleParty.gmd:hoursOfService.gco:CharacterString._$",
+                  "value" : ""
+                },
+                {   "name" : "OnlineResource",
+                    "display" : "OnlineResource",
+                    "datatype" : "string",
+                    "xoffset": 240,
+                    "yoffset" : 80,
+                     "viewstate" : "collapse",
+                    "ref" : "gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:onlineResource.gmd:CI_OnlineResource.gmd:linkage.gmd:URL._$"
+                },
+                {   "name" : "agentRole",
+                    "display" : "Role",
+                    "datatype" : "dictlist",
+                    "value": "Pick Role",
+                    "xoffset": 240,
+                    "yoffset" : 80,
+                     "viewstate" : "collapse",
+                    "ref" : "gmd:CI_ResponsibleParty.gmd:role.gmd:CI_RoleCode._$"
+                }]
+            }
+          ]
+        }
+    ]
+}

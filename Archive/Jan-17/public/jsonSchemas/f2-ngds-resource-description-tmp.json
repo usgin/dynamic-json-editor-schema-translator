@@ -1,0 +1,211 @@
+{
+  "name": "resourceDescription",
+   "display":"resource Description",
+   "datatype" : "subschema",
+   "ref" : "/jsonSchemas/f2-min3.json",
+   "required" : "true",
+    "root" : "extras",
+   "rootType" : "array",
+   "rootKey" : { "keyname" : "key", 
+                 "keyvalue" : "md_package",
+                 "valuename" : "value" },
+  "children": [ 
+      {
+      "name": "resourceTitle",
+      "datatype":"string",
+      "value":"",
+      "ref": "resourceDescription.resourceTitle",
+      "required" : "true",
+      "package_ref": "title"
+      }, 
+      {
+      "name": "resourceDescription",
+      "value":"Description",
+      "ref": "resourceDescription.resourceDescription",
+      "datatype" : "textarea",
+      "package_ref": "notes"
+      },
+      {
+      "name": "usginContentModel",
+      "ref" : "resourceDescription.usginContentModel",
+      "datatype" : "typeahead",
+      "dicturl" : "/typeahead",
+      "dictparams" : {"field":"usginContentModel",
+                      "query":"",
+                      "ref": ""},
+      "dictChildren" : [{"name":"usginContentModelLayer",
+                         "reltype":"1-1"},
+                        {"name":"usginContentModelVersion",
+                          "reltype":"1-1"}],
+      "value" : ""
+      },
+      {
+      "name": "usginContentModelLayer",
+      "ref" : "resourceDescription.usginContentModelLayer",
+      "datatype" : "typeahead",
+      "dicturl" : "/typeahead",
+      "dictparams" : {"field": "usginContentModelLayer","query":"usginContentModel", "ref": ""},
+            "dictChildren" : [{"name":"usginContentModelLayer",
+                         "reltype":"1-1"},
+                        {"name":"usginContentModelVersion"}],
+      "value" : ""
+      }, 
+      {
+      "name": "usginContentModelVersion",
+      "datatype":"typeahead",
+      "ref" : "resourceDescription.usginContentModelVersion",
+      "dicturl" : "/typeahead",
+      "dictparams" : {"field": "usginContentModelVersion", "query":"usginContentModelLayer", "ref": ""},
+      "value" : ""
+      },
+      {
+      "name": "geographicExtent",
+      "datatype" : "bbox",
+      "display":"geoExtent",
+       "children": [
+                            {
+                                "name": "northBoundLatitude",
+                                "ref": "resourceDescription.geographicExtent.0.northBoundLatitude",
+                                 "package_ref": "notes",
+                                "value": 31.6
+                            },
+                            {
+                                "name": "southBoundLatitude",
+                                "ref": "resourceDescription.geographicExtent.0.southBoundLatitude",
+                                "value": 28.3
+                            },
+                            {
+                                "name": "eastBoundLongitude",
+                                "ref": "resourceDescription.geographicExtent.0.eastBoundLongitude",
+                                "value": -107.7
+                            },
+                            {
+                                "name": "westBoundLongitude",
+                                "ref": "resourceDescription.geographicExtent.0.westBoundLongitude",
+                                "value": -110.1
+                            }
+                        ]
+      },{
+      "name": "citedSourceAgents",
+      "children": [{
+          "name": "relatedAgent",
+          "children": [{ "name": "agentRole",
+                          "children": [
+                          { "name":"contactEmail",
+                            "datatype" : "string",
+                             "ref" : "resourceDescription.citedSourceAgents.0.relatedAgent.agentRole.contactEmail",
+                            "value":" " },
+                          { "name": "contactAddress",
+                          "datatype" : "string",
+                          "ref" : "resourceDescription.citedSourceAgents.0.relatedAgent.agentRole.contactAddress",
+                            "value": "" },
+                          { "name": "individual",
+                            "datatype" : "string",
+                            "ref" :"resourceDescription.citedSourceAgents.0.relatedAgent.agentRole.individual.personName",
+                            "value": "" },
+                          { "name": "organizationName",
+                            "datatype" : "string",
+                            "ref": "resourceDescription.citedSourceAgents.0.relatedAgent.agentRole.organizationName",
+                            "value": "" }
+                          ]
+              }]
+          }]
+      },
+      {
+      "name": "resourceAccessOptions",
+      "display": "Resource Access Options",
+      "datatype"   : "array",
+      "children": [{ "name": "accessLinks",
+                     "viewstate" : "collapse",
+                     "children": [{"name" : "linkObject",
+                                   "display" : "Resource Link",
+                                  "children": [{ "name": "description", "datatype" : "string" },
+                                                { "name": "url",
+                                                  "display" : "Resource Link URL", 
+                                                  "ref": "resourceDescription.resourceAccessOptions.accessLinks.0.linkObject.url",
+                                                  "datatype" : "string",
+                                                  "value" :"" },
+                                                { "name": "linkTargetResourceType",
+                                                  "display" : "Target Resource Type",
+                                                  "ref" : "resourceDescription.resourceAccessOptions.accessLinks.0.linkObject.linkTargetResourceType",
+                                                  "datatype" : "string",
+                                                  "value" : ""  },
+                                                { "name": "linkContentResourceType",
+                                                   "display" : "Content Type",
+                                                   "ref":"resourceDescription.resourceAccessOptions.accessLinks0.linkObject.linkContentResourceType",
+                                                  "datatype" : "string",
+                                                  "value" :""  },
+                                                { "name": "ogc_layer",
+                                                  "display" : "OGC Layer",
+                                                   "ref" : "resourceDescription.resourceAccessOptions.accessLinks.0.linkObject.ogc_layer",
+                                                  "datatype" : "string",
+                                                  "value" :""  },
+                                                { "name":  "linkTitle",
+                                                  "display" : "Resource Link Title",
+                                                  "datatype" : "string",
+                                                  "ref" : "resourceDescription.resourceAccessOptions.accessLinks.0.linkObject.linkTitle",
+                                                  "value" :""  }
+                                                ]
+                                    }] 
+                  },{ "name": "Distributors",
+                      "datatype" : "array",
+                       "children": [{
+                          "name": "relatedAgent",
+                          "display": "Related Agent",
+                          "viewstate" : "collapse",
+                          "children": [{ "name": "agentRole",
+                                         "display": "Agent Role",
+                                          "children": [
+                                          { "name":"contactEmail",
+                                           "datatype" : "string",
+                                          "ref":"harvestInformation.resourceDescription.distributors.relatedAgent.agentRole.contactEmail",
+                                            "value":"" },
+                                          { "name": "contactAddress",
+                                             "datatype" : "string",
+                                            "value": "" },
+                                          { "name": "individual",
+                                            "ref": "resourceDescription.citedSourceAgents.0.relatedAgent.agentRole.individual.personName",
+                                            "datatype" : "string",
+                                            "value": "" },
+                                          { "name": "organizationName",
+                                            "ref" : "resourceDescription.resourceAccessOptions.distributors.0.relatedAgent.agentRole.organizationName",
+                                            "datatype" : "string",
+                                            "value": "" }
+                                          ]
+                              }]
+                          }]
+                  }]
+      }, 
+      {
+      "name": "resourceContact",
+          "children": [{
+          "name": "relatedAgent",
+          "children": [{ "name": "agentRole",
+                          "children": [
+                          { "name":"contactEmail",
+                            "datatype" : "string",
+                             "ref":"resourceDescription.resourceContact.relatedAgent.agentRole.contactEmail",
+                            "value":"" },
+                          { "name": "contactAddress",
+                            "datatype" : "string",
+                            "ref" : "resourceDescription.resourceContact.0.relatedAgent.agentRole.contactAddress",
+                            "value": "" },
+                          { "name": "individual",
+                            "datatype" : "string",
+                            "ref" :"resourceDescription.resourceContact.0.relatedAgent.agentRole.individual.personName",
+                            "value": "" },
+                          { "name": "organizationName",
+                            "datatype" : "string",
+                            "ref" : "resourceDescription.resourceContact.0.relatedAgent.agentRole.organizationName",
+                            "value": "" }
+                          ]
+              }]
+          }]
+
+      }, {
+      "name": "citationDates",
+      "datatype":"date",
+      "ref" : "resourceDescription.citationDates.EventDateObject.dateTime",
+      "value" : ""
+      }] 
+  }

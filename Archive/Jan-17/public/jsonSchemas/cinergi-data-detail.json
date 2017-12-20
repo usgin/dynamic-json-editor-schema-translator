@@ -1,0 +1,72 @@
+{   "name":"root",
+   "root" : "Data",
+    "datatype" : "subschema",
+   "display" : "< Back to Summary",
+  "xoffset": -300,
+   "ref" : "/jsonSchemas/cinergi-mongodb.json",
+   "required" : "true",
+   "rootType" : "object",
+   "rootKey" : { "keyname" : "key", 
+                 "keyvalue" : "_id",
+                 "valuename" : "value" },
+    "children": [
+        { "name": "Data",
+          "datatype" : "object",
+          "display" : "Pipeline Metadata",
+          "required" : "true",
+          "xoffset": -300,
+          "yoffset" : -80,
+          "ref":  "children.Data",
+          "children": [ 
+            { "name": "spatial",
+              "datatype" : "object",
+              "required" : "true",
+                "xoffset": -360,
+                 "yoffset" : -60,
+              "ref":  "children.Data.spatial",
+              "children": [ 
+                  { "name": "place_keywords",
+                    "display": "Place Keywords",
+                    "datatype" : "array",
+                    "required" : "false",
+                    "xoffset": -420,
+                     "yoffset" : -60,
+                    "ref":  "children.Data.spatial.place_keywords" 
+                  },                  
+                  { "name": "text",
+                    "display": "Spatial Notes",
+                    "datatype" : "textarea",
+                    "required" : "true",
+                    "xoffset": -420,
+                     "yoffset" : -60,
+                    "ref":  "children.Data.spatial.text" 
+                  },
+                  { "name" : "derived_bounding_boxes",
+                    "display": "Derived Bounding Boxes from Places",
+                    "datatype" : "array",
+                    "required" : "false",
+                    "xoffset": -360,
+                     "yoffset" : -60,
+                    "ref":  "children.Data.spatial.derived_place_from_text" 
+                 },
+                  { "name": "bounding_boxes",
+                    "datatype" : "bbox",
+                    "required" : "false",
+                    "xoffset": -320,
+                    "yoffset" : -60,
+                    "ref":  "children.Data.spatial.bounding_boxes[0]" 
+                  }
+              ]
+            }, 
+            {   "name": "KeywordEditor",
+                "display" : "Go To > Enhanced Keyword Editor",
+                "datatype" : "subschema",
+                "required" : "false",
+                "xoffset": -240,
+                 "yoffset" : -60,
+                "ref":  "/jsonSchemas/cinergi-keywords-editor.json"
+              }
+          ]
+        }
+    ]
+}

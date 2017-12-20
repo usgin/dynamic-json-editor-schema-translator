@@ -1,0 +1,129 @@
+{
+  "id": "2f85505d420e252e4cd8c23e6718befc",
+  "key": "",
+  "value": {
+    "_id": "2f85505d420e252e4cd8c23e6718befc",
+    "_rev": "6-90fd5495c83eab17ec6c61c22bc00fd7",
+    "Description": "Long Valley caldera, an elliptical depression covering 450 km2 on the eastern front of the Sierra Nevada in east-central California, contains a hot-water convection system with numerous hot springs and measured and estimated aquifer temperatures at depths of 180C to 280C. In this study we have synthesized the results of previous geologic, geophysical, geochemical, and hydrologic investigations of the Long Valley area to develop a generalized conceptual and mathematical model which describes the gross features of heat and fluid flow in the hydrothermal system. \nCenozoic volcanism in the Long Valley region began about 3.2 (million years) m.y. ago and has continued intermittently until the present time. The major event that resulted in the formation of the Long Valley caldera took place about 0.7 m.y. ago with the eruption of 600 km3 or more of \nBishop Tuff of Pleistocene age, a rhyolitic ash flow, and subsequent collapse of the roof of the magma chamber along one or more steeply inclined ring fractures. Subsequent intracaldera volcanism and uplift of the west-central part of the caldera floor formed a subcircular resurgent dome \nabout 10 km in diameter surrounded by a moat containing rhyolitic, rhyodacitic, and basaltic rocks ranging in age from 0.5 to 0.05 m.y. On the basis of gravity and seismic studies, we estimate an aver- age thickness of fill of 2.4 km above the precaldera granitic and metamorphic\nbasement rocks. A continuous layer of densely welded Bishop Tuff overlies the basement rocks, with an average thickness of 1.4 km; the fill above the welded Bishop Tuff consists of intercalated volcanic flows and tuffs and fluvial and lacustrine deposits. Assuming the average grain density of the \nfill is between 2.45 and 2.65 g/cm3, we calculate the average bulk porosity of the total fill as from 0.11 to 0.21. Comparison of published values of porosity of the welded Bishop Tuff exposed southeast of the caldera with calculated values indicates average bulk porosity for the welded tuff \n(including fracture porosity) from 0.05 to 0.10. Because of its continuity and depth and the likelihood of significant fracture permeability in the more competent rocks such as the welded tuff, our model of the hydrothermal system assumes that the Bishop Tuff provides the principal hot-water reservoir. \nHowever, because very little direct information exists from drill holes below 300 m, this assumption must be considered tentative. Long Valley caldera is drained by the Owens River and several tributaries which flow into Lake Crowley in the southeast end of the caldera. Streamflow and springflow \nmeasurements for water years 1964-74 indicate a total inflow to Lake Crowley of about 10,900 L/s. In contrast, the total discharge of hot water from the hydrothermal reservoir is about 300 L/s. For modeling purposes, the ground-water system is considered as comprising a shallow subsystem \nin the fill above the densely welded Bishop Tuff containing relatively cold ground water, and a deep subsystem or hydrothermal reservoir in the welded tuff containing relatively hot ground water. Hydrologic, isotopic, and thermal data indicate that recharge to the hydrothermal reservoir \noccurs in the upper Owens River drainage basin along the western periphery of the caldera. Temperature profiles in a 2.11- km-deep test well drilled by private industry in the southeastern part of the caldera suggest that an additional flux of relatively cool ground water recharges the deep subsystem \naround the northeast rim. Flow in the shallow ground-water subsystem is neglected in the model except in recharge areas and along Hot Creek gorge, where approximately 80 percent of the hot-water discharge from the hydrothermal reservoir moves upward along faults toward springs in the gorge. \nHeat-flow data from the Long Valley region indicate that the resurgent dome overlies a residual magma chamber more circular in plan than the original magma chamber that supplied the Bishop Tuff.",
+    "GeographicExtent": {
+      "EastBound": -118.52600097658,
+      "NorthBound": 37.774625941879,
+      "WestBound": -118.94348144533,
+      "SouthBound": 37.454805121236
+    },
+    "Title": "The Hydrothermal System of Long Valley Caldera, California",
+    "ResourceId": "",
+    "Published": true,
+    "Links": [
+      {
+        "schemaName": "link",
+        "URL": "http://pubs.er.usgs.gov/publication/pp1044A",
+        "Name": "USGS  Pubs Document Information Webpage",
+        "Description": "link",
+        "Distributor": "Arizona Geological Survey"
+      },
+      {
+        "schemaName": "link",
+        "URL": "http://pubs.usgs.gov/pp/1044a/report.pdf",
+        "Name": "USGS Professional Paper 1044a - Full Text PDF",
+        "Description": "doc",
+        "Distributor": "Arizona Geological Survey"
+      }
+    ],
+    "Collections": [
+      "fd62bbde5b68ce93e4ba348bc703d49e",
+      "",
+      "50ec3aefb656b70647f32e38bc8b406f"
+    ],
+    "PublicationDate": "01-01-1978",
+    "Authors": [
+      {
+        "OrganizationName": "USGS",
+        "Name": "Sorey, M.L.",
+        "ContactInformation": {
+          "Phone": "1-888-275-8747",
+          "email": "http://pubs.er.usgs.gov/feedback",
+          "Address": {
+            "City": "Reston",
+            "State": "VA",
+            "Street": "12201 Sunrise Valley Drive",
+            "Zip": "20192"
+          }
+        }
+      },
+      {
+        "OrganizationName": "USGS",
+        "Name": "Lewis, Robert Edward",
+        "ContactInformation": {
+          "Phone": "1-888-275-8747",
+          "email": "http://pubs.er.usgs.gov/feedback",
+          "Address": {
+            "City": "Reston",
+            "State": "VA",
+            "Street": "12201 Sunrise Valley Drive",
+            "Zip": "20192"
+          }
+        }
+      },
+      {
+        "OrganizationName": "USGS",
+        "Name": "Olmsted, F.H.",
+        "ContactInformation": {
+          "Phone": "1-888-275-8747",
+          "email": "http://pubs.er.usgs.gov/feedback",
+          "Address": {
+            "City": "Reston",
+            "State": "VA",
+            "Street": "12201 Sunrise Valley Drive",
+            "Zip": "20192"
+          }
+        }
+      }
+    ],
+    "Keywords": [
+      "hydrothermal",
+      "temperature",
+      "professional paper 1044",
+      "usgs",
+      "geothermal",
+      "volcanic",
+      "system",
+      "california",
+      "caldera",
+      "long valley",
+      "geothermal"
+    ],
+    "Distributors": [
+      {
+        "OrganizationName": "USGS",
+        "Name": "",
+        "ContactInformation": {
+          "Phone": "1-888-275-8747",
+          "email": "http://pubs.er.usgs.gov/feedback",
+          "Address": {
+            "City": "Reston",
+            "State": "VA",
+            "Street": "12201 Sunrise Valley Drive",
+            "Zip": "20192"
+          }
+        }
+      }
+    ],
+    "MetadataContact": {
+      "ContactInformation": {
+        "Phone": "520-209-4119",
+        "email": "diane.love@azgs.az.gov",
+        "Address": {
+          "City": "Tucson",
+          "State": "AZ",
+          "Street": "416 W Congress",
+          "Zip": "85701"
+        }
+      },
+      "OrganizationName": "AZGS",
+      "Name": "Diane Love"
+    },
+    "ModifiedDate": "2014-12-30T01:21:52Z",
+    "id": "2f85505d420e252e4cd8c23e6718befc"
+  }
+}

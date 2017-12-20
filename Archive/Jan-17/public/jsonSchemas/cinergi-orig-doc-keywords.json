@@ -1,0 +1,30 @@
+ {  "name": "keywords",
+    "display" : "<< Back to Original Docs",
+    "ref" : "children.OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:descriptiveKeywords",
+    "root" : "children.OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:descriptiveKeywords",
+    "datatype": "subschema",
+    "ref" : "/jsonSchemas/cinergi-mongodb.json", 
+    "rootType" : "array",
+    "rootKey" : { "keyname" : "gmd:descriptiveKeywords", 
+                 "keyvalue" : "gmd:descriptiveKeywords",
+                 "valuename" : "gmd:descriptiveKeywords" },
+    "children": [{
+        "name": "gmd:MD_Keywords",
+        "display" : "Keywords",
+          "yoffset" : 120,
+        "ref" : "children.OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:descriptiveKeywords.gmd:MD_Keywords", 
+        "datatype" : "array",
+        "children": [
+              { "name": "keyword", 
+               "value" : "name",
+                "yoffset" : 200,
+               "display" : "display_name",
+               "datatype" : "string", 
+               "ref": "children.OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:descriptiveKeywords.gmd:MD_Keywords.gmd:keyword.gco:CharacterString._$",    
+               "array_index" : "0"
+               }
+               
+            ]
+        }
+    ] 
+}

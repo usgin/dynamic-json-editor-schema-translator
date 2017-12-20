@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+<link rel="stylesheet" href="/css/style.css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+<style type="text/css">
+#accordion {
+ width:100%;
+ margin: 0;
+ padding: 0;
+}
+#accordion p span {
+ cursor:pointer;
+ font-size: 15px;
+ font-family: calibri;
+}
+.news-title {
+ color: #aaaaaa;
+ font: bold 16px calibri;
+ margin-bottom: 10px;
+ background: #EDEDED;
+ padding: 12px 10px;
+ border-radius: 10px;
+}
+.news_text {
+ margin-left: 12px;
+ line-height: 18px;
+ padding: 10px;
+ font-family: calibri;
+ text-align: justify;
+}
+p, li, ul {
+   font-size: 14px;
+}
+
+</style>
+
+<script type="text/javascript">
+<!--http://www.itechroom.com-->
+$(document).ready(function($) {
+       $('#accordion div').hide();
+       $('#accordion p span').click(function(){
+               $('#accordion div').slideUp();
+               $(this).parent().next().slideDown();
+               return false;
+       });
+});
+
+</script>	
+</head>
+
+<body >
+   <table width="80%"><tr class="tr-hdr" ><td class="td-hdr">DyJEST Metadata Editor 1.1
+      </td><td class="td-hdr">
+      <table><tr>
+      <td class="td-hdr">
+      FAQ PAGE
+      </td>
+      <td class="td-hdr">  
+      </td></tr></table>
+     </td></tr>
+   <tr>
+   <td width="20%">
+       <p class="news-title"><span>More Info..</span></p>
+       <div>
+       <p>DYJEST Schema Details</p>
+       <a href="https://github.com/usgin/dynamic-json-editor-schema-translator">DYJEST JSON Schema Design</a>
+       </div>
+       <div>
+       <p>About the D3 Library</p>
+       <a href="https://github.com/d3/d3-hierarchy/blob/master/README.md#tree">D3 Home</a>
+       </div>
+       <div>
+       <p>D3 Code Library</p>
+       <a href="https://github.com/d3/d3-hierarchy/blob/master/README.md#tree">D3 Github</a>
+       </div>
+   </td>
+   <td>
+   <h2><strong>Dynamic Metadata JSON editor and Schema Translator (DyJest)<strong></h2>
+   <table><tr><td>
+   <p>The Dygest editor provides a visual tree diagram for metadata in a JSON format. The color coding provides
+       information about whether the data meets schema requirements (red branch segments), and options that can be performed.
+       This schema(s) for this editor is a json file that can be modified to meet varying metdata editing requirements and
+       sources. </p>
+       </td></tr>
+       </tr></table>
+<div id="accordion">
+<p class="news-title"><span>Using the Editor </span></p>
+<div class="news_text"><strong>Header Functions<strong></strong>
+  <ul>
+  <li>Enter your name - To be saving edits, enter your name that will be saved as part of the metadata record.  Click on the Editor name, edit, then click to save.</li>
+  <li>json - The JSON button will display your edits in the "diff' format required by the pipeline processing.</li>
+  <li>Help - You are here.</li>
+  </ul>
+</div>
+<p class="news-title"><span>DDH Metadata Site Map </span></p>
+<div class="news_text"><strong><strong></strong>
+     <p>The elements of a metadata record are viewed and edited for the Data Discovery Hub are edited in seven pages</p>
+     <img src="/img/SchemasMap.png" alt="Editor Map" style="width:564px;height:404px;">
+     <p>Pages are accessed by selecting a Blue Node, or from the drop down list in the right navigation panel. </p>
+</div>
+<p class="news-title"><span>How to Navigate the Metadata Tree</span></p>
+<div class="news_text"><strong>Mouse<strong></strong>
+   
+  <ul>
+  <li>Zoom In & Zoom Out - use the Mouse Scroll wheel to zoom in and out</li>
+  <li>Pan - Click and hold background to drag the tree to desired location</li>
+  <li>End Point Nodes- Click to edit</li>
+  <li>Parent Nodes - Click to collapse or expand, right click to for edit menu.</li>
+  </ul>
+  <ul>
+  <li>Zoom In & Zoom Out - use the Mouse Scroll wheel to zoom in and out</li>
+  <li>Pan - Click and hold background to drag the tree to desired location (This function is currently disabled).</li>
+  </ul>
+</div>
+<p class="news-title"><span>Metadata Tree Display Legend</span></p>
+<div class="news_text"><strong>Links and Nodes<strong></strong>
+  <ul>
+  <li>End Point Node - is the last element in a tree. These can be edited. If the node has a value, the value will be displayed, else it will show the name of the field</li>
+  <li>Parent Nodes - Objects and Arrays - Objects are Blue circles with children. Arrays are Red circles with children. They will always display the field name above the node.</li>
+  <li>Links are the lines that connect the nodes, showing the parent child relationship defined in the schema.</li>
+  <li>Links for Required Data - Nodes that are required data elements will be either Green (populated) or Red (missing data).</li>
+  <li>Links for Optional Data - Links that are defined as optional data will either be Gold (populated) or Grey (empty).</li>
+  </ul>
+</div>
+<p class="news-title"><span>Editing Metadata</span></p>
+<div class="news_text"><strong>Data Types that can be edited</strong>:
+   <ul>
+  <li>Text - Edit, delete or add text</li>
+  <li>Large Text Areas - resizable object to handle large text area. </li>
+  <li>Arrays - Right click on an array (the Red Circles ) and you can add new elements or delete elements in the array</li>
+  <li>Parent Nodes (Objects) - right click on an array (the Blue Circles ) and you can add a new element or delete element elements to the object. Objects are strongly type, you can only add objects if they do not already exist. To allow multiple objects of the same type, use the array element.</li>
+  <li>Select lists - Select list are populated by a url reference list, can be external to system, such as data type registry, dictionary, or thesaurus.</li>
+  <li>Typehead Lists - Similar to select list in functionality, provides exernally referenced Typeahead lookup.</li>
+  <li>Map Bounding Box - graphic map display that allow you to view and modify a bounding box.</li>
+  <li>Dates - View and pick a date from calendar</li>
+  <li>GUIDS - Guids can only be created and not edited. Click on an empty guid to create a new on</li>
+  </ul>
+  <ul>
+</div>
+<p class="news-title"><span>Metadata Schemas</span></p>
+<div class="news_text"> 
+  <ul><li>JSON schemas translate the incoming data to the tree structure displayed, and transform it back when saved. To change the tree view and the data to be edited, requires a new json schema to be uploaded.</li>
+  <li>JSON Data Dictionaries - populate pick lists for select fields.  </li></ul>
+</div>
+ </td>
+   </tr>
+   </table>
+
+</body>
+</html>

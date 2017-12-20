@@ -1,0 +1,24 @@
+{
+  "name": "NodeServer-d3-mongodb",
+  "version": "1.0.0",
+  "description": "Dynamic Json Editor and Schema Translator",
+  "main": "nodeServer-d3-editor.js",
+  "repository": "https://github.com/usgin/dynamic-json-editor-schema-translator.git",
+  "license": "MIT",
+  "dependencies": {
+    "http": "0.0.0",
+    "fs-extra": "2.0.0",
+    "body-parser": "~1.15.0",
+    "express": "~4.13.4",
+    "mongodb": "~2.2.21",
+    "request": "~2.72.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "dyjest"
+  ],
+  "author": "Gary Hudman"
+}

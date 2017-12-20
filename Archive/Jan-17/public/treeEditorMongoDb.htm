@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/css/datepicker.css" />
+<link rel="stylesheet" href="/css/style.css" />
+
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.css' rel='stylesheet' />
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.css' rel='stylesheet' />
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.js'></script>
+<script>
+var gCKAN_package,
+    gCin_edit = { 'dateTime' : 'Now', editedBy: 'me', 'changes' : [] },
+    gCKAN_mdpackage,
+    gCKAN_pid,
+
+    gCKAN_api_path = 'http://132.249.238.150:8080/foundry/api/cinergi/docs/cinergi-0002',
+    gD3_Schema = "/jsonSchemas/cinergi-mongodb.json", 
+    gCKAN_offset = 100,
+    gCKAN_pagesize = 11,
+    zoomFactor = .3,
+    editState = 0;
+
+</script>
+<script src="js/cin-jEditorUI.js"></script>
+<script src="js/cin-d3jsonTree.js"></script>
+<script src="/js/cin-d3-context-menu.js"></script>
+<script src="/js/mdclient.js"></script>
+<script src="js/typeahead.bundle.js"></script>
+<script src="js/contentModel.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#ZoomOut").click(function() {
+      var zf = 1 - zoomFactor;
+      paintTree(zf);
+    });
+    $("#ZoomIn").click(function() {
+      var zf = 1 + zoomFactor;
+      paintTree(zf);
+    });
+    $("#btnLoad").click(function() {
+      getData();
+    });
+    $("#btnLoad").click(function() {
+       $("myEd").show();
+    });
+    $("#SPL").click(function() {
+        show_packlist("next");
+      });
+    $("#SAC").click(function() {
+        SaveThenClose();
+      });
+
+    $("#SPLback").click(function() {
+        show_packlist("back");
+      });
+    
+    $("#SearchPack").click(function() {
+      search_package(1);
+    });
+    $("#btnSRD").click(function() {
+       showEdits();
+    }); 
+
+    $("#xport").click(function() {
+       showFullPack();
+    });
+    $("#shojson").click(function() {
+        showFullPack();
+    }); 
+    $("#edbyin").keypress(function() {
+      if (e.keyCode == 13) {
+          editUser();
+      }
+    }); 
+     $("#pgsz").val(gCKAN_pagesize);
+
+    if ( gCKAN_pid ) {
+      ( gCKAN_pid.length > 5 ) ? $("#SAC").show() : $("#SAC").hide(); 
+    } else { $("#SAC").hide() }
+});
+
+// Allows external call to editor that loads a dataset
+
+function getParams() {
+  var query = window.location.href.split('?')[1]; 
+  //query won't be set if ? isn't in the URL
+  if ( getCookie("editorName").length > 1 ) { 
+    $('#editby').text( getCookie("editorName") );
+  } else {
+     $('#editby').text("Click to Enter Name");
+  }
+ // document.cookie= "editorName=Test User";
+  if(!query) {
+    return { };
+  }
+ 
+  var params = query.split('&');
+  var pairs = {};
+  for(var i = 0, len = params.length; i < len; i++) {
+    var pair = params[i].split('=');
+    pairs[pair[0]] = pair[1];
+    if ( pair[0] == "docId" ) {
+      console.log(' param ' + pair[0] + ' ' + pair[1]);
+      var pid = { id : pair[1] };
+      //d3.selectAll("svg").remove();
+      gCKAN_pid = pid.id;
+      loadD3();
+      //get_package(pid);
+    }      
+  } 
+}
+
+</script>
+<body onload="getParams()">
+   <table width="100%">
+   <tr class="tr-hdr" >
+      <td class="td-hdr">Data Discover Hub</br>Metadata Editor</td>
+      <td class="td-hdr" onclick="editUser();" style="width: 60px;">
+        Click to Edit Name<div id="editby">Editor Name</div>
+      </td>
+      <a id="shojson" class="circle_button" title="Save" target="_blank">json</a>
+      <a id="faq" class="circle_button" href="/publish/faq" title="FAQ" target="_blank">Help</a>
+     </td>
+     </tr>
+     <tr><td colspan=2>
+      <div id="myEd">
+      </div>
+      </td>
+      </tr>
+      <tr>
+   <td>
+   <div>
+   <div>
+  
+   <p>Select MetaData Page</p><select id="schemaPick" onchange="selectSchema(this)" >
+   <option id="/jsonSchemas/cinergi-mongodb.json">DDHub Summary</option>
+   <option id="/jsonSchemas/cinergi-orig-doc.json">Original Document</option>
+   <option id="/jsonSchemas/cinergi-orig-resparty.json">Original Document Contacts</option>
+   <option id="/jsonSchemas/cinergi-orig-doc-keywords.json">Original Documents Keywords</option>
+   <option id="/jsonSchemas/cinergi-orig-doc-distribution.json">Original Documents Distribution</option>
+   <option id="/jsonSchemas/cinergi-data-detail.json">Pipelined MetaData</option>
+   <option id="/jsonSchemas/cinergi-keywords-editor.json">Enhanced Keywords</option>
+
+   </select>
+   </div>
+   </br>
+    <div id="ckan_list" >
+      <a href="#" id="520a619fe4b0026c2bc2e229" onclick="javascript:get_package(this);"><p>Geophysical Log 1170782</p></a>
+      <a href="#" id="noaa_models:331" onclick="javascript:get_package(this);"><p>Columbia River plume - Ecological</p></a>
+      <a href="#" id="a05f7892-7e5b-7506-e044-00144fdd4fa6" onclick="javascript:get_package(this);"><p>Oroville, CA: Middle Fork of the Feather River, Sierra Nevada Foothills</p></a>
+      <a href="#" id="10.1594/IEDA/100461" onclick="javascript:get_package(this);"><p>Wax Lake Delta, Louisiana, USA 2013</p></a>
+      <a href="#" id="urn:org.marine-geo:metadata:6334" onclick="javascript:get_package(this);"><p>Yosemite, CA: El Portal, Mariposa Grove, Yosemite Canyon & Tuolumne Meadows</p></a>
+      <a href="#" id="dac133ff-d0f7-4f00-9c46-7f537adb7525" onclick="javascript:get_package(this);"><p>Raw XBT Expendable Probe Data from the East Pacific Rise Spreading Center acquired during the Marcus G. Langseth expedition MGL0812 (2008)</p></a>
+      <a href="#" id="48C34542A1604F74BD4B6F6EBF099D46" onclick="javascript:get_package(this);"><p>Coronado Copper and Zinc Company Location Map</p></a>
+      <a href="#" id="tess_models:124" onclick="javascript:get_package(this);"><p>Boise NF, ID: Avalanche Forecasting and Acoustic Detection</p></a>
+      <a href="#" id="537f6bf0e4b021317a8716d0" onclick="javascript:get_package(this);"><p>Bristlecone pine viability score, 2060 (GFDLCM21 GCM, A2 emissions scenario)</p></a>
+      <a href="#" id="520a8658e4b0026c2bc430d0" onclick="javascript:get_package(this);"><p>Geophysical Log 1216865</p></a>
+      <a href="#" id="520a626ce4b0026c2bc3268b" onclick="javascript:get_package(this);"><p>Geophysical Log 1180341</p></a>
+      <a href="#" id="4f4e4b0be4b07f02db69d92b" onclick="javascript:get_package(this);"><p>Mineral resource potential map of the Chanchelulla Roadless Area, Trinity County, California</p></a>
+    </div> 
+    </div>
+   </td>
+   <td><div id="tree-container"><div id="showData" style="display: none;"></div></div></td>
+   </tr></table>
+</body>
+</html>

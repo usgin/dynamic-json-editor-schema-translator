@@ -1,0 +1,94 @@
+{  "name":"gmd:MD_Metadata",
+   "root" : "gmd:MD_Metadata",
+   "xoffset": 120,
+   "display":"gmd:MD_Metadata",
+   "ref" : "/jsonSchemas/cinergi-sample.json",
+   "required" : "true",
+   "rootType" : "array",
+   "rootKey" : { "keyname" : "key", 
+                 "keyvalue" : "gmd:MD_Metadata",
+                 "valuename" : "value" },
+    "children": [
+        { "name": "gmd:fileIdentifier",
+          "display" : "gmd:fileIdentifier",
+          "datatype" : "guid",
+          "required" : "true",
+          "xoffset": -20,
+          "ref":  "gmd:MD_Metadata.gmd:fileIdentifier.gco:CharacterString.$",
+          "value" : ""
+        },
+        { "name": "LanguageCode",
+          "display" : "gmd:language",
+          "datatype": "dictlist",
+           "xoffset": -10,
+          "ref": "gmd:MD_Metadata.gmd:language.gco:CharacterString.$",
+          "value" : ""
+        },
+        { "name" : "gmd:dateStamp",
+          "display"  : "gmd:dateStamp",
+          "xoffset": 0,
+          "datatype":"date",
+          "ref" : "gmd:MD_Metadata.gmd:dateStamp.gco:Date.$"
+        },
+        { "name": "gmd:identificationInfo",
+          "datatype": "object",
+           "xoffset": 10,
+          "value" : "",          
+           "children": [{ 
+              "name" :"gmd:citation",
+              "datatype" : "object",
+              "children" : [{
+                "name" : "gmd:CI_Citation",
+                "datatype" : "object",
+                "yoffset": -40,
+                "children": [{
+                      "name": "gmd:title",
+                      "datatype": "string",
+                       "xoffset": -40,
+                       "yoffset": -40,
+                       "required" : "true",
+                      "ref": "gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString.$",
+                      "value" : "Default title"
+                    }, {
+                      "name": "gmd:date",
+                      "datatype" : "object",
+                      "yoffset": -40,
+                      "children" : [{"name":"gmd:date", 
+                                     "datatype" : "date",
+                                     "ref" : "gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:date.gmd:CI_Date.gmd:date.gco:Date.$",
+                                     "yoffset": -40, 
+                                     "value" : ""}, 
+                                    {"name" : "datetype",
+                                     "datatype" : "string",
+                                     "ref": "fullkey gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:date.gmd:CI_Date.gmd:dateType.gmd:CI_DateTypeCode.$",
+                                     "yoffset": -40,
+                                     "value" : "publication"}]
+
+                    }]
+              }]
+            }]
+        },
+        { "name": "gmd:abstract",
+          "display" : "gmd:abstract",
+          "datatype": "textarea",
+           "xoffset": 40,
+          "ref":"gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString.$",
+          "value" : ""
+        },
+
+        {
+          "name":"Responsible Parties",
+          "display":"Responsible Parties",
+          "datatype"  : "subschema",
+          "xoffset": 80,
+          "ref"  : "/jsonSchemas/cinergi-sample-resparty.json"
+        },
+        {
+          "name":"Spatial & Categories",
+          "display":"Spatial & Categories",
+          "datatype"  : "subschema",
+          "xoffset": 100,
+          "ref"  : "/jsonSchemas/cinergi-sample-sub.json"
+        }
+  ]
+}

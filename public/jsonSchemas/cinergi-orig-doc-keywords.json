@@ -1,0 +1,102 @@
+ {  "name": "keywords",
+    "display" : "<< Back to Original Docs",
+    "root" : "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords",
+    "datatype": "subschema",
+    "ref" : "/jsonSchemas/cinergi-mongodb.json", 
+    "rootType" : "array",
+    "rootKey" : { "keyname" : "gmd:descriptiveKeywords", 
+                 "keyvalue" : "gmd:descriptiveKeywords",
+                 "valuename" : "gmd:descriptiveKeywords" },
+    "children": [
+         { "name" :"gmd:abstract",
+          "display" : "Abstract",
+          "datatype" : "textarea",
+          "required" : "true",
+          "xoffset": -280,
+          "ref":  [ "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString._$", 
+                    "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString._$",
+                     "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.0.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString._$",
+                    "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.abstract.gco:CharacterString._$" ],
+          "value" : "Abstract"
+        },
+        {
+        "name": "keywords",
+        "display" : "Descriptive Keywords",
+        "yoffset" : 0,
+        "ref" : [ "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords",
+                  "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords",
+                  "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.0.gmd:MD_DataIdentification.gmd:descriptiveKeywords",
+                  "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.descriptiveKeywords" ], 
+        "datatype" : "array",
+        "children": [
+            { "name": "keywords", 
+                      "xoffset" : 0,
+                      "yoffset" : 80,
+                      "growdown" : 10,
+                      "display" : "Keyword",
+                      "datatype" : "object", 
+                      "viewstate" : "parent-collapse",
+                      "ref":  [ "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords",
+                                "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords",
+                                "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.0.gmd:MD_DataIdentification.gmd:descriptiveKeywords",
+                                "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.descriptiveKeywords" ],
+                      "displayChild" : "term",  
+                      "array_index" : "0",
+                      "children" : [ 
+                          { "name": "term", 
+                           "value" : "",  
+                           "yoffset" : 220,
+                           "xoffset" : 120,
+                           "xadjust" : "false",
+                           "growdown" : 10,
+                           "viewstate" : "collapse",
+                           "datatype" : "typeahead",
+                           "dicturl" : "http://ec-scigraph.sdsc.edu:9000/scigraph/vocabulary/autocomplete/%QUERY?limit=20&searchSynonyms=false&searchAbbreviations=false&searchAcronyms=false&includeDeprecated=false",
+                           "dictparams" : {"query": "%QUERY","limit":"20" },
+                           "ref": [ "gmd:MD_Keywords.gmd:keyword.0.gco:CharacterString._$", 
+                                    "gmd:MD_Keywords.gmd:keyword.gco:CharacterString._$",
+                                    "gmd:MD_Keywords.gmd:keyword.0.gmx:Anchor._$",
+									"gmd:MD_Keywords.gmd:keyword.gmx:Anchor._$",
+                                    "MD_Keywords.keyword.gco:CharacterString._$",
+									"MD_Keywords.keyword.0.gco:CharacterString._$"
+                                  ],
+                           "subArrCat" : [ "gco:CharacterString._$", 
+                                           "gmx:Anchor._$" ]
+                           },
+                            {
+                               "name": "gmd:type",
+                               "value" : "Type",
+                               "yoffset" : 220,
+                               "xoffset" : 120,
+                               "xadjust" : "false",
+                               "growdown" : 10,
+                               "viewstate" : "collapse",
+                               "datatype" : "dictlist", 
+                               "subArrCat" : "gmd:MD_Keywords.gmd:type.gmd:MD_KeywordTypeCode._$",
+                               "ref" : [ "gmd:MD_Keywords.gmd:type.gmd:MD_KeywordTypeCode._$",
+                                         "gmd:MD_Keywords.type.MD_KeywordTypeCode._$" ]
+
+                             },
+                             {
+                               "name": "gmd:thesaurusName", 
+                               "value" : "Thesaurus Name",
+                               "yoffset" : 220,
+                               "xoffset" : 120,
+                               "xadjust" : "false",
+                               "growdown" : 10,
+                               "viewstate" : "collapse",
+                               "datatype" : "string", 
+                               "subArrCat" : "gmd:MD_Keywords.gmd:thesaurusName.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
+                               "ref" : [ "gmd:MD_Keywords.gmd:thesaurusName.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
+                                         "MD_Keywords.thesaurusName.CI_Citation.title.CharacterString._$" ]
+
+  
+                             }
+
+                      ]
+               }
+              
+            ]
+        }
+    ] 
+}

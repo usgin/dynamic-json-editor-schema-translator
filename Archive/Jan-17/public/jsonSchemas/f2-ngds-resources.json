@@ -1,0 +1,57 @@
+ {
+    "name": "tags",
+    "root" : "tags",
+    "rootType" : "array",
+    "children": [
+        { "name": "tag", 
+           "value" : "",
+           "datatype" : "string", 
+           "ref": "tags[]",         
+           "display": "CHP",
+           "properties" : 
+		    {
+		      "vocabulary_id": null,
+		      "display_name": "CHP",
+		      "name": "CHP",
+		      "revision_timestamp": "2015-11-13T00:21:53.825855",
+		      "state": "active",
+		      "id": "33de9d90-bd16-4bce-b358-e037ed3462d8"
+		    }
+		}
+	]
+}
+{ "name: "resources",
+  "": [
+    {
+      "resource_group_id": "1cabdb60-b7bd-4fc3-9f1e-597b1d9321e0",
+      "cache_last_updated": null,
+      "revision_timestamp": "2015-11-20T18:31:04.838184",
+      "webstore_last_updated": null,
+      "datastore_active": false,
+      "id": "06db3230-3924-4a48-b585-6766db561de0",
+      "size": null,
+      "state": "active",
+      "resource_locator_function": "",
+      "hash": "",
+      "description": "",
+      "format": "PDF",
+      "tracking_summary": {
+        "total": 0,
+        "recent": 0
+      },
+      "mimetype_inner": null,
+      "url_type": null,
+      "resource_locator_protocol": "",
+      "mimetype": null,
+      "cache_url": null,
+      "name": "Downloadable File",
+      "created": "2015-11-20T11:31:04.912624",
+      "url": "http://www.geothermal-energy.org/pdf/IGAstandard/WGC/2005/1309.pdf",
+      "webstore_url": null,
+      "last_modified": null,
+      "md_resource": "{\"accessLink\": {\"linkObject\": {\"description\": null, \"url\": \"http://www.geothermal-energy.org/pdf/IGAstandard/WGC/2005/1309.pdf\", \"linkTargetResourceType\": \"\", \"linkContentResourceType\": \"\", \"ogc_layer\": null, \"linkTitle\": \"Downloadable File\"}}, \"distributors\": [{\"relatedAgent\": {\"agentRole\": {\"contactEmail\": \"horne@stanford.edu\", \"contactAddress\": null, \"individual\": {\"personName\": \"Roland Horne\", \"personPosition\": \"\", \"personRole\": \"distributor\"}, \"organizationName\": \"Stanford University\"}}}]}",
+      "position": 0,
+      "revision_id": "d38e97f7-795b-400e-ad1a-61b108305f1b",
+      "resource_type": null
+    }
+  ]

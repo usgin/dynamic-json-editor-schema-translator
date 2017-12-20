@@ -1,0 +1,224 @@
+{
+    "name": "harvestInformation",
+    "display": "Harvest-Info",
+    "required": "true",
+    "datatype" : "object",
+    "expanded": "true",
+    "children": [{
+        "name": "originalFileIdentifier",
+        "display": "Original File Identifier",
+        "required" : "true",
+        "value" : "98ddf901b9782a25982e01af3b048b8f",
+        "datatype" : "string",
+        "ref" : "harvestInformation.originalFileIdentifier" 
+        },{ 
+         "name": "harvestURL",
+         "value" : "",
+         "datatype" : "string",
+         "ref" : "harvestInformation.harvestURL" 
+        },{ 
+          "name": "sourceInfo",
+          "viewstate" : "collapse",
+          "display": "Source",
+            "children": [{
+                "name": "harvestSourceName",
+                 "display": "SourceName",
+                "value" : "xxx",
+                "datatype" : "string",
+                "ref" : "harvestInformation.sourceInfo.harvestSourceName"  
+                },{
+                "name": "viewID",
+                "display": "View ID",
+                "value" : "xxx",
+                "datatype" : "string",
+                "ref" : "harvestInformation.sourceInfo.viewID"   
+                },{
+                "name": "harvestSourceID",
+                "display": "Source ID",
+                "value" : "xxx",
+                "datatype" : "string",
+                "ref" : "harvestInformation.sourceInfo.harvestSourceID"
+                }]
+         },
+        { "name": "indexDate",
+          "display" : "Index Date",
+          "datatype" : "date",
+          "ref" : "harvestInformation.indexDate",
+          "value" : "" },
+        { "name": "originalFormat",
+          "ref" : "harvestInformation.originalFormat",
+          "datatype" : "string",
+          "value" : "" },
+        { "name": "Version",
+          "ref" : "harvestInformation.version",
+          "value" : "1.2" },
+        { "name": "crawlDate",
+          "display" : "Crawl Date",
+          "ref" : "harvestInformation.crawlDate",
+          "datatype" : "date",
+          "value" : "07/07/2015" 
+        },                 
+        { "name": "metadataProperties",
+          "viewstate" : "collapse",
+          "children": [{
+            "name": "metadataContact",
+            "children": [{
+                "name": "relatedAgent",
+                "children": [{ 
+                    "name": "agentRole",
+                    "children": [{  
+                        "name": "contactEmail",
+                        "datatype" : "string",
+                        "value": "No email Was Given"
+                         },
+                        {"name": "organizationURI",
+                         "datatype" : "string",
+                        "value": "http:xxx"
+                        },{"name": "individual",
+                            "children": [{ "name": "personName", 
+                                            "datatype" : "string" },
+                                        { "name": "personPosition",
+                                          "datatype" : "string" },
+                                        { "name": "personURI",
+                                           "datatype" : "string" }
+                            ]},
+                        {"name": "organizationName",
+                        "datatype" : "string",
+                        "value": "No Organization Name Was Given"  
+                        }, {"name": "phoneNumber",
+                            "datatype" : "string",
+                            "value": ""
+                        }, {"name": "agentRoleLabel",
+                             "datatype" : "string",
+                        "value": "No Organization Name Was Given"
+                        }, {"name": "contactAddress", "datatype" : "string",
+                        "value": ""
+                        }, {"name": "agentRoleURI", "datatype" : "string",
+                        "value": ""
+                        }
+                        ]
+
+                    }]
+                }]
+            }] 
+        },{
+        "name": "resourceDescription",
+        "viewstate" : "collapse",
+         "display":"resourceDesc",
+        "children": [{
+            "name": "usginContentModelLayer"
+            },{
+            "name": "geographicExtent",
+            "datatype" : "bbox",
+            "display":"geoExtent",
+             "children": [{ "name": "westBoundLongitude"},
+                          { "name": "northBoundLatitude"},
+                          { "name": "eastBoundLongitude"},
+                          { "name": "southBoundLatitude"}]
+            },{
+            "name": "citedSourceAgents",
+            "children": [{
+                "name": "relatedAgent",
+                "children": [{ "name": "agentRole",
+                                "children": [
+                                { "name":"contactEmail",
+                                  "datatype" : "string",
+                                  "value":"http://www.usgs.gov/ask/index.html" },
+                                { "name": "contactAddress",
+                                "datatype" : "string",
+                                  "value": "" },
+                                { "name": "individual",
+                                  "datatype" : "string",
+                                  "value": "" },
+                                { "name": "organizationName",
+                                  "datatype" : "string",
+                                  "value": "lookup" }
+                                ]
+                    }]
+                }]
+            },
+            {
+            "name": "resourceAccessOptions",
+            "display": "rscAccessOpt",
+            "viewstate" : "collapse",
+            "datatype"   : "array",
+            "children": [{ "name": "accessLinks",
+                           "children": [{"name" : "linkObject",
+                                        "children": [{ "name": "description", "datatype" : "string" },
+                                                      { "name": "url", 
+                                                        "datatype" : "string" },
+                                                      { "name": "linkTargetResourceType",
+                                                        "datatype" : "string" },
+                                                      { "name": "linkContentResourceType",
+                                                        "datatype" : "string" },
+                                                      { "name": "ogc_layer",
+                                                        "datatype" : "string" },
+                                                      { "name":  "linkTitle",
+                                                        "datatype" : "string" }
+                                                      ]
+                                          }] 
+                        },{ "name": "distributors",
+                            "datatype" : "array",
+                             "children": [{
+                                "name": "relatedAgent",
+                                "children": [{ "name": "agentRole",
+                                                "children": [
+                                                { "name":"contactEmail",
+                                                 "datatype" : "string",
+                                                "ref":"harvestInformation.resourceDescription.distributors.relatedAgent.agentRole.contactEmail",
+                                                  "value":"" },
+                                                { "name": "contactAddress",
+                                                   "datatype" : "string",
+                                                  "value": "" },
+                                                { "name": "individual",
+                                                  "datatype" : "string",
+                                                  "value": "" },
+                                                { "name": "organizationName",
+                                                  "datatype" : "string",
+                                                  "value": "" }
+                                                ]
+                                    }]
+                                }]
+                        }]
+            }, {
+            "name": "resourceContact",
+                "children": [{
+                "name": "relatedAgent",
+                "children": [{ "name": "agentRole",
+                                "children": [
+                                { "name":"contactEmail",
+                                  "datatype" : "string",
+                                   "ref":"resourceDescription.resourceContact.relatedAgent.agentRole.contactEmail",
+                                  "value":"" },
+                                { "name": "contactAddress",
+                                  "datatype" : "string",
+                                  "value": "" },
+                                { "name": "individual",
+                                  "datatype" : "string",
+                                  "value": "" },
+                                { "name": "organizationName",
+                                  "datatype" : "string",
+                                  "value": "" }
+                                ]
+                    }]
+                }]
+
+            },{
+            "name": "resourceDescription",
+            "value":"Description",
+            "ref": "resourceDescription.resourceDescription",
+            "datatype" : "textarea"
+            },{
+            "name": "resourceTitle",
+            "value":"resource Title",
+            "ref": "resourceDescription.resourceTitle"
+            }, {
+            "name": "usginContentModelVersion"
+            },{
+            "name": "citationDates"
+            }
+            ] 
+        }
+
+    ]
+}

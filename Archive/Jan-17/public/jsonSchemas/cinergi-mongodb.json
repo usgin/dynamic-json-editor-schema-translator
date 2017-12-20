@@ -1,0 +1,173 @@
+{  "name":"root",
+   "root" : "root",
+   "datatype" : "object",
+   "display": "MetaData Overview",
+    "xoffset": -300,
+   "ref" : "/jsonSchemas/cinergi-mongodb.json",
+   "required" : "true",
+   "rootType" : "object",
+   "rootKey" : { "keyname" : "key", 
+                 "keyvalue" : "_id",
+                 "valuename" : "value" },
+    "children": [
+         { "name": "Version",
+          "datatype" : "string",
+          "required" : "true",
+           "xoffset": -472,
+           "yoffset" : -25,
+          "ref":  ".Version",
+          "value" : "1"
+        },
+        { "name": "CrawlDate",
+          "datatype" : "date",
+          "required" : "true",
+          "display" : "Original Crawl Date",
+           "xoffset": -510,
+           "yoffset" : 25,
+          "ref":  ".CrawlDate",
+          "value" : "10/10/2010"
+        }, 
+         
+        { "name": "OrginalDoc",
+          "datatype" : "object",
+          "required" : "true",
+           "xoffset": -430,
+          "ref":  "OriginalDoc",
+          "children": [ 
+              { "name": "orgDocDetail",
+                "display" : "Go To > Original Doc Detail View",
+                "datatype" : "subschema",
+                "required" : "false",
+                "xoffset": -425,
+                "yoffset" : -40,
+                "ref":  "/jsonSchemas/cinergi-orig-doc.json"
+              },
+              { "name": "gmd:fileIdentifier",
+                "display" : "File Identifier",
+                "datatype" : "string",
+                "required" : "true",
+                "xoffset": -420,
+                "ref": [ "OriginalDoc.gmd:MD_Metadata.gmd:fileIdentifier.gco:CharacterString._$" ,
+                          "OriginalDoc.MD_Metadata.fileIdentifier.gco:CharacterString._$" ]
+              },
+              { "name" :"gmd:title",
+                "display" : "Title",
+                "datatype" : "string",
+                "required" : "true",
+                "xoffset": -420,
+                "ref": [ "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
+                        "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.citation.CI_Citation.title.gco:CharacterString._$" ]
+              },
+              { "name" :"gmd:abstract",
+                "display" : "Abstract",
+                "datatype" : "textarea",
+                "required" : "true",
+                "xoffset": -410,
+                "ref":  "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString._$",
+                "value" : "Abstract"
+              }
+            ]
+        },
+        { "name": "Processing",
+          "datatype" : "object",
+          "display" : "Processing Status",
+          "required" : "true",
+          "xoffset": -380,
+           "yoffset" : 220,
+          "children" : [
+              {   "name": "status",
+                "display" : "status",
+                "datatype" : "string",
+                "required" : "false",
+                "xoffset": -380,
+                  "yoffset" : 220,
+                "ref":  "Processing.status"
+            },
+            {   "name": "docId",
+                "display" : "Doc ID",
+                "datatype" : "string",
+                "required" : "false",
+                "xoffset": -380,
+                  "yoffset" : 220,
+                "ref":  "Processing.docId"
+            }
+          ]
+        },
+        { "name": "SourceInfo",
+          "datatype" : "object",
+          "display" : "Source Info",
+          "required" : "true",
+          "xoffset": -420,
+          "yoffset" : -100,
+          "ref":  "SourceInfo",
+          "children": [
+            {   "name": "SourceID",
+                "display" : "Source ID",
+                "datatype" : "string",
+                "required" : "false",
+                "xoffset": -430,
+                 "yoffset" : -120,
+                "ref":  "SourceInfo.SourceID"
+            },
+            {   "name": "Name",
+                "display" : "Source Name",
+                "datatype" : "string",
+                "required" : "false",
+                "xoffset": -430,
+                 "yoffset" : -120,
+                "ref":  "SourceInfo.Name"
+            }
+            ]
+        },
+        { "name": "Data",
+          "datatype" : "object",
+          "display" : "Pipeline Metadata",
+          "required" : "true",
+          "xoffset": -380,
+          "yoffset" : -100,
+          "ref":  "children.Data",
+          "children": [
+            {   "name": "DataDetail",
+                "display" : "Go To > Detail View",
+                "datatype" : "subschema",
+                "required" : "false",
+                "xoffset": -390,
+                 "yoffset" : -100,
+                "ref":  "/jsonSchemas/cinergi-data-detail.json"
+              },
+            { "name": "spatial",
+              "datatype" : "object",
+              "required" : "true",
+                "xoffset": -360,
+                 "yoffset" : -100,
+              "ref":  "Data.spatial",
+              "children": [ 
+                  { "name": "text",
+                    "display": "Spatial Notes",
+                    "datatype" : "textarea",
+                    "required" : "true",
+                    "xoffset": -420,
+                     "yoffset" : -100,
+                    "ref":  "Data.spatial.text" 
+                  },
+                  { "name": "bounding_boxes",
+                    "datatype" : "bbox",
+                    "required" : "false",
+                    "xoffset": -320,
+                    "yoffset" : 0,
+                    "ref":  "Data.spatial.bounding_boxes[0]" 
+                  }
+              ]
+            }, 
+            {   "name": "KeywordEditor",
+                "display" : "Go To > Keyword Editor",
+                "datatype" : "subschema",
+                "required" : "false",
+                "xoffset": -340,
+                 "yoffset" : -100,
+                "ref":  "/jsonSchemas/cinergi-keywords-editor.json"
+              }
+          ]
+        }
+    ]
+}

@@ -1,0 +1,99 @@
+ {  "name": "keywords",
+    "display" : "<< Back to Pipeline Metadata",
+    "root" : "children.Data",
+    "datatype": "subschema",
+    "ref" : "/jsonSchemas/cinergi-mongodb.json", 
+    "rootType" : "array",
+    "rootKey" : { "keyname" : "keywords", 
+                 "keyvalue" : "keywords",
+                 "valuename" : "keywords" },
+    "children": [{
+        "name": "keywords",
+        "display" : "Enhanced Keywords",
+        "xoffset" : -200,
+        "yoffset" : 120,
+        "ref" : "Data.keywords.0",
+        "datatype" : "array",
+         "array_index" : "0",
+        "children": [
+                    { "name": "keyword", 
+                      "yoffset" : 180,
+                      "xoffset" : -200,
+                      "display" : "Keyword",
+                      "datatype" : "object", 
+                      "ref": "keyword",    
+                      "children" : [ 
+                          { "name": "Term", 
+                            "xoffset" : -200,
+                            "yoffset" : 180,
+                            "display" : "Term",
+                            "datatype" : "string", 
+                            "ref": "Data.keywords.0.term"   
+                           },                
+                           { "name": "ontId", 
+                            "yoffset" : 180,
+                            "xoffset" : -190,
+                            "display" : "Ontological ID",
+                            "datatype" : "string", 
+                            "ref": "Data.keywords.0.ontId"   
+                           },
+                          { "name": "fullHierarchy", 
+                           "display" : "Full Hierarchy",
+                           "yoffset" : 180,
+                           "xoffset" : -180,
+                           "datatype" : "string", 
+                           "ref": "Data.keywords.0.fullHierarchy",    
+                           "array_index" : "0"
+                           },
+                           { "name": "facetHierarchy", 
+                           "display" : "Facet Hierarchy",
+                           "yoffset" : 180,
+                           "xoffset" : -180,
+                           "datatype" : "string", 
+                           "ref": "Data.keywords.0.facetHierarchy",    
+                           "array_index" : "0"
+                           },
+                           {  "name": "entityInfos", 
+                              "display" : "Entity Info",
+                              "datatype" : "object", 
+                              "ref": "ontId",
+                              "yoffset" : 180,
+                              "xoffset" : -100,    
+                              "children" : [
+                                  { "name": "id", 
+                                    "display" : "ID",
+                                    "yoffset" : 180,
+                                    "xoffset" : -100,  
+                                    "datatype" : "string",
+                                    "ref" : "Data.keywords.0.entityInfos.id"
+                                  },
+                                  { "name": "start", 
+                                    "display" : "Start",
+                                    "yoffset" : 180,
+                                    "xoffset" : -90, 
+                                    "datatype" : "string",
+                                    "ref" : "Data.keywords.0.entityInfos.start"
+                                  },
+                                  { "name": "end", 
+                                    "display" : "End",
+                                    "yoffset" : 180,
+                                    "xoffset" : -80, 
+                                    "datatype" : "string",
+                                    "ref" : "Data.keywords.0.entityInfos.end"
+                                  },
+                                  { "name": "category", 
+                                    "display" : "Category",
+                                    "yoffset" : 180,
+                                    "xoffset" : -70, 
+                                    "datatype" : "string",
+                                    "ref" : "Data.keywords.0.entityInfos.category"
+                                  }
+                              ]
+                           }
+                      ]
+                  }
+
+            ]
+        }
+    ] 
+}

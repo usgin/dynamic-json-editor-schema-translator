@@ -1,0 +1,30 @@
+ {  "name": "keywords",
+    "display" : "Metadata",
+    "ref" : "tags",
+    "root" : "tags",
+    "datatype": "subschema",
+    "ref" : "/jsonSchemas/f2-min3.json", 
+    "rootType" : "array",
+    "rootKey" : { "keyname" : "tags", 
+                 "keyvalue" : "tags",
+                 "valuename" : "tags" },
+    "children": [{
+        "name": "keywords",
+        "display" : "Keywords",
+        "ref" : "tags",
+        "datatype" : "array",
+        "children": [
+              { "name": "keyword", 
+               "value" : "name",
+                "yoffset" : 80,
+               "display" : "display_name",
+               "datatype" : "string", 
+               "ref": "name",    
+               "array_index" : "0"
+               }
+            ]
+        }
+    ] 
+}
+
+   

@@ -1,0 +1,24 @@
+{  "name":"root",
+   "root" : "root",
+   "display": "MetaData Record",
+   "ref" : "/jsonSchemas/cinergi-mongodb.json",
+   "required" : "true",
+   "rootType" : "object",
+   "rootKey" : { "keyname" : "key", 
+                 "keyvalue" : "_id",
+                 "valuename" : "value" },
+    "children": [
+         { "name": "Version",
+          "datatype" : "string",
+          "required" : "true",
+          "ref":  "children.Version",
+          "value" : "1"
+        },
+        { "name": "CrawlDate",
+          "datatype" : "date",
+          "required" : "true",
+          "ref":  "children.CrawlDate",
+          "value" : "10/10/2010"
+        }
+    ]
+}

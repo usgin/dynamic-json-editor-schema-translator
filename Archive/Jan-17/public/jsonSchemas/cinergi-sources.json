@@ -1,0 +1,860 @@
+[
+  {
+    "_id": {"$oid": "570eb146e4b038ce2983e32d"},
+    "sourceInformation": {
+      "resourceID": "cinergi-0002",
+      "name": "OpenTopography",
+      "dataSource": "OpenTopography",
+      "description": ""
+    },
+    "schema": "",
+    "provenance": "",
+    "ingestConfiguration": {
+      "ingestMethod": "WAF",
+      "ingestURL": "http://hydro10.sdsc.edu/metadata/OpenTopography/",
+      "allowDuplicates": "False",
+      "crawlFrequency": {
+        "crawlType": "Frequency",
+        "hours": "48",
+        "minutes": "0",
+        "startDays": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "startTime": "0:00",
+        "operationEndTime": "24:00"
+      }
+    },
+    "contentSpecification": {
+      "keepMissing": "false",
+      "locale": "en_US"
+    },
+    "originalRecordIdentifierSpec": {
+      "fields": ["$.'gmd:MD_Metadata'.'gmd:fileIdentifier'.'gco:CharacterString'.'_$'"],
+      "delimiter": [":"],
+      "method": "Value"
+    },
+    "documentProcessing": [
+      "UUID Generation",
+      "XML2Cinergi",
+      "Index"
+    ],
+    "batchInfos": [
+      {
+        "batchId": "04182016-22:47",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "04192016-19:49",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "05062016-23:06",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06132016-18:45",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06172016-00:04",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      }
+    ]
+  },
+  {
+    "_id": {"$oid": "570eb22de4b077e7fd0da952"},
+    "sourceInformation": {
+      "resourceID": "cinergi-0015",
+      "name": "Sediment Experimentalist Network",
+      "dataSource": "SEN",
+      "description": ""
+    },
+    "schema": "",
+    "provenance": "",
+    "ingestConfiguration": {
+      "ingestMethod": "WAF",
+      "ingestURL": "http://hydro10.sdsc.edu/metadata/SEN/",
+      "allowDuplicates": "False",
+      "crawlFrequency": {
+        "crawlType": "Frequency",
+        "hours": "48",
+        "minutes": "0",
+        "startDays": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "startTime": "0:00",
+        "operationEndTime": "24:00"
+      }
+    },
+    "contentSpecification": {
+      "keepMissing": "false",
+      "locale": "en_US"
+    },
+    "originalRecordIdentifierSpec": {
+      "fields": ["$.'gmd:MD_Metadata'.'gmd:fileIdentifier'.'gco:CharacterString'.'_$'"],
+      "delimiter": [":"],
+      "method": "Value"
+    },
+    "documentProcessing": [
+      "UUID Generation",
+      "XML2Cinergi",
+      "Index"
+    ],
+    "batchInfos": [
+      {
+        "batchId": "04192016-19:54",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "05062016-23:00",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06132016-18:57",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06172016-00:17",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      }
+    ]
+  },
+  {
+    "_id": {"$oid": "570eb23ee4b0fdd81a6fcca5"},
+    "sourceInformation": {
+      "resourceID": "cinergi-0009",
+      "name": "NGDS_Geo-portal",
+      "dataSource": "NGDS_Geo-portal",
+      "description": ""
+    },
+    "schema": "",
+    "provenance": "",
+    "ingestConfiguration": {
+      "ingestMethod": "WAF",
+      "ingestURL": "http://hydro10.sdsc.edu/metadata/NGDS_Geo-portal/",
+      "allowDuplicates": "False",
+      "crawlFrequency": {
+        "crawlType": "Frequency",
+        "hours": "48",
+        "minutes": "0",
+        "startDays": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "startTime": "0:00",
+        "operationEndTime": "24:00"
+      }
+    },
+    "contentSpecification": {
+      "keepMissing": "false",
+      "locale": "en_US"
+    },
+    "originalRecordIdentifierSpec": {
+      "fields": ["$.'gmd:MD_Metadata'.'gmd:fileIdentifier'.'gco:CharacterString'.'_$'"],
+      "delimiter": [":"],
+      "method": "Value"
+    },
+    "documentProcessing": [
+      "UUID Generation",
+      "XML2Cinergi",
+      "Index"
+    ],
+    "batchInfos": [
+      {
+        "batchId": "04192016-19:51",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "05062016-23:13",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06132016-18:51",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06172016-00:12",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      }
+    ]
+  },
+  {
+    "_id": {"$oid": "570eb1cfe4b090e66cf53729"},
+    "sourceInformation": {
+      "resourceID": "cinergi-0007",
+      "name": "NOAA_NGDC",
+      "dataSource": "NOAA_NGDC",
+      "description": ""
+    },
+    "schema": "",
+    "provenance": "",
+    "ingestConfiguration": {
+      "ingestMethod": "WAF",
+      "ingestURL": "http://hydro10.sdsc.edu/metadata/NOAA_NGDC/",
+      "allowDuplicates": "False",
+      "crawlFrequency": {
+        "crawlType": "Frequency",
+        "hours": "48",
+        "minutes": "0",
+        "startDays": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "startTime": "0:00",
+        "operationEndTime": "24:00"
+      }
+    },
+    "contentSpecification": {
+      "keepMissing": "false",
+      "locale": "en_US"
+    },
+    "originalRecordIdentifierSpec": {
+      "fields": ["$.'gmi:MI_Metadata'.'gmd:fileIdentifier'.'gco:CharacterString'.'_$'"],
+      "delimiter": [":"],
+      "method": "Value"
+    },
+    "documentProcessing": [
+      "UUID Generation",
+      "XML2Cinergi",
+      "Index"
+    ],
+    "batchInfos": [
+      {
+        "batchId": "04192016-19:50",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "05062016-23:14",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06132016-18:49",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06172016-00:10",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      }
+    ]
+  },
+  {
+    "_id": {"$oid": "570eb202e4b06bae575a17bd"},
+    "sourceInformation": {
+      "resourceID": "cinergi-0013",
+      "name": "EarthCube Oceanography and Geobiology Environment Omics",
+      "dataSource": "ecogeo",
+      "description": ""
+    },
+    "schema": "",
+    "provenance": "",
+    "ingestConfiguration": {
+      "ingestMethod": "WAF",
+      "ingestURL": "http://hydro10.sdsc.edu/metadata/ecogeo/",
+      "allowDuplicates": "False",
+      "crawlFrequency": {
+        "crawlType": "Frequency",
+        "hours": "48",
+        "minutes": "0",
+        "startDays": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "startTime": "0:00",
+        "operationEndTime": "24:00"
+      }
+    },
+    "contentSpecification": {
+      "keepMissing": "false",
+      "locale": "en_US"
+    },
+    "originalRecordIdentifierSpec": {
+      "fields": ["$.'gmd:MD_Metadata'.'gmd:fileIdentifier'.'gco:CharacterString'.'_$'"],
+      "delimiter": [":"],
+      "method": "Value"
+    },
+    "documentProcessing": [
+      "UUID Generation",
+      "XML2Cinergi",
+      "Index"
+    ],
+    "batchInfos": [
+      {
+        "batchId": "04192016-19:52",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "05062016-23:18",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06132016-18:54",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06172016-00:14",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      }
+    ]
+  },
+  {
+    "_id": {"$oid": "570eb212e4b0ad8004fd6bcb"},
+    "sourceInformation": {
+      "resourceID": "cinergi-0014",
+      "name": "Collaboration and Cyberinfrastructure for Paleogeosciences",
+      "dataSource": "c4p",
+      "description": ""
+    },
+    "schema": "",
+    "provenance": "",
+    "ingestConfiguration": {
+      "ingestMethod": "WAF",
+      "ingestURL": "http://hydro10.sdsc.edu/metadata/c4p/",
+      "allowDuplicates": "False",
+      "crawlFrequency": {
+        "crawlType": "Frequency",
+        "hours": "48",
+        "minutes": "0",
+        "startDays": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "startTime": "0:00",
+        "operationEndTime": "24:00"
+      }
+    },
+    "contentSpecification": {
+      "keepMissing": "false",
+      "locale": "en_US"
+    },
+    "originalRecordIdentifierSpec": {
+      "fields": ["$.'gmd:MD_Metadata'.'gmd:fileIdentifier'.'gco:CharacterString'.'_$'"],
+      "delimiter": [":"],
+      "method": "Value"
+    },
+    "documentProcessing": [
+      "UUID Generation",
+      "XML2Cinergi",
+      "Index"
+    ],
+    "batchInfos": [
+      {
+        "batchId": "04192016-19:54",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "05062016-23:20",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06132016-18:56",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06172016-00:15",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      }
+    ]
+  },
+  {
+    "_id": {"$oid": "570eb254e4b0d5e955f18cf8"},
+    "sourceInformation": {
+      "resourceID": "cinergi-0017",
+      "name": "CUAHSI WaterOneFlow services",
+      "dataSource": "CUAHSI",
+      "description": ""
+    },
+    "schema": "",
+    "provenance": "",
+    "ingestConfiguration": {
+      "ingestMethod": "WAF",
+      "ingestURL": "http://hydro10.sdsc.edu/metadata/cuahsi/",
+      "allowDuplicates": "False",
+      "crawlFrequency": {
+        "crawlType": "Frequency",
+        "hours": "48",
+        "minutes": "0",
+        "startDays": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "startTime": "0:00",
+        "operationEndTime": "24:00"
+      }
+    },
+    "contentSpecification": {
+      "keepMissing": "false",
+      "locale": "en_US"
+    },
+    "originalRecordIdentifierSpec": {
+      "fields": ["$.'gmd:MD_Metadata'.'gmd:fileIdentifier'.'gco:CharacterString'.'_$'"],
+      "delimiter": [":"],
+      "method": "Value"
+    },
+    "documentProcessing": [
+      "UUID Generation",
+      "XML2Cinergi",
+      "Index"
+    ],
+    "batchInfos": [
+      {
+        "batchId": "04192016-19:55",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "05062016-23:21",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06132016-18:59",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06132016-20:18",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06172016-00:18",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      }
+    ]
+  },
+  {
+    "_id": {"$oid": "5716a0d6e4b09a3b91809a81"},
+    "sourceInformation": {
+      "resourceID": "cinergi-0023",
+      "name": "IEDA",
+      "dataSource": "IEDA",
+      "description": ""
+    },
+    "schema": "",
+    "provenance": "",
+    "ingestConfiguration": {
+      "ingestMethod": "WAF",
+      "ingestURL": "http://hydro10.sdsc.edu/metadata/IEDA/",
+      "allowDuplicates": "false",
+      "crawlFrequency": {
+        "crawlType": "Frequency",
+        "hours": "48",
+        "minutes": "0",
+        "startDays": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "startTime": "0:00",
+        "operationEndTime": "24:00"
+      }
+    },
+    "contentSpecification": {
+      "keepMissing": "false",
+      "locale": "en_US"
+    },
+    "originalRecordIdentifierSpec": {
+      "fields": ["$.'gmi:MI_Metadata'.'gmd:fileIdentifier'.'gco:CharacterString'.'_$'"],
+      "delimiter": [":"],
+      "method": "Value"
+    },
+    "documentProcessing": [
+      "UUID Generation",
+      "XML2Cinergi",
+      "Index"
+    ],
+    "batchInfos": [
+      {
+        "batchId": "04192016-21:21",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06132016-18:41",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06142016-00:43",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06172016-00:00",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06202016-20:52",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      }
+    ]
+  },
+  {
+    "_id": {"$oid": "570eb0e8e4b0d386d5c0d107"},
+    "sourceInformation": {
+      "resourceID": "cinergi-0001",
+      "name": "ScienceBase WAF",
+      "dataSource": "ScienceBase WAF",
+      "description": ""
+    },
+    "schema": "",
+    "provenance": "",
+    "ingestConfiguration": {
+      "ingestMethod": "WAF",
+      "ingestURL": "http://maxim.ucsd.edu/waf/sciencebase/",
+      "allowDuplicates": "False",
+      "crawlFrequency": {
+        "crawlType": "Frequency",
+        "hours": "48",
+        "minutes": "0",
+        "startDays": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "startTime": "0:00",
+        "operationEndTime": "24:00"
+      }
+    },
+    "contentSpecification": {
+      "keepMissing": "false",
+      "locale": "en_US"
+    },
+    "originalRecordIdentifierSpec": {
+      "fields": ["$.'gmd:MD_Metadata'.'gmd:fileIdentifier'.'gco:CharacterString'.'_$'"],
+      "delimiter": [":"],
+      "method": "Value"
+    },
+    "documentProcessing": [
+      "UUID Generation",
+      "XML2Cinergi",
+      "Index"
+    ],
+    "batchInfos": [
+      {
+        "batchId": "04182016-22:35",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "04182016-23:02",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "04182016-23:05",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "04182016-23:10",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "04182016-23:27",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "04182016-23:22",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "04192016-00:05",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "04192016-18:53",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "04192016-19:24",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "04192016-19:32",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "04192016-19:48",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "05062016-23:05",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06132016-18:44",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06172016-00:03",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      }
+    ]
+  },
+  {
+    "_id": {"$oid": "570eb32be4b0c761cd57706f"},
+    "sourceInformation": {
+      "resourceID": "cinergi-0022",
+      "name": "CZO_Datasets",
+      "dataSource": "CZO_Datasets",
+      "description": ""
+    },
+    "schema": "",
+    "provenance": "",
+    "ingestConfiguration": {
+      "ingestMethod": "WAF",
+      "ingestURL": "http://hydro10.sdsc.edu/metadata/CZO_Datasets/",
+      "allowDuplicates": "false",
+      "crawlFrequency": {
+        "crawlType": "Frequency",
+        "hours": "48",
+        "minutes": "0",
+        "startDays": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "startTime": "0:00",
+        "operationEndTime": "24:00"
+      }
+    },
+    "contentSpecification": {
+      "keepMissing": "false",
+      "locale": "en_US"
+    },
+    "originalRecordIdentifierSpec": {
+      "fields": ["$.'gmd:MD_Metadata'.'gmd:fileIdentifier'.'gco:CharacterString'.'_$'"],
+      "delimiter": [":"],
+      "method": "Value"
+    },
+    "documentProcessing": [
+      "UUID Generation",
+      "XML2Cinergi",
+      "Index"
+    ],
+    "batchInfos": [
+      {
+        "batchId": "04192016-00:06",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "04192016-19:56",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "05062016-22:57",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06132016-18:20",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06132016-18:31",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06162016-23:47",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06162016-23:59",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06172016-20:00",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06172016-21:55",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06232016-19:02",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06232016-19:11",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06232016-19:55",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06242016-18:47",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      },
+      {
+        "batchId": "06242016-19:05",
+        "status": 2,
+        "ingestedCount": 20,
+        "submittedCount": 20
+      }
+    ]
+  }
+]

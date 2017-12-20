@@ -1,0 +1,70 @@
+ {  "name": "keywords",
+    "display" : "<< Back to Original Docs",
+    "root" : "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords",
+    "datatype": "subschema",
+    "ref" : "/jsonSchemas/cinergi-orig-doc.json", 
+    "rootType" : "array",
+    "rootKey" : { "keyname" : "gmd:descriptiveKeywords", 
+                 "keyvalue" : "gmd:descriptiveKeywords",
+                 "valuename" : "gmd:descriptiveKeywords" },
+    "children": [
+         { "name" :"gmd:abstract",
+          "display" : "Abstract",
+          "datatype" : "textarea",
+          "required" : "true",
+          "xoffset": -280,
+          "ref":  "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString._$",
+          "value" : "Abstract"
+        },
+        {
+        "name": "keywords",
+        "display" : "Descriptive Keywords",
+        "yoffset" : 0,
+        "ref" : "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords",
+        "datatype" : "array",
+        "children": [
+              { "name": "keywords", 
+                      "yoffset" : 80,
+                      "xoffset" : 0,
+                      "display" : "Keyword",
+                      "datatype" : "object", 
+                      "viewstate" : "parent-collapse",
+                      "ref": "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords",
+                      "displayChild" : "term",  
+                      "array_index" : "0",
+                      "children" : [ 
+                          { "name": "term", 
+                           "value" : "name",
+                           "yoffset" : 240,
+                           "viewstate" : "collapse",
+                           "datatype" : "string", 
+                           "ref": [ "gmd:MD_Keywords.gmd:keyword.0.gco:CharacterString._$", 
+                                    "gmd:MD_Keywords.gmd:keyword.gco:CharacterString._$"
+                                  ],
+                           "subArrCat" : "gco:CharacterString._$"
+                           },
+                            {
+                               "name": "gmd:type", 
+                               "value" : "Type",
+                               "yoffset" : 240,
+                               "viewstate" : "collapse",
+                               "datatype" : "string", 
+                               "ref" : "gmd:MD_Keywords.gmd:type.gmd:MD_KeywordTypeCode._$"
+
+                             },
+                             {
+                               "name": "gmd:thesaurusName", 
+                               "value" : "Thesaurus Name",
+                               "yoffset" : 240,
+                               "viewstate" : "collapse",
+                               "datatype" : "string", 
+                               "ref" : "gmd:MD_Keywords.gmd:thesaurusName.gmd:CI_Citation.gmd:title.gco:CharacterString._$"
+                             }
+
+                      ]
+               }
+              
+            ]
+        }
+    ] 
+}

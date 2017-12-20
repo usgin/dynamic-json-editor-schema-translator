@@ -1,0 +1,81 @@
+{
+         "name":"metadataInfo",
+         "name":"Metadata Info Page",
+          "xoffset": 80,
+          "datatype" : "subschema",
+          "ref" : "/jsonSchemas/f2-min3.json",
+          "root" : "extras",
+          "rootType" : "array",
+          "rootKey" : { "keyname" : "key", 
+                 "keyvalue" : "md_package",
+                 "valuename" : "value" },
+         "children": [
+            {"name": "metadataIdentifier", 
+              "value" : "",
+              "datatype" : "guid",
+               "xoffset": -120,
+              "required" : "true",
+              "ref" : "harvestInformation.originalFileIdentifier"  },
+            {"name":"metadataLastUpdate", 
+             "ref" : "harvestInformation.indexDate",
+             "xoffset": -100,
+             "datatype" : "date", 
+             "value": "2016-03-31T12:00:00"},
+            {"name":"metadataContacts",
+              "display":"Metadata Contacts",
+             "datatype"  : "array",
+             "xoffset": -20,
+             "children": [{
+                    "name":"agentRole",
+                     "xoffset": -40,
+                    "datatype"  : "array",
+                    "children": [{
+                        "name":"conceptPrefLabel",
+                         "xoffset": -40,
+                         "datatype": "string",
+                        "value": "point of contact"
+                    }]},{
+                    "name": "agent",
+                    "display": "Agent",
+                    "datatype"  : "array",
+                    "xoffset": -20,
+                    "children":[{
+                        "name":"personName", 
+                        "display":"Persons Name", 
+                         "xoffset": -20, 
+                        "ref": "metadataProperties.metadataContact.relatedAgent.agentRole.indvidual.personName",
+                         "datatype": "string",
+                        "value": "default personName" 
+                        },{
+                        "name":"contactEmails",
+                        "display":"Contact Emails",
+                         "datatype": "string",
+                          "xoffset": -20, 
+                         "ref": "metadataProperties.metadataContact.relatedAgent.agentRole.contactEmail",
+                         "value": "default@email.com" 
+                    }]
+                }]
+            },{
+            "name": "metadataSpecification",
+            "display": "Metadata Specification",
+            "value" : "",
+            "xoffset": 80,
+            "datatype" : "array",
+            "children": [ {
+                    "name": "referenceLabel",
+                     "display": "Reference Label",
+                     "datatype": "string",
+                      "xoffset": 90,
+                    "value": ""
+                    },
+                    { "name":"metadataLanguage",
+                      "display":"Language",
+                       "xoffset": 90,
+                      "children": [{ "name": "LanguageCode",
+                                      "xoffset": 90,
+                                      "yoffset": -60,
+                                    "datatype": "dictlist",
+                                    "value":"eng"}]
+                    }]
+            }]
+}

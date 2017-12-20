@@ -1,0 +1,25 @@
+{
+  "name": "NodeApp",
+  "version": "1.0.0",
+  "description": "Dynamic Json Editor and Schema Translator",
+  "main": "nodeServer-d3-editor.js",
+  "repository": "https://github.com/usgin/dynamic-json-editor-schema-translator.git",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "~1.15.0",
+    "bson-ext": "^1.0.3",
+    "express": "~4.13.4",
+    "mongodb": "~2.2.24",
+    "request": "~2.72.0",
+	"url-exists": "~1.03"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node nodeServer-d3-mongodb.js",
+    "poststart": "echo $NODE_PATH"
+  },
+  "keywords": [
+    "dyjest"
+  ],
+  "author": "Gary Hudman"
+}

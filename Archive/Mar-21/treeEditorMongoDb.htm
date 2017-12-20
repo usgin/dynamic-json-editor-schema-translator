@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/css/datepicker.css" />
+<link rel="stylesheet" href="/css/style.css" />
+
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<!--script src="https://d3js.org/d3-selection.v1.min.js"></script-->
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.css' rel='stylesheet' />
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.css' rel='stylesheet' />
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.js'></script>
+<script>
+var gCKAN_package,
+    gCin_edit = { 'dateTime' : 'Now', 'editedBy' : 'me', 'changes' : [] },
+    gCKAN_mdpackage,
+    gCKAN_pid,
+    gCKAN_api_path = 'http://132.249.238.150:8080/foundry/api/cinergi/docs/cinergi-0002',
+    gD3_Schema = "/jsonSchemas/cinergi-mongodb.json", 
+    gCKAN_offset = 100,
+    svgReady = false;
+    gCKAN_pagesize = 11,
+    docHistList = [],
+    zoomFactor = .3,
+    editState = 0
+    maxId =0;
+
+</script>
+<script src="js/cin-jEditorUI.js"></script>
+<script src="js/cin-d3jsonTree.js"></script>
+<script src="/js/cin-d3-context-menu.js"></script>
+<script src="/js/cin-mdclient.js"></script>
+<script src="js/typeahead.bundle.js"></script>
+<script src="js/contentModel.js"></script>
+
+<style>
+#accordion {
+ width:100%;
+ margin: 0;
+ padding: 0;
+}
+#accordion p span {
+ cursor:pointer;
+ font-size: 15px;
+ font-family: calibri;
+}
+.history-title {
+ color: #aaaaaa;
+ font: bold 16px calibri;
+ margin-bottom: 10px;
+ background: #EDEDED;
+ padding: 12px 10px;
+ border-radius: 10px;
+}
+
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#ZoomOut").click(function() {
+      var zf = 1 - zoomFactor;
+      paintTree(zf);
+    });
+    $("#ZoomIn").click(function() {
+      var zf = 1 + zoomFactor;
+      paintTree(zf);
+    });
+    $("#btnLoad").click(function() {
+      getData();
+    });
+    $("#btnLoad").click(function() {
+       $("myEd").show();
+    });
+    $("#SPL").click(function() {
+        show_packlist("next");
+      });
+    $("#SAC").click(function() {
+        SaveThenClose();
+      });
+
+    $("#SPLback").click(function() {
+        show_packlist("back");
+      });
+    
+    $("#SearchPack").click(function() {
+      search_package(1);
+    });
+    $("#btnSRD").click(function() {
+       showEdits();
+    }); 
+
+    $("#xport").click(function() {
+       showFullPack();
+    });
+    $("#shojson").click(function() {
+        showFullPack();
+    }); 
+    $("#edbyin").keypress(function() {
+      if (e.keyCode == 13) {
+          editUser();
+      }
+    }); 
+     $("#pgsz").val(gCKAN_pagesize);
+
+    if ( gCKAN_pid ) {
+      ( gCKAN_pid.length > 5 ) ? $("#SAC").show() : $("#SAC").hide(); 
+    } else { $("#SAC").hide() }
+});
+
+$(document).ready(function($) {
+       $('#accordion div').hide();
+       $('#accordion p span').click(function(){
+               $('#accordion div').slideUp();
+               $(this).parent().next().slideDown();
+               return false;
+       });
+});
+
+// Allows external call to editor that loads a dataset
+
+function getParams() {
+  var query = window.location.href.split('?')[1]; 
+  //query won't be set if ? isn't in the URL
+  if ( getCookie("editorName").length > 1 ) { 
+    $('#editby').text( getCookie("editorName") );
+  } else {
+     $('#editby').text("Click to Enter Name");
+  }
+ 
+  if(!query) {
+    return { };
+  }
+ 
+  var params = query.split('&');
+  var pairs = {};
+  for(var i = 0, len = params.length; i < len; i++) {
+    var pair = params[i].split('=');
+    pairs[pair[0]] = pair[1];
+    if ( pair[0] == "docId" || pair[0] == "docID" || pair[0] == "docid" || pair[0] == "DOCID") {
+    
+      var pid = { id : pair[1] };
+     
+      gCKAN_pid = pid.id;
+      loadD3();
+     
+    }      
+  } 
+}
+
+</script>
+<body onload="getParams()">
+   <table width="100%">
+   <tr class="tr-hdr" >
+      <td class="td-hdr">Data Discover Hub</br>Metadata Editor</td>
+      <td class="td-hdr" onclick="editUser();" style="width: 60px;">
+        Click to Edit Name<div id="editby">Editor Name</div>
+      </td>
+      <a id="shojson" class="circle_button" title="Save" target="_blank">json</a>
+      <a id="faq" class="circle_button" href="/publish/faq" title="FAQ" target="_blank">Help</a>
+     </td>
+     </tr>
+     <tr><td colspan=2>
+      <div id="myEd">
+      </div>
+      </td>
+      </tr>
+      <tr>
+   <td>
+   <div>
+      <div>
+     <span>Select MetaData Page</span>
+     <select id="schemaPick" onchange="selectSchema(this)" >
+     <option value="/jsonSchemas/cinergi-mongodb.json">DDHub Summary</option>
+     <option value="/jsonSchemas/cinergi-orig-doc.json">Original Document</option>
+     <option value="/jsonSchemas/cinergi-orig-resparty.json">Original Document Contacts</option>
+     <option value="/jsonSchemas/cinergi-orig-doc-keywords.json">Original Documents Keywords</option>
+     <option value="/jsonSchemas/cinergi-orig-doc-distribution.json">Original Documents Distribution</option>
+     <option value="/jsonSchemas/cinergi-data-detail.json">Pipelined MetaData</option>
+     <option value="/jsonSchemas/cinergi-keywords-editor.json">Enhanced Keywords</option>
+     </select>
+   </div>
+   </br>
+    </div>
+    <div id="accordion">
+      <p class="history-title"><span>Recently Edited Docs</span></p>
+      <div id="cookie_list" >
+          <ul id="dochist">
+              <li><a href="#" id="000" onclick="javascript:clearCookies();" style="font-weight: bold">(-) Clear History</a></li>
+          </ul>
+      </div>
+      <p class="history-title"><span>Pending Edits</span></p>
+      <div id="edit_list" >
+          <ul id="editStack">
+              <li><a href="#" id="x00" onclick="javascript:clearEdits();" style="font-weight: bold">(-) Clear Edits</a></li>
+          </ul>
+      </div>
+   </td>
+   <td><div id="tree-container"><div id="showData" style="display: none;"></div></div></td>
+   </tr></table>
+</body>
+</html>

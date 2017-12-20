@@ -1,0 +1,93 @@
+{
+  "name": "Spatial and Categories",
+   "display":"Spatial and Categories",
+   "datatype" : "subschema",
+   "ref" : "/jsonSchemas/cinergi-sample.json",
+   "required" : "true",
+   "root" : "gmd:MD_Metadata",
+   "rootType" : "array",
+   "rootKey" : { "keyname" : "key", 
+                 "keyvalue" : "gmd:MD_Metadata",
+                 "valuename" : "value" },
+    "children": [{
+      "name" : "gmd:topicCategory",
+      "datatype" : "string",
+      "xoffset": -60,
+      "ref" : "gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:topicCategory.gmd:MD_TopicCategoryCode.$"
+      },
+     {
+      "name": "gmd:extent",
+      "display" : "Spatial Extent",
+      "xoffset": 80,
+      "datatype" : "bbox",
+       "children": [
+                    {
+                        "name": "gmd:northBoundLatitude",
+                        "ref": "gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:northBoundLatitude.gco:Decimal.$",
+                          "xoffset": 80,
+                         "datatype" : "string",
+                        "value": 31.6
+
+                    },
+                    {
+                        "name": "gmd:southBoundLatitude",
+                         "xoffset": 80,
+                        "ref": "gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:southBoundLatitude.gco:Decimal.$",
+                        "datatype" : "string",
+                        "value": 28.3
+                    },
+                    {
+                        "name": "gmd:eastBoundLongitude",
+                         "xoffset": 80,
+                        "ref": "gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:eastBoundLongitude.gco:Decimal.$",
+                        "datatype" : "string",
+                        "value": -107.7
+                    },
+                    {
+                        "name": "gmd:westBoundLongitude",
+                         "xoffset": 80,
+                        "ref": "gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:westBoundLongitude.gco:Decimal.$",
+                        "datatype" : "string",
+                        "value": -110.1
+                    }
+                ]
+      },
+      { "name": "gmd:distributionInfo",
+          "datatype": "object", 
+           "xoffset": 100,     
+           "children": [{ 
+              "name" :"gmd:MD_Distribution",
+                "datatype" : "object",
+                "xoffset": 120,
+                "yoffset": -100,
+              "datatype" : "object",
+              "children" : [{
+                "name" : "gmd:transferOptions",
+                "datatype" : "object",
+                "xoffset": 140,
+                "yoffset": -180,
+                "children": [{
+                      "name": "gmd:MD_DigitalTransferOptions",
+                      "datatype": "object",
+                       "xoffset": 160,
+                       "yoffset": -280,
+                       "children" : [{
+                          "name": "gmd:onLine",
+                          "datatype": "object",
+                          "xoffset": 180,
+                          "yoffset": -400,
+                          "children" : [{
+                            "name": "gmd:url",
+                            "datatype": "string",
+                            "xoffset": 200,
+                            "yoffset": -480,
+                            "ref" : "gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource.gmd:linkage.gmd:URL.$",
+                            "value" : ""
+                            }] 
+                           }] 
+                        }]
+                      }]
+                     }]
+      }
+    ]
+}

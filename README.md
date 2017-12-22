@@ -2,7 +2,7 @@
 
 The Data Discovery Hub metadata editor differs from the standard editor in the following ways:
 
-1 - Provides json path arrays in the schema files to allow multiple json paths for each metadata element. This allows the editor to edit     records with the different metdata schemas. Cinergi records are harvested from many data sources, so the metadata formats vary.
+1 - Provides json path arrays in the schema files to allow multiple json paths for each metadata element. This allows the editor to edit     records with the different metadata schemas. Cinergi records are harvested from many data sources, so the metadata formats may vary.
     
 2 - Creates "difference objects" that track edit changes for processing in Cinergi pipeline.
 

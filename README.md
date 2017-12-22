@@ -1,4 +1,4 @@
-# dynamic-json-editor-schema-translator
+# Cinergi Data Discovery Hub customizations
 
 The Data Discovery Hub metadata editor differs from the standard editor in the following ways:
 

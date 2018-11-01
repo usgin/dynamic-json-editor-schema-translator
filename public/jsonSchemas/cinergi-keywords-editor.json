@@ -1,0 +1,97 @@
+ {  "name": "keywords",
+    "display" : "<< Back to Pipeline Metadata",
+    "root" : "Data",
+    "datatype": "subschema",
+     "titleref" :  [ "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
+                   "OriginalDoc.gmi:Mi_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
+                   "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.citation.CI_Citation.title.gco:CharacterString._$",
+                   "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.0.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
+                   "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$" ],
+    "titleval" : "",
+    "ref" : "/jsonSchemas/cinergi-mongodb.json", 
+    "rootType" : "object",
+    "rootKey" : { "keyname" : "keywords", 
+                 "keyvalue" : "keywords",
+                 "valuename" : "keywords" },
+    "children": [
+              { "name" :"gmd:abstract",
+                "display" : "Abstract",
+                "datatype" : "textarea",
+                "readonly" : "true",
+                "required" : "true",
+                "xoffset": -280,
+                "ref": [ "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString._$",
+                         "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.0.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString._$",
+                        "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString._$" ],
+                "value" : "Abstract"
+              },
+        {
+          "name": "keywords",
+          "display" : "Keywords",
+          "yoffset" : 0,
+          "ref" : "Data.keywords",
+          "readonly" : "true",
+          "datatype" : "array",
+          "children": [
+                    { "name": "keywords", 
+                      "yoffset" : 20,
+                      "xoffset" : 0,
+                      "growdown" : 10,
+                      "display" : "Keyword",
+                      "datatype" : "object", 
+                      "readonly" : "true",
+                      "viewstate" : "parent-collapse",
+                      "ref": "Data.keywords",
+                      "displayChild" : "fullHierarchy",  
+                      "array_index" : "0",
+                      "children" : [ 
+                          { "name": "term", 
+                            "yoffset" : 300,
+                            "xoffset" : 60,
+                            "display" : "Term",
+                            "viewstate" : "collapse",
+                            "readonly" : "true",
+                            "datatype" : "typeahead",
+                            "dicturl" : "http://ec-scigraph.sdsc.edu:9000/scigraph/vocabulary/autocomplete/%QUERY?limit=20",
+                            "dictparams" : {"query": "%QUERY","limit":"20" },
+                            "ref": "term",
+                            "value": "0" 
+                           },                  
+                           { "name": "uri", 
+                            "yoffset" : 300,
+                            "xoffset" : 60,
+                            "readonly" : "true",
+                            "viewstate" : "collapse",
+                            "display" : "Ontological ID",
+                            "datatype" : "string", 
+                            "ref": "ontId"   
+                           },
+                           { "name": "facetHierarchy", 
+                           "display" : "Facet Hierarchy",
+                           "yoffset" : 300,
+                           "xoffset" : 60,
+                            "readonly" : "true",
+                           "viewstate" : "collapse",
+                           "datatype" : "string", 
+                           "ref": "facetHierarchy",    
+                           "array_index" : "0"
+                           },
+                          { "name": "fullHierarchy", 
+                           "display" : "Full Hierarchy",
+                           "readonly" : "true",
+                           "yoffset" : 300,
+                           "xoffset" : 60,
+                            "viewstate" : "collapse",
+                           "datatype" : "string", 
+                           "ref": "fullHierarchy",    
+                           "array_index" : "0"
+                           }
+                        
+
+                      ]
+                  }
+
+            ]
+        }
+    ] 
+}

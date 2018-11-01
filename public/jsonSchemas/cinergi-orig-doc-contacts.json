@@ -1,0 +1,47 @@
+{  "name":"root",
+   "root" : "OriginalDoc",
+    "datatype" : "subschema",
+   "display": "< Back to Original Doc",
+    "xoffset": -300,
+   "ref" : "/jsonSchemas/cinergi-orig-doc.json",
+   "required" : "true",
+   "rootType" : "object",
+   "rootKey" : { "keyname" : "key", 
+                 "keyvalue" : "_id",
+                 "valuename" : "value" },
+    "children": [
+              { "name": "gmd:CI_ResponsibleParty",
+                "display" : "Responsible Party",
+                "datatype" : "object",
+                "required" : "true",
+                "xoffset": -430,
+                "ref":  "children.OriginalDoc.gmd:MD_Metadata.gmd:contact.gmd:CI_ResponsibleParty",
+                "children": [ 
+                    { "name": "gmd:organisationName",
+                      "display" : "Organisation Name",
+                      "datatype" : "string",
+                      "required" : "false", 
+                      "value" : "";
+                      "xoffset": -425,
+                      "ref":  "children.OriginalDoc.gmd:MD_Metadata.gmd:contact.gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString._$"       
+                    },
+                    { "name": "gmd:contactInfo",
+                      "display" : "Contact Info",
+                      "datatype" : "string",
+                      "required" : "false", 
+                       "value" : "";
+                      "xoffset": -425,
+                      "ref":  "children.OriginalDoc.gmd:MD_Metadata.gmd:contact.gmd:CI_ResponsibleParty.gmd:contactInfo.gco:CharacterString._$"       
+                    },
+                    { "name": "gmd:role",
+                      "display" : "Role",
+                      "datatype" : "string",
+                      "required" : "false", 
+                      "value" : "";
+                      "xoffset": -425,
+                      "ref":  "children.OriginalDoc.gmd:MD_Metadata.gmd:contact.gmd:CI_ResponsibleParty.gmd:role.gmd:CI_RoleCode.gco:CharacterString._$"       
+                    }
+                ]
+              }
+  ]
+}

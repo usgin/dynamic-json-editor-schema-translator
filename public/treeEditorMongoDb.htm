@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<!--[if gt IE 8]><p> IE Not supported !<![endif]-->  
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=11">
+<meta name="google-site-verification" content="ocx6S-yQnSzBgQFQvYG9YSYg231KiMO46b1URzgnKaU" />
+<title>DDH Metadata Editor</title>
+<link rel="shortcut icon" href="images/shortcut.ico">
+<link rel="stylesheet" href="/css/datepicker.css" />
+<link rel="stylesheet" href="/css/style.css" />
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<!--script src="https://d3js.org/d3-selection.v1.min.js"></script-->
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.css' rel='stylesheet' />
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.css' rel='stylesheet' />
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.js'></script>
+<script>
+var gCKAN_package,
+    gCin_edit = { 'dateTime' : 'Now', 'editedBy' : 'me', 'changes' : [] },
+    gCKAN_mdpackage,
+    gCKAN_pid,
+    gLa = false,
+    gCIN_saveDoc={},
+    gCKAN_api_path = 'http://132.249.238.150:8080/foundry/api/cinergi/docs/cinergi-0002',
+    gD3_Schema = "/jsonSchemas/cinergi-mongodb.json", 
+    gSrc_Schema= "/jsonSchemas/cinergi-schema-templates.json", 
+    gCKAN_offset = 100,
+    gEdName,
+    gTitle,
+    gEditStepSeq = 0,
+    gIndxID,
+    gLoginState = 'init',
+    svgReady = false,
+    gCKAN_pagesize = 11,
+    docHistList = [],
+    zoomFactor = .3,
+    editState = 0
+    maxId =0;
+
+    var gCin_EdRec = { "metadataRecordLineageItems": [ 
+                { "item" : 
+                    { 
+                      "stepSequenceNo" : 0, 
+                      "stepProcessors" :   [ { "personName": "Editor Name" } ],  
+                      "stepDateTime" : "",
+                      "metadataUpdates": []
+                    }                                          
+                }  ]  };
+    var gCinEditSession = {},
+        gCinEditIdx = 0;
+
+    var gDDH_edit = [];
+
+       /*
+      { "metadataRecordLineageItems": [ 
+                { "item" : 
+                    { 
+                      "stepSequenceNo" : 0, 
+                      "stepProcessors" :   [ { "person Name": "Editor Name" } ],  
+                      "stepDateTime" : "",
+                      "metadataUpdates": []
+                    }                                          
+                }  ]  };
+
+    gCin_edit = { "jmd:metadataRecordLineageItems": [ { "item" : { "jmd:stepSequenceNo" : 0 },                                           
+                      { "jmd:stepProcessors" :   [  {  "jmd:personName": "Editor Name" } ] }, 
+                      { "jmd:stepDateTime" : "" }, 
+                      { "jmd:metadataUpdates": [] } 
+                  }  ]  };
+  */
+
+</script>
+<script src="../js/cin-jEditorUI.js"></script>
+<script src="../js/cin-d3jsonTree.js"></script>
+<script src="../js/cin-d3-context-menu.js"></script>
+<script src="../js/cin-mdclient.js"></script>
+<script src="../js/typeahead.bundle.js"></script>
+<!--script src="js/contentModel.js"></script-->
+
+<style>
+#accordion {
+ width:100%;
+ margin: 0;
+ padding: 0;
+}
+#accordion p span {
+ cursor:pointer;
+ font-size: 15px;
+ font-family: calibri;
+ background-color: #ffffff;
+}
+.history-title, .prov-title {
+ color: #196fa6;
+ font: bold 16px calibri;
+ margin-bottom: 5px;
+ background-color: #fffff;
+ border:1px solid #dcdcdc;
+ padding: 5px 5px;
+ border-radius: 0px;
+}
+
+.mul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #196fa6;
+}
+
+.mli {
+    float: left;
+}
+
+.mli a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.mli a:hover:not(.active) {
+    background-color: #111;
+}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#ZoomOut").click(function() {
+      var zf = 1 - zoomFactor;
+      paintTree(zf);
+    });
+    $("#ZoomIn").click(function() {
+      var zf = 1 + zoomFactor;
+      paintTree(zf);
+    });
+    $("#btnLoad").click(function() {
+      getData();
+    });
+    $("#btnLoad").click(function() {
+       $("myEd").show();
+    });
+    $("#SPL").click(function() {
+        show_packlist("next");
+      });
+    $("#SAC").click(function() {
+        SaveThenClose();
+      });
+
+    $("#SPLback").click(function() {
+        show_packlist("back");
+      });
+    
+    $("#SearchPack").click(function() {
+      search_package(1);
+    });
+    $("#btnSRD").click(function() {
+       showEdits();
+    }); 
+
+    $("#xport").click(function() {
+       showFullPack();
+    });
+
+     $("#loginBtn").click(function() {
+       loginAuth();
+    });
+    
+    $("#curEdBtn").click(function() {
+       editUser();
+    });
+
+    $("#validBtn").click(function() {
+       validator();
+    });
+    
+    $("#shojson").click(function() {
+        showFullPack();
+    }); 
+    $("#savejson").click(function() {
+        saveMdb();
+    }); 
+    
+    $("#trigproc").click(function() {
+        startPipelineProcess();
+    }); 
+    
+    $("#edbyin").keypress(function() {
+      if (e.keyCode == 13) {
+       //   editUser();
+      }
+    }); 
+
+     $("#pgsz").val(gCKAN_pagesize);
+
+    if ( gCKAN_pid ) {
+      ( gCKAN_pid.length > 5 ) ? $("#SAC").show() : $("#SAC").hide(); 
+    } else { $("#SAC").hide() }
+});
+
+$(document).ready(function($) {
+       $('#accordion div').hide();
+       $('#accordion p span').click(function(){
+               $('#accordion div').slideUp();
+               $(this).parent().next().slideDown();
+               return false;
+       });
+});
+
+function detectIE() {
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf('MSIE ');
+    if (msie > 0) {
+        // IE 10 or older => return version number
+        return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+        //return true;
+    }
+
+    var trident = ua.indexOf('Trident/');
+    if (trident > 0) {
+        // IE 11 => return version number
+        var rv = ua.indexOf('rv:');
+        //return true;
+        return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+    }
+
+    var edge = ua.indexOf('Edge/');
+    if (edge > 0) {
+       // Edge (IE 12+) => return version number
+       //return true;
+       return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+    }
+
+    // other browser
+    return false;
+}
+
+// Allows external call to editor that loads a dataset
+
+function hs() {
+  $("#showValidateSplash").hide();
+}
+function getParams() {
+
+var detIE = false; // detectIE();
+if ( detIE != false ) {
+    
+    alert('Internet Explorer ' + detIE + ' is currently not supported ');
+    
+  } else {
+
+    var query = window.location.href.split('?')[1]; 
+    //query won't be set if ? isn't in the URL
+    if ( getCookie("editorName").length > 1 ) { 
+      //$('#editby').text( getCookie("editorName") );
+       $("#editby").append(getCookie("editorName") );
+      gEdName = getCookie("editorName");
+    } else {
+       $('#editby').append("Edit Curator Name");
+    }
+   
+    if(!query) {
+      return { };
+    }
+     
+    $("#validBtn").hide();
+    
+    var params = query.split('&');
+    var pairs = {};
+    for(var i = 0, len = params.length; i < len; i++) {
+      var pair = params[i].split('=');
+      pairs[pair[0]] = pair[1];
+      if ( pair[0] == "docId" || pair[0] == "docID" || pair[0] == "docid" || pair[0] == "DOCID") {
+        
+        var pid = { id : pair[1] };
+        if ( pid.id.slice(-1) == "#" ) {
+          pid.id = pid.id.slice(0,-1);
+        }
+
+        if (gCKAN_pid == pid.id ) {
+          // Same record, different schema - the edits need to be preserved
+          reSchemD3();
+
+        } else {
+          // Load a new record
+          gCKAN_pid = pid.id;
+          loadD3();
+          
+        }
+      }      
+    } 
+
+ }
+
+}
+
+</script>
+</head>
+<body onload="getParams()">
+   <table width="100%">
+   <tr class="tr-hdr" >
+      <td class="td-hdr">Data Discover Hub</br>Metadata Editor</td>
+      <td class="td-hdr" style="width: 40%;">
+        <a id="loginBtn" class="nav-link" title="loginBtn" target="_blank">Sign In</a>
+        <a id="curEdBtn" class="nav-link" title="curEdBtn" target="_blank">Curator</a>
+        <a id="validBtn" class="nav-link" title="validBtn" target="_blank">Validate</a>
+        <div id="logger" style="display: none; color: #196fa6; background-color: #196fa6; border-color: #196fa6;">
+          <input placeholder="Username" id='luser' >
+          <input id='lpass' placeholder="Password" type="password"></div>
+        <p></p>
+        <div id="editby" style="width: 200px;"></div>
+        
+      </td>
+      <td class="td-hdr" style="width: 40%;">
+        <div id="mousebox">View Only Mode - Login to Save Edits</div>
+         <!--a id="shoHints" class="circle_button" title="Hints" target="_blank">Hints</a--> 
+  
+      </td>
+      <td class="td-hdr" style="width: 20%;">
+      <ul class="mul">
+      <li class="mli"><a id="savejson"  title="Save metadata to database" target="_blank" style="display: none;">Save</a></li>
+      <li class="mli"><a id="trigproc" title="Save to geoportal index" target="_blank" style="display: none;">Process</a></li>
+      <li class="mli"><a id="shojson" title="Show meta data as json" target="_blank" >JSON</a></li>
+      <li class="mli"><a id="faq" title="FAQ" target="_blank">Help</a></li>
+      </ul>
+      
+      <!--a id="shojson" class="nav-link" title="ShowJson" target="_blank">json</a>
+      <a id="savejson" class="nav-link" title="Save" target="_blank" style="display: none;">Save</a>
+      <a id="trigproc" class="nav-link" title="Proc" target="_blank" style="display: none;">Process</a>
+      <a id="faq" class="nav-link" href="/publish/faq" title="FAQ" target="_blank">Help</a-->
+     </td>
+     </tr>
+     <tr><td colspan=4>
+      <div id="myEd">
+      </div>
+      </td>
+      </tr>
+      <tr>
+   <td>
+   <div>
+      <div>
+     <span>Select MetaData Page</span>
+     <select id="schemaPick" onchange="selectSchema(this)" >
+     <option value="/jsonSchemas/cinergi-mongodb.json">DDHub Summary</option>
+     <option value="/jsonSchemas/cin-quick-edit.json">DDHub Quick Edits</option>
+     <option value="/jsonSchemas/cinergi-orig-doc.json">Original Document</option>
+     <option value="/jsonSchemas/cinergi-orig-resparty.json">Original Document Contacts</option>
+     <option value="/jsonSchemas/cinergi-orig-doc-keywords.json">Original Documents Keywords</option>
+     <option value="/jsonSchemas/cinergi-orig-doc-distribution.json">Original Documents Distribution</option>
+     <option value="/jsonSchemas/cinergi-data-detail.json">Pipelined MetaData</option>
+     <option value="/jsonSchemas/cinergi-keywords-editor.json">Enhanced Keywords</option>
+     </select>
+   </div>
+   </br>
+    </div>
+    <div id="accordion">
+      <p class="history-title" style="font-weight: bold"><span>Recently Edited Docs</span></p>
+      <div id="cookie_list" >
+          <ul id="dochist">
+              <li><a href="#" id="000" onclick="javascript:clearCookies();" style="font-weight: bold">(-) Clear History</a></li>
+          </ul>
+      </div>
+      <p class="history-title"><span>Pending Edits</span></p>
+      <div id="edit_list" >
+          <ul id="editStack">
+              <li><a href="#" id="x00" onclick="javascript:clearEdits();" style="font-weight: bold">(-) Clear Edits</a></li>
+          </ul>
+      </div>
+       <p class="prov-title"><span>Edit History</span></p>
+       <div id="prov_list" >
+          <ul id="provStack">
+              <li>Provenance</li>
+          </ul>
+      </div>
+      </div>
+   </td>
+   <td colspan=3><div id="tree-container">
+     <div id="showData" style="display: none;"></div>
+     <div id="showMap" style="display: none;"></div>
+      <div id="showValidateSplash" style="display: none;">
+       <center>
+       <h2 style="color: #2e6c80;">Welcome to the Metadata Editor</h2>
+       </center>
+       <p style="font-size: 120%" >To edit this record:</br>
+       <b>Login</b> - edit elements that you want to change</br>
+       <b>Save</b> - to post your changes to the database</br>
+       <b>Process</b> - to execute enhancements and reindex </br>
+       To validate this record without changes, login and click <b>Validate</b>.</p>
+       <center>
+       <a id="hideSplash" class="nav-link" style="background-color: #a9aaa6; font-color: Blue"  title="Close this message nox" onclick="javascript:hs();"  target="_blank">OK</a>
+       </center>
+      </div>
+      
+   </div></td>
+   </tr></table>
+</body>
+</html>

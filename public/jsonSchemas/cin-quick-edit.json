@@ -1,0 +1,229 @@
+{  "name":"root",
+   "root" : "root",
+   "datatype" : "object",
+   "display": "MetaData Overview",
+    "xoffset": -400,
+   "ref" : "/jsonSchemas/cin-quick-edit.json",
+   "required" : "true",
+   "titleref" :  [ "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
+                   "OriginalDoc.gmi:Mi_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
+                   "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.citation.CI_Citation.title.gco:CharacterString._$",
+                   "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$"
+                    ],
+   "titleval" : "",
+   "rootType" : "object",
+   "rootKey" : { "keyname" : "key", 
+                 "keyvalue" : "_id",
+                 "valuename" : "value"},
+    "children": [
+        { "name": "OrginalDoc",
+          "datatype" : "object",
+          "required" : "true",
+           "xoffset": -600,
+		   "yoffset": -100,
+          "ref":  "OriginalDoc",
+          "children": [ 
+           
+              { "name" :"gmd:title",
+                "display" : "Title",
+                "datatype" : "string",
+                "required" : "true",
+                "xoffset": -700,
+                "yoffset" : 80,
+                "ref": [ "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
+                       "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.citation.CI_Citation.title.gco:CharacterString._$",
+                       "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$" ]
+              },
+              { "name": "DescriptiveKeywords",
+                "display" : "Go To >> Orignal Doc > Descriptive Keywords Editor",
+                "datatype" : "subschema",
+                "required" : "false",
+                "xoffset": -670,
+                 "yoffset" : 80,
+                "ref":  "/jsonSchemas/cinergi-orig-doc-keywords.json"
+              },
+             
+              { "name" :"gmd:extent",
+                "display" : "Bounding Box",
+                "datatype" : "bbox",
+                "viewstate" : "parent-collapse",
+                "required" : "true",
+                "xoffset": -640,
+                 "yoffset" : 80,
+                "value" : "",
+                "displayChild" : "northBoundLatitude", 
+                "ref": [ "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox", 
+                         "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox",
+                         "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.extent.EX_Extent.geographicElement.EX_GeographicBoundingBox",
+                         "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.0.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox"  ],
+                "children": [
+                    {
+                        "name": "northBoundLatitude",
+                        "ref": [ "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:northBoundLatitude.gco:Decimal._$",
+                                 "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:northBoundLatitude.gco:Decimal._$",
+                                 "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.extent.EX_Extent.geographicElement.EX_GeographicBoundingBox.northBoundLatitude.gco:Decimal._$",
+                                "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.0.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:northBoundLatitude.gco:Decimal._$"],
+                        "value": 0.0,
+                        "xoffset": -500,
+                         "yoffset" : 80
+                    },
+                    {
+                        "name": "southBoundLatitude",
+                        "ref": [ "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:southBoundLatitude.gco:Decimal._$",
+                                 "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:southBoundLatitude.gco:Decimal._$",
+                                 "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.extent.EX_Extent.geographicElement.EX_GeographicBoundingBox.southBoundLatitude.gco:Decimal._$",
+                                 "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.0.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:southBoundLatitude.gco:Decimal._$"],
+                        "value": -1.0,
+                         "xoffset": -500,
+                          "yoffset" : 80
+                    },
+                    {
+                        "name": "eastBoundLongitude",
+                        "ref": [ "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:eastBoundLongitude.gco:Decimal._$",
+                                 "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:eastBoundLongitude.gco:Decimal._$",
+                                 "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.extent.EX_Extent.geographicElement.EX_GeographicBoundingBox.eastBoundLongitude.gco:Decimal._$",
+                                 "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.0.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:eastBoundLongitude.gco:Decimal._$"],
+                        "value": -99.0,
+                        "xoffset": -500,
+                         "yoffset" : 80
+                    },
+                    {
+                        "name": "westBoundLongitude",
+                        "ref": [ "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:westBoundLongitude.gco:Decimal._$",
+                                 "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:westBoundLongitude.gco:Decimal._$",
+                                 "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.extent.EX_Extent.geographicElement.EX_GeographicBoundingBox.westBoundLongitude.gco:Decimal._$",
+                                 "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.0.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:westBoundLongitude.gco:Decimal._$"],
+                        "value": -100.0,
+                        "xoffset": -500,
+                        "yoffset" : 80
+                    }
+                ]
+              },
+			  { "name": "gmd:transferOptions",
+                "display" : "Resource Links",
+                "datatype" : "array",
+                "required" : "true",
+                "xoffset": -610,
+                 "yoffset": 80,
+				
+                "ref":  [ "OriginalDoc.gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine",
+                          "OriginalDoc.gmi:MI_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine",                         
+                          "OriginalDoc.gmi:MI_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor.gmd:MD_Distributor.gmd:distributorTransferOptions",
+                          "OriginalDoc.MD_Metadata.distributionInfo.MD_Distribution.transferOptions.MD_DigitalTransferOptions.onLine" ],
+                "children": [ 
+                    {  "name" : "gmd:CI_OnlineResource",
+                        "display" : "Online Resource",
+                        "datatype" : "object",
+                        "required" : "false",
+                        "viewstate" : "parent-collapse",
+                        "displayChild" : "gmd:linkage",
+                        "xoffset": -560,
+						"yoffset": 160,
+						 "xadjust" : "false",
+                        "ref": [ "OriginalDoc.gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine",
+                                 "OriginalDoc.gmi:MI_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions.gmd:MD_DigitalTransferOptions.gmd:onLine",
+                                 "OriginalDoc.gmi:MI_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor.gmd:MD_Distributor.gmd:distributorTransferOptions",
+                                 "OriginalDoc.MD_Metadata.distributionInfo.MD_Distribution.transferOptions.MD_DigitalTransferOptions.onLine" ],
+                        "children" : [
+                            { "name" :"gmd:linkage",
+                              "display" : "Linkage",
+                              "datatype" : "url",
+                              "urlvalid" : "",
+                              "required" : "false",
+                              "xoffset": -560,
+                              "yoffset": 160,
+							  "xadjust" : "false",
+                              "ref": [ "gmd:CI_OnlineResource.gmd:linkage.gmd:URL._$",
+                                       "gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource.gmd:linkage.gmd:URL._$",
+                                        "CI_OnlineResource.linkage.URL._$" ]
+                            },
+                           
+                            { "name" :"gmd:applicationProfile",
+                              "display" : "Application Profile",
+                              "datatype" : "string",
+                              "required" : "false",
+                              "xoffset": -560,
+                              "yoffset": 160,
+							  "xadjust" : "false",
+                              "ref":   [  "gmd:CI_OnlineResource.gmd:applicationProfile.gmd:CharacterString._$",
+                                         "gmd:CI_OnlineResource.gmd:applicationProfile.gco:CharacterString._$",
+                                         "gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource.gmd:applicationProfile.gco:CharacterString._$",
+                                         "gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource.gmd:applicationProfile.gmd:CharacterString._$",
+                                         "CI_OnlineResource.applicationProfile.gco:CharacterString._$"
+                                          ]
+                            },
+                            { "name" :"gmd:Name",
+                              "display" : "Name",
+                              "datatype" : "string",
+                              "required" : "false",
+                              "xoffset": -560,
+                              "yoffset": 160,
+							  "xadjust" : "false",
+                              "ref":  [ "gmd:CI_OnlineResource.gmd:name.gmd:CharacterString._$", 
+                                        "gmd:CI_OnlineResource.gmd:name.gco:CharacterString._$",
+                                        "gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource.gmd:name.gco:CharacterString._$",
+                                        "gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource.gmd:name.gmd:CharacterString._$",
+                                         "CI_OnlineResource.name.gco:CharacterString._$"
+                                         ]
+
+                            },
+                            { "name" :"gmd:function",
+                              "display" : "Function",
+                              "datatype" : "string",
+                              "required" : "false",
+                              "xoffset": -560,
+                              "yoffset": 160,
+							  "xadjust" : "false",
+                              "ref":  [ "gmd:CI_OnlineResource.gmd:function.gmd:CI_OnLineFunctionCode._$",
+                                        "gmd:MD_DigitalTransferOptions.gmd:onLine.gmd:CI_OnlineResource.gmd:function.gmd:CI_OnLineFunctionCode._$",
+                                        "CI_OnlineResource.function.CI_OnLineFunctionCode._$",
+                                        "gmd:CI_OnlineResource.gmd:function.gmd:CI_OnLineFunctionCode.@codeListValue" ]
+                            }
+
+                        ]
+                    }
+                 ]
+              },
+			  
+              { "name" :"gmd:abstract",
+                "display" : "Abstract",
+                "datatype" : "textarea",
+                "required" : "true",
+                "xoffset": -520,
+                "yoffset" : 80,
+                "ref":  [ "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString._$",
+                          "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString._$",
+                          "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.abstract.gco:CharacterString._$" ],
+                "value" : "Abstract"
+              }
+            ]
+        },
+        { "name": "Data",
+          "datatype" : "object",
+          "display" : "Pipeline Metadata",
+          "required" : "true",
+          "xoffset": -580,
+          "yoffset" : -100,
+          "ref":  "children.Data",
+          "children": [
+            
+              {   "name": "KeywordEditor",
+                "display" : "Go To > Pipeline Keywords",
+                "datatype" : "subschema",
+                "required" : "false",
+                "xoffset": -580,
+                 "yoffset" : -100,
+                "ref":  "/jsonSchemas/cinergi-keywords-editor.json"
+              },
+              {   "name": "Enhanced Keywords",
+                "display" : "Go To > Pipeline Enhanced Keywords",
+                "datatype" : "subschema",
+                "required" : "false",
+                "xoffset": -560,
+                 "yoffset" : -100,
+                "ref":  "/jsonSchemas/cinergi-enhanced-keywords-editor.json"
+              }   
+              ]
+            }   
+          ]
+        }

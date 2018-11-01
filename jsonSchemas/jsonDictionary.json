@@ -1,0 +1,23 @@
+{ 
+  "usginContentModel": {
+    "ExternalReference":"http://test.geothermaldata.org/api/3/action/package_search",
+    "Params": { "id" : "value",
+                "start" : "value"  }
+  },
+  "ListNumber2": {
+    "DisplayValue21":"RealValue1",
+    "DisplayValue22":"RealValue2",
+    "DisplayValue23":"RealValue3"
+  },
+  "LanguageCode": [
+    {"name": "English", "value":"eng USA"},
+    {"name":"French", "value":"fre"},
+    {"name":"Spanish", "value":"spe"}
+  ],
+  "agentRole": [{"name": "Author", "value":"Author"},
+                {"name": "Publisher", "value":"Publisher"},
+                {"name": "Curator", "value":"Curator"},
+                {"name": "Originator", "value":"originator"},
+                {"name": "Owner", "value":"owner"},
+                {"name": "MetaData Contact", "value":"metadataContact"} ]
+}

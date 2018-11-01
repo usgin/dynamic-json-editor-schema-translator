@@ -1,0 +1,149 @@
+{   "name":"root",
+   "root" : "Data",
+    "datatype" : "subschema",
+   "display" : "< Back to Summary",
+  "xoffset": -300,
+   "ref" : "/jsonSchemas/cinergi-mongodb.json",
+   "required" : "true",
+   "rootType" : "object",
+   "rootKey" : { "keyname" : "key", 
+                 "keyvalue" : "_id",
+                 "valuename" : "value" },
+    "children": [
+            { "name": "spatial",
+			  "display" : "Pipeline Spatial Metadata",
+              "datatype" : "object",
+              "required" : "false",
+              "xoffset": -400,
+              "yoffset" : -100,
+              "ref":  "Data.spatial",
+              "children": [ 
+                  { "name": "place_keywords",
+                    "display": "Candidate Place Keywords",
+                    "datatype" : "array",
+                    "required" : "false",
+                    "xoffset": -500,
+                    "yoffset" : -60,
+					"viewstate" : "parent-collapse",
+                    "ref":  "Data.spatial.place_keywords", 
+					"children" : [
+                        { "name": "place_keywords", 
+                           "value" : "",  
+                           "yoffset" : 0,
+                           "xoffset" : -500,     
+                           "viewstate" : "collapse",
+                           "datatype" : "validateonly", 
+						   "validateonly" : "true",
+                           "ref":  "Data.spatial.place_keywords.0"
+                        }
+					]
+                  },
+                  { "name": "invalid_place_keywords",
+                    "display": "Invalid Place Keywords",
+                    "datatype" : "array",
+                    "required" : "false",
+                    "xoffset": -480,
+                    "yoffset" : -60,
+					"viewstate" : "parent-collapse",
+                    "ref":  "Data.spatial.invalid_place_keywords",
+                    "children" : [
+                        { "name": "invalid_place_keywords", 
+                           "value" : "",  
+                           "yoffset" :  0,
+                           "xoffset" : -480,
+                           "viewstate" : "collapse",
+                           "datatype" : "validateonly", 
+						   "validateonly" : "true",
+                           "ref":  "Data.spatial.invalid_place_keywords.0"
+                        }
+					]					
+					
+                  }, 
+				  { "name": "bounding_boxes",
+					"datatype" : "array",
+					"required" : "false",
+					"xoffset": -460,
+					"value": "",
+					"ref":  "Data.spatial.bounding_boxes",
+					"yoffset" : -60,
+				    "children" : [
+						  { "name": "bounding_box",
+							"datatype" : "bbox",
+							"required" : "false",
+							"xoffset": -460,
+							"yoffset" : 0,
+							"dicturl" : "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=%QUERY&category=Land+Features,Water+Features,Populated+Place,Coordinate+System,Parks+and+Outdoors,Professional+and+Other+Places&maxSuggestions=15&f=pjson",
+							"dictparams" : {"query": "%QUERY","extent":"%EXTENT" },
+							 "dictExt" :  { "url": "place?urxl=http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidatesQQQsingleLine=", 
+										"params": "---maxLocations=10---category=Land+Features,Water+Features,Populated+Place---outFields=Match_addr,Place_addr,Type---f=pjson" },
+							"viewstate" : "parent-collapse",
+							"value": "",
+							"displayChild": "term",
+							"array_index" : "0",
+							"ref":  "Data.spatial.bounding_boxes", 
+							"children" : [
+									{"name": "term",
+										"ref": "description",  									      
+										"datatype" : "string",
+										"value": "",
+										"xoffset": -460
+									},
+									{
+										"name": "northBoundLatitude",
+										"ref": "northeast.lat",  									      
+										"datatype" : "string",
+										"value": "",
+										"xoffset": -460
+									},
+									{
+										"name": "southBoundLatitude",
+										"ref": "southwest.lat",											
+										"datatype" : "string",
+										"value": "",
+										 "xoffset": -460
+									},
+									{
+										"name": "eastBoundLongitude",
+										"ref": "northeast.lng",									    
+										"datatype" : "string",
+										"value": "",
+										"xoffset": -460
+									},
+									{
+										"name": "westBoundLongitude",
+										"ref": "southwest.lng",		
+										"datatype" : "string",
+										"value": "",
+										"xoffset": -460
+									}
+						  ]}
+                    ]         
+				  },
+                  { "name": "text",
+                    "display": "Spatial Notes",
+                    "datatype" : "textarea",
+                    "required" : "true",
+                    "xoffset": -360,
+                     "yoffset" : -60,
+                    "ref":  "Data.spatial.text" 
+                  }
+				]
+			},
+        {   "name": "KeywordEditor",
+            "display" : "Go To > Keyword Editor",
+            "datatype" : "subschema",
+            "required" : "false",
+            "xoffset": -420,
+             "yoffset" : -140,
+            "ref":  "/jsonSchemas/cinergi-keywords-editor.json"
+        },
+        {   "name": "EnhancedKeywordEditor",
+            "display" : "Go To > Enhanced Keyword Editor",
+            "datatype" : "subschema",
+            "required" : "false",
+            "xoffset": -400,
+            "yoffset" : -140,
+            "ref":  "/jsonSchemas/cinergi-enhanced-keywords-editor.json"
+        }
+    ]
+}

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Dynamic Json Editor and Schema Translator",
   "main": "nodeServer-d3-editor.js",
-  "repository": "https://github.com/usgin/dynamic-json-editor-schema-translator.git",
+  "repository": "https://github.com/GaryHudmanAZGS/mdeditor-docker.git",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.15.2",
@@ -21,7 +21,7 @@
     "poststart": "echo $NODE_PATH"
   },
   "keywords": [
-    "dyjest"
+    "metadata editor"
   ],
   "author": "Gary Hudman"
 }

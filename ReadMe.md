@@ -5,3 +5,7 @@ This Metadata Editor is based on a D3 SVG tree graphic, using a local json file 
 The transform function iterates through a provided schema, and looks up all reference attribute values from the source json, returning a json object that has the structure of the provided schema populated with data from the source json. This allows the same transform functions to be used for both exports and imports, only requiring accurate json schemas to provide correct json output.
 
 This is version allow configuration to connect to a mongo database and geoportal repository.
+
+# Build the Docker
+
+docker build -t mdeditor https://github.com/usgin/dynamic-json-editor-schema-translator.git#docker

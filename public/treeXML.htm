@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<!--[if gt IE 8]><p> IE Not supported !<![endif]-->  
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=11">
+<meta name="google-site-verification" content="ocx6S-yQnSzBgQFQvYG9YSYg231KiMO46b1URzgnKaU" />
+<title>DDS Index Editor</title>
+<link rel="shortcut icon" href="images/shortcut.ico">
+<link rel="stylesheet" href="/css/datepicker.css" />
+<link rel="stylesheet" href="/css/style.css" />
+<link rel="stylesheet" href="../js/themes/default/style.css" />
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<!--script src="https://d3js.org/d3-selection.v1.min.js"></script-->
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.css' rel='stylesheet' />
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.css' rel='stylesheet' />
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.js'></script>
+<script>
+var gCKAN_package,
+    gCin_edit = { 'dateTime' : 'Now', 'editedBy' : 'me', 'changes' : [] },
+    gCKAN_mdpackage,
+    gFlat,
+    gCKAN_pid,
+    gDDH_page=0,
+    gLa = false,
+    gCIN_saveDoc={},
+    gCKAN_api_path = 'http://132.249.238.150:8080/foundry/api/cinergi/docs/cinergi-0002',
+    gD3_Schema = "/jsonSchemas/cinergi-xml.json", 
+    gSrc_Schema= "/jsonSchemas/cinergi-schema-templates.json", 
+    gCKAN_offset = 100,
+    gEdName,
+    gTitle,
+    gXMLedit_pid,
+    gXMList=[],
+    gXMLSearch = {},
+    gEditStepSeq = 0,
+    gIndxID,
+    gSearchStr='',
+	gSearchIdx=0,
+	gSA =[],
+	gSedState=0,
+    gLoginState = 'init',
+    svgReady = false,
+    gCKAN_pagesize = 11,
+    docHistList = [],
+    zoomFactor = .3,
+    editState = 0
+    maxId =0;
+
+    var gCin_EdRec = { "metadataRecordLineageItems": [ 
+                { "item" : 
+                    { 
+                      "stepSequenceNo" : 0, 
+                      "stepProcessors" :   [ { "personName": "Editor Name" } ],  
+                      "stepDateTime" : "",
+                      "metadataUpdates": []
+                    }                                          
+                }  ]  };
+    var gCinEditSession = {},
+        gCinEditIdx = 0;
+
+    var gDDH_edit = [];
+
+    var gSchemaStack = {};
+
+    gSchemaStack['gmd:extent'] = { 
+                          "gmd:EX_Extent": {
+								"gmd:geographicElement": {
+									"gmd:EX_GeographicBoundingBox": {
+										"gmd:westBoundLongitude": { "gco:Decimal": "" },
+										"gmd:eastBoundLongitude": { "gco:Decimal": "" },
+										"gmd:southBoundLatitude": { "gco:Decimal": "" },
+										"gmd:northBoundLatitude": { "gco:Decimal": "" } } },
+								"gmd:description" : { "gco:CharacterString" : "" } }
+							};
+
+    gSchemaStack['gmd:EX_extent'] = {
+								"gmd:geographicElement": {
+									"gmd:EX_GeographicBoundingBox": {
+									   "gmd:westBoundLongitude": { "gco:Decimal": "" },
+									   "gmd:eastBoundLongitude": { "gco:Decimal": "" },
+									   "gmd:southBoundLatitude": { "gco:Decimal": "" },
+									   "gmd:northBoundLatitude": { "gco:Decimal": "" } } },
+								"gmd:description" : { "gco:CharacterString" : "" } 
+							 };
+                         
+    gSchemaStack['gmd:description'] =  { "gco:CharacterString" : "" } ;
+    
+    gSchemaStack['gmd:distributionInfo'] = {
+            "gmd:MD_Distribution": {
+               "gmd:distributor": {
+                  "gmd:MD_Distributor": {
+                     "gmd:distributorContact": {
+                        "gmd:CI_ResponsibleParty": {
+                           "gmd:individualName": {
+                              "gco:CharacterString": ""
+                           },
+                           "gmd:organisationName": {
+                              "gco:CharacterString": ""
+                           },
+                           "gmd:positionName": {
+                              "gco:CharacterString": ""
+                           },
+                           "gmd:contactInfo": {
+                              "gmd:CI_Contact": {
+                                 "gmd:phone": {
+                                    "gmd:CI_Telephone": {
+                                       "gmd:voice": {
+                                          "gco:CharacterString": ""
+                                       }
+                                    }
+                                 },
+                                 "gmd:address": {
+                                    "gmd:CI_Address": {
+                                       "gmd:deliveryPoint": {
+                                          "gco:CharacterString": ""
+                                       },
+                                       "gmd:city": {
+                                          "gco:CharacterString": ""
+                                       },
+                                       "gmd:administrativeArea": {
+                                          "gco:CharacterString": ""
+                                       },
+                                       "gmd:postalCode": {
+                                          "gco:CharacterString": ""
+                                       },
+                                       "gmd:electronicMailAddress": {
+                                          "gco:CharacterString": ""
+                                       }
+                                    }
+                                 },
+                                 "gmd:onlineResource": {
+                                    "gmd:CI_OnlineResource": {
+                                       "gmd:linkage": {
+                                          "gmd:URL": ""
+                                       }
+                                    }
+                                 }
+                              }
+                           },
+                           "gmd:role": {
+                              "gmd:CI_RoleCode": {
+                                 "_": "distributor",
+                                 "$": {
+                                    "codeList": "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/gmxCodelists.xml#CI_RoleCode",
+                                    "codeListValue": "distributor"
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               },
+               "gmd:transferOptions": {
+                  "gmd:MD_DigitalTransferOptions": {
+                     "gmd:onLine": {
+                        "gmd:CI_OnlineResource": {
+                           "gmd:linkage": {
+                              "gmd:URL": ""
+                           },
+                           "gmd:name": {
+                              "gco:CharacterString": ""
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         };
+                 
+    gSchemaStack['gmd:transferOptions'] = {
+                      "gmd:MD_DigitalTransferOptions": {
+                         "gmd:onLine": {
+                            "gmd:CI_OnlineResource": {
+                               "gmd:linkage": {
+                                  "gmd:URL": ""
+                               },
+                               "gmd:name": {
+                                  "gco:CharacterString": ""
+                               }
+                            }
+                         }
+                      }
+                 };
+                         
+
+</script>
+<script src="../js/cin-xmlUI.js"></script>
+<script src="../js/cin-d3jsonTree.js"></script>
+<!--script src="../js/cin-d3indent.js"></script-->
+<script src="../js/cin-xml-context-menu.js"></script>
+<script src="../js/cin-mdclient.js"></script>
+<script src="../js/typeahead.bundle.js"></script>
+<script src="../js/jstree.min.js"></script>
+<!--script src="js/contentModel.js"></script-->
+
+<style>
+#accordion {
+ width:100%;
+ margin: 0;
+ padding: 0;
+}
+#accordion p span {
+ cursor:pointer;
+ font-size: 15px;
+ font-family: "Avenir Next","Avenir",calibri;
+ background-color: #ffffff;
+}
+.history-title, .prov-title {
+ color: #196fa6;
+ font: bold 16px "Avenir Next","Avenir",calibri;
+ margin-bottom: 5px;
+ background-color: #fffff;
+ border:1px solid #dcdcdc;
+ padding: 5px 5px;
+ border-radius: 0px;
+}
+
+.g-item-card .g-item-card-saved {
+  margin-top: 5px;
+  margin-left: 40px;
+  padding: 4px;
+  font-size: 10px;
+  border-bottom: 1px solid #cccccc;
+  font-family: "Avenir Next","Avenir","Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.g-item-card-saved {
+  background-color: #aaaaaa;
+  font-size: 10px;
+  font-family: "Avenir Next","Avenir","Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.g-item-card .g-item-title {
+
+  font-weight: bold;
+  font-family: "Avenir Next","Avenir","Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.g-item-card .g-item-status {
+  margin-right: 0.5em;
+  font-family: "Avenir Next","Avenir","Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.g-item-card .g-item-description, 
+.g-item-card .g-item-actions, 
+.g-item-card .g-item-owner-and-date {
+	margin-left: 20px;
+  font-family: "Avenir Next","Avenir","Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.g-item-card .g-item-description, 
+.g-item-card .g-item-owner-and-date {
+  padding: 2px;
+  font-size: 10px;
+  width: 85%;
+  font-family: "Avenir Next","Avenir","Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+.g-item-card .g-item-thumbnail {
+	width: 80px;
+	height: 60px;
+  font-family: "Avenir Next","Avenir","Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.g-item-card .g-item-actions {
+  padding: 2px;
+  clear: both;
+}
+.g-item-card .g-item-actions > a, 
+.g-item-card .g-item-actions > .dropdown {
+  margin-right: 20px;
+  font-family: "Avenir Next","Avenir","Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.g-item-card .g-item-actions > .dropdown > .dropdown-menu {
+	max-height: 200px;
+	overflow-y: auto;
+	padding-right: 20px;
+  font-family: "Avenir Next","Avenir","Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.mul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #1e84a8;
+}
+
+.mli {
+    float: left;
+}
+
+.mli a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.mli a:hover:not(.active) {
+    background-color: #111;
+}
+
+.active {
+    background-color: #4CAF50;
+}
+
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#ZoomOut").click(function() {
+      var zf = 1 - zoomFactor;
+      paintTree(zf);
+    });
+    $("#ZoomIn").click(function() {
+      var zf = 1 + zoomFactor;
+      paintTree(zf);
+    });
+    $("#btnLoad").click(function() {
+      getData();
+    });
+    $("#btnLoad").click(function() {
+       $("myEd").show();
+    });
+    $("#SPL").click(function() {
+        show_packlist("next");
+      });
+    $("#SAC").click(function() {
+        SaveThenClose();
+      });
+
+    $("#SPLback").click(function() {
+        show_packlist("back");
+      });
+    
+    $("#SearchPack").click(function() {
+      search_package(1);
+    });
+    $("#btnSRD").click(function() {
+       showEdits();
+    }); 
+
+    $("#xport").click(function() {
+       showFullPack();
+    });
+
+     $("#loginBtn").click(function() {
+       loginAuth();
+    });
+    
+    $("#curEdBtn").click(function() {
+       editUser();
+    });
+
+    $("#validBtn").click(function() {
+       validator();
+    });
+    
+    $("#ts").click(function() {
+	  gSedState=0;
+      $.jstree.destroy();
+      showEndpoints(gXMLSearch[gCKAN_pid]);
+    });
+
+     $("#rs").click(function() {
+      $("#cin_results_div").empty();
+      showDDHRecords();
+    });
+    
+     $("#faq").click(function() {
+      console.log('picked faq');
+      //showFlat();
+      //showXML();
+      
+    });
+
+    $("#hideSearch").click(function() {
+          $("#showList").hide();
+    });
+    
+     $("#hideDDH").click(function() {
+          $("#showDDH").hide();
+    });
+        
+    $("#shojson").click(function() {
+        showFullPack();
+        
+    }); 
+
+    $("#shojson").contextmenu(function() {
+        showFlat();
+    }); 
+        
+    $("#savejson").click(function() {
+        //saveMdb();
+        getIndexID();
+        
+    }); 
+    
+    $("#trigproc").click(function() {
+        startPipelineProcess();
+    }); 
+    
+    $("#edbyin").keypress(function() {
+      if (e.keyCode == 13) {
+       //   editUser();
+      }
+    }); 
+
+     $("#pgsz").val(gCKAN_pagesize);
+
+    if ( gCKAN_pid ) {
+      ( gCKAN_pid.length > 5 ) ? $("#SAC").show() : $("#SAC").hide(); 
+    } else { $("#SAC").hide() }
+});
+
+$(document).ready(function($) {
+       $('#accordion div').hide();
+       $('#accordion p span').click(function(){
+               $('#accordion div').slideUp();
+               $(this).parent().next().slideDown();
+               return false;
+       });
+});
+
+function detectIE() {
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf('MSIE ');
+    if (msie > 0) {
+        // IE 10 or older => return version number
+        return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+        //return true;
+    }
+
+    var trident = ua.indexOf('Trident/');
+    if (trident > 0) {
+        // IE 11 => return version number
+        var rv = ua.indexOf('rv:');
+        //return true;
+        return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+    }
+
+    var edge = ua.indexOf('Edge/');
+    if (edge > 0) {
+       // Edge (IE 12+) => return version number
+       //return true;
+       return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+    }
+
+    // other browser
+    return false;
+}
+
+// Allows external call to editor that loads a dataset
+
+function hs() {
+  $("#showValidateSplash").hide();
+}
+function getParams() {
+
+var detIE = false; // detectIE();
+if ( detIE != false ) {
+    
+    alert('Internet Explorer ' + detIE + ' is currently not supported ');
+    
+  } else {
+
+    var query = window.location.href.split('?')[1]; 
+    //query won't be set if ? isn't in the URL
+    if ( getCookie("editorName").length > 1 ) { 
+      //$('#editby').text( getCookie("editorName") );
+       $("#editby").append(getCookie("editorName") );
+      gEdName = getCookie("editorName");
+    } else {
+       $('#editby').append("Edit Curator Name");
+    }
+   
+    if(!query) {
+      return { };
+    }
+     
+    $("#validBtn").hide();
+    
+    var params = query.split('&');
+    var pairs = {};
+    for(var i = 0, len = params.length; i < len; i++) {
+      var pair = params[i].split('=');
+      pairs[pair[0]] = pair[1];
+      if ( pair[0] == "docId" || pair[0] == "docID" || pair[0] == "docid" || pair[0] == "DOCID") {
+        
+        var pid = { id : pair[1] };
+        if ( pid.id.slice(-1) == "#" ) {
+          pid.id = pid.id.slice(0,-1);
+        }
+
+        if (gCKAN_pid == pid.id ) {
+          // Same record, different schema - the edits need to be preserved
+          reSchemD3();
+
+        } else {
+          // Load a new record
+          gCKAN_pid = pid.id;
+          gXMLedit_pid = pid.id;
+          loadIndexID();
+          //loadD3();
+          
+        }
+      }      
+    } 
+
+ }
+
+}
+
+</script>
+</head>
+<body onload="getParams()">
+   <table width="100%">
+   <tr class="tr-hdr" >
+      <!--td class="td-hdr">Data Discovery Studio</br>Index Editor</td-->
+      <td class="td-hdr"><img src="img/DataDiscoveryStudio.png" height="30" width="125"></img></br>Metadata Editor</td>
+      <td class="td-hdr" style="width: 40%;">
+        <a id="loginBtn" class="nav-link" title="loginBtn" target="_blank">Sign In</a>
+        <a id="curEdBtn" class="nav-link" title="Allows you to save the name of the curator/editor - independent of the login name" target="_blank">Curator</a>
+        <a id="validBtn" class="nav-link" title="validBtn" target="_blank">Validate</a>
+        <div id="logger" style="display: none; color: #196fa6; background-color: #196fa6; border-color: #196fa6;">
+          <input placeholder="Username" id='luser' >
+          <input id='lpass' placeholder="Password" type="password"></div>
+        <p></p>
+        <div id="editby" style="width: 200px;"></div>
+        
+      </td>
+      <td class="td-hdr" style="width: 40%;">
+        <div id="mousebox">View Only Mode - Login to Save Edits</div>
+         <!--a id="shoHints" class="circle_button" title="Hints" target="_blank">Hints</a--> 
+      </td>
+      <td class="td-hdr" style="width: 30%;">
+      <ul class="mul">
+      <li class="mli"><a id="savejson"  title="Save metadata to database" target="_blank" style="display: none;">Publish</a></li>
+      <li class="mli"><a id="trigproc" title="Save to geoportal index" target="_blank" style="display: none;">Process</a></li>
+      <li class="mli"><a id="shojson" title="Show meta data as json" target="_blank" >JSON</a></li>
+      <li class="mli"><a id="faq" title="FAQ" href="/publish/faq" target="_blank">Help</a></li>
+      </ul>
+      
+      <!--table style="width: 100%;"><tr><td>
+      <a id="shojson" class="nav-link" title="ShowJson" target="_blank" >json</a>
+      </td><td>
+      <a id="savejson" class="nav-link" title="Save" target="_blank" style="display: none;">Save</a>
+      </td><td >
+      <a id="trigproc" class="nav-link" title="Proc" target="_blank" style="display: none;">Process</a>
+      </td><td >
+      <a id="faq" class="nav-link" title="FAQ" target="_blank">Help</a>
+      </td></tr>
+      </table-->
+     </td>
+     </tr>
+     <tr><td colspan=4>
+      <div id="myEd">
+      </div>
+      </td>
+      </tr>
+      <tr>
+   <td>
+   <div>
+      <div>
+  
+      <div class="box">
+          <div class="container-1">
+              <!--p style="font-weight: bold"><span>Select Records for Batch Edit</span></p>
+              <p style="font-weight: bold">
+             <input class="select" type="search" id="searchDDH" size="30" placeholder="Record Search..." />
+             <i id="rs" class="fa fa-search"><img height="20px" width="20px" src="/img/search.png"></i></p-->
+             
+              <p style="font-weight: bold"><span>Metadata Text Search</span></p>
+              <p style="font-weight: bold">
+             <input class="select" type="search" id="stxt" size="30" placeholder="Text Search..." />
+             <i id="ts" class="fa fa-search"><img height="20px" width="20px" src="/img/search.png"></i></p>
+             <p style="font-weight: bold"><span>
+              <select id="searchType"  >
+               <option value="Text">Search by Text Values</option>
+               <option value="Path">Search by Path Names</option>
+               <option value="All">Return All</option>
+              </select>
+              </span></p>
+              
+        </div>
+      </div>
+    
+     </div>
+   </br>
+    </div>
+    <div id="accordion" style="width:80%">
+    <!--input placeholder="Search" id='stxt' >
+     <p class="history-title" style="font-weight: bold"><span id="ts">Search</span></p>
+       <div id="search_list" >
+          <ul id="searchStack">
+              <li>Text</li>
+          </ul>
+      </div-->
+      <p class="history-title" style="font-weight: bold"><span>Recently Edited Docs</span></p>
+      <div id="cookie_list" >
+          <ul id="dochist">
+              <li><a href="#" id="000" onclick="javascript:clearCookies();" style="font-weight: bold">(-) Clear History</a></li>
+          </ul>
+      </div>
+      <p class="history-title"><span>Pending Edits</span></p>
+      <div id="edit_list" >
+          <ul id="editStack">
+              <li><a href="#" id="x00" onclick="javascript:clearEdits();" style="font-weight: bold">(-) Clear Edits</a></li>
+          </ul>
+      </div>
+       <p class="prov-title"><span>Edit History</span></p>
+       <div id="prov_list" >
+          <ul id="provStack">
+              <li>Provenance</li>
+          </ul>
+      </div>
+      </div>
+   </td>
+   <td colspan=3><div id="tree-container">
+     <div id="showData" style="display: none;"></div>
+     <div id="showMap" style="display: none; background: #fff "></div>
+     
+      <div id="showDDH" style="display: none;">
+        <div id="showDDHdr">
+       
+        </div>
+        <div id="cin_results_div"  style="background-color: #efefef; background: #efefef;" >
+        
+        </div>
+        <!--table id="searchTab" class="st"><tbody></tbody></table-->
+     </div>
+     
+     <div id="showList" style="display: none;">
+        <div id="showMV">
+       
+        </div>
+        <div id="jstree_div"  style="background-color: #efefef; background: #efefef;" >
+        
+        </div>
+        <!--table id="searchTab" class="st"><tbody></tbody></table-->
+     </div>
+     
+      <div id="showValidateSplash" style="display: none;">
+       <center>
+       <h2 style="color: #2e6c80;">Welcome to the Index Editor</h2>
+       </center>
+       <p style="font-size: 120%" >To edit this record:</br>
+       <b>Login</b> - edit elements that you want to change</br>
+       <b>Save</b> - to post your changes to the database</br>
+       <b>Process</b> - to execute enhancements and reindex </br>
+       To validate this record without changes, login and click <b>Validate</b>.</p>
+       <center>
+       <a id="hideSplash" class="nav-link" style="background-color: #a9aaa6; font-color: Blue"  title="Close this message nox" onclick="javascript:hs();"  target="_blank">OK</a>
+       </center>
+      </div>
+      
+   </div></td>
+   </tr></table>
+</body>
+</html>

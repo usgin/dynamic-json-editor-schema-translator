@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=11">
+<meta name="google-site-verification" content="ocx6S-yQnSzBgQFQvYG9YSYg231KiMO46b1URzgnKaU" />
 <title>DDH Metadata Editor</title>
 <link rel="shortcut icon" href="images/shortcut.ico">
 <link rel="stylesheet" href="/css/datepicker.css" />
@@ -28,6 +29,8 @@ var gCKAN_package,
     gCKAN_offset = 100,
     gEdName,
     gTitle,
+    gEditStepSeq = 0,
+    gIndxID,
     gLoginState = 'init',
     svgReady = false,
     gCKAN_pagesize = 11,
@@ -98,6 +101,29 @@ var gCKAN_package,
  border-radius: 0px;
 }
 
+.mul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #196fa6;
+}
+
+.mli {
+    float: left;
+}
+
+.mli a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.mli a:hover:not(.active) {
+    background-color: #111;
+}
 </style>
 
 <script type="text/javascript">
@@ -156,6 +182,11 @@ $(document).ready(function(){
     $("#savejson").click(function() {
         saveMdb();
     }); 
+    
+    $("#trigproc").click(function() {
+        startPipelineProcess();
+    }); 
+    
     $("#edbyin").keypress(function() {
       if (e.keyCode == 13) {
        //   editUser();
@@ -288,10 +319,17 @@ if ( detIE != false ) {
   
       </td>
       <td class="td-hdr" style="width: 20%;">
-      <a id="shojson" class="nav-link" title="ShowJson" target="_blank">json</a>
+      <ul class="mul">
+      <li class="mli"><a id="savejson"  title="Save metadata to database" target="_blank" style="display: none;">Save</a></li>
+      <li class="mli"><a id="trigproc" title="Save to geoportal index" target="_blank" style="display: none;">Process</a></li>
+      <li class="mli"><a id="shojson" title="Show meta data as json" target="_blank" >JSON</a></li>
+      <li class="mli"><a id="faq" title="FAQ" target="_blank">Help</a></li>
+      </ul>
+      
+      <!--a id="shojson" class="nav-link" title="ShowJson" target="_blank">json</a>
       <a id="savejson" class="nav-link" title="Save" target="_blank" style="display: none;">Save</a>
       <a id="trigproc" class="nav-link" title="Proc" target="_blank" style="display: none;">Process</a>
-      <a id="faq" class="nav-link" href="/publish/faq" title="FAQ" target="_blank">Help</a>
+      <a id="faq" class="nav-link" href="/publish/faq" title="FAQ" target="_blank">Help</a-->
      </td>
      </tr>
      <tr><td colspan=4>

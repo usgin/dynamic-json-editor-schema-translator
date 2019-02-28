@@ -278,6 +278,39 @@ function jsonLookup(jsonObj, trail, keylookup) {
 	return found;
 }
 
+function jsonLookupWrite(jsonObj, trail, keylookup,endVal) {
+
+	trail = trail || [];
+	for (var key in jsonObj) {
+	    if ( jsonObj[key] !== null && typeof(jsonObj[key])=="object" ) {
+        	if (  keylookup == 'Data.keywords') {
+				console.log( 'jsonLookup - the key >>> ' + key );
+			}
+
+	        if ( key == keylookup ) {
+				console.log('found as object ' + jsonObj[key] + key);
+	        	 found = jsonObj[key];
+				 return found;
+			} else {
+				//console.log('j2 not found obj ' + trail + key); 
+           		jsonLookupWrite(jsonObj[key], trail.concat(key), keylookup,endVal );
+           	}
+           
+        } else { 
+			var fullkey = trail.join(".") + "." + key;
+
+			if ( keylookup == fullkey ) {
+				    console.log('found as endpoint ' + jsonObj[key] + key);
+					jsonObj[key] = endVal;
+			        found = jsonObj[key];
+					return found;
+			}
+		}
+
+    }    
+	return found;
+}
+
 function jsonArrayLookup(jsonObj, trail, keylookup) {
     // console.log( 'jsonArrayLookup - json lookup ' + trail + ' ' + keylookup );
 	trail = trail || [];

@@ -2,6 +2,30 @@
 // D3 needs an api source to pull in json, so Node makes the request and translates the package
 // G. Hudman April 8, 2016
 
+JSON.flatten = function(data) {
+    var result = {};
+    function recurse (cur, prop) {
+        if (Object(cur) !== cur) {
+            result[prop] = cur;
+        } else if (Array.isArray(cur)) {
+             for(var i=0, l=cur.length; i<l; i++)
+                 recurse(cur[i], prop ? prop+"."+i : ""+i);
+            if (l == 0)
+                result[prop] = [];
+        } else {
+            var isEmpty = true;
+            for (var p in cur) {
+                isEmpty = false;
+                recurse(cur[p], prop ? prop+"."+p : p);
+            }
+            if (isEmpty)
+                result[prop] = {};
+        }
+    }
+    recurse(data, "");
+    return result;
+}
+
 var moa;
 exports.any = (function(d3json, mdjson) { 
 	var kp;
@@ -12,7 +36,16 @@ exports.any = (function(d3json, mdjson) {
 exports.altmap = (function(d3json, mdjson) { 
 	var kp;
 	moa = mdjson;
-
+  /*
+  var xJson = JSON.flatten(mdjson);
+  console.log(' xjson ' + JSON.stringify(xJson) );
+  if ( Array.isArray(xJson) ) {
+    for (z=0; z < xJson.length; z++) {
+        console.log(' array bld ' + z + xJson[z]);
+    }
+  }
+  */
+  
 	var newJson = altransverse(d3json,kp,mdjson);
 	return newJson;
 });
@@ -35,84 +68,152 @@ exports.stripNS  = function(mdjson) {
 // This could be used for templating and validation in the more genaral case
 
 exports.mdKwPrep=(function(mdjson) {
-              
-  var kwPaths = [ "gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords",
-                  "gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords",
-                  "MD_Metadata.identificationInfo.MD_DataIdentification.descriptiveKeywords" ];
-              
-  var jb =  [ {
-                     "gmd:MD_Keywords": {
-                        "gmd:keyword": [
-                           {
-                              "gco:CharacterString": {
-                                 "_$": ""
-                              }
-                           }
-                        ],
-                        "gmd:type": {
-                           "gmd:MD_KeywordTypeCode": {
-                              "@codeSpace": "ISOTC211/19115",
-                              "@codeList": "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode",
-                              "@codeListValue": "theme",
-                              "_$": "theme"
-                           }
-                        },
-                        "gmd:thesaurusName": {
-                           "gmd:CI_Citation": {
-                              "gmd:title": {
-                                 "gco:CharacterString": {
-                                    "_$": "CINERGI Themes"
-                                 }
-                              },
-                              "gmd:date": {
-                                 "gmd:CI_Date": {
-                                    "gmd:date": {
-                                       "gco:Date": {
-                                          "_$": "2015-01-01"
-                                       }
-                                    },
-                                    "gmd:dateType": {
-                                       "gmd:CI_DateTypeCode": {
-                                          "@codeListValue": "publication",
-                                          "@codeList": "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode"
+                          
+  gDist = {
+            "gmd:MD_Distribution": {
+               "gmd:distributor": {
+                  "gmd:MD_Distributor": {
+                     "gmd:distributorContact": {
+                        "gmd:CI_ResponsibleParty": {
+                           "gmd:individualName": {
+                              "gco:CharacterString": ""
+                           },
+                           "gmd:organisationName": {
+                              "gco:CharacterString": ""
+                           },
+                           "gmd:positionName": {
+                              "gco:CharacterString": ""
+                           },
+                           "gmd:contactInfo": {
+                              "gmd:CI_Contact": {
+                                 "gmd:phone": {
+                                    "gmd:CI_Telephone": {
+                                       "gmd:voice": {
+                                          "gco:CharacterString": ""
                                        }
                                     }
+                                 },
+                                 "gmd:address": {
+                                    "gmd:CI_Address": {
+                                       "gmd:deliveryPoint": {
+                                          "gco:CharacterString": ""
+                                       },
+                                       "gmd:city": {
+                                          "gco:CharacterString": ""
+                                       },
+                                       "gmd:administrativeArea": {
+                                          "gco:CharacterString": ""
+                                       },
+                                       "gmd:postalCode": {
+                                          "gco:CharacterString": ""
+                                       },
+                                       "gmd:electronicMailAddress": {
+                                          "gco:CharacterString": ""
+                                       }
+                                    }
+                                 },
+                                 "gmd:onlineResource": {
+                                    "gmd:CI_OnlineResource": {
+                                       "gmd:linkage": {
+                                          "gmd:URL": ""
+                                       }
+                                    }
+                                 }
+                              }
+                           },
+                           "gmd:role": {
+                              "gmd:CI_RoleCode": {
+                                 "_": "distributor",
+                                 "$": {
+                                    "codeList": "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/gmxCodelists.xml#CI_RoleCode",
+                                    "codeListValue": "distributor"
                                  }
                               }
                            }
                         }
                      }
                   }
-               ];
-
-             
-    if ( mdjson.hasOwnProperty("OriginalDoc") ) {
-       var mo = mdjson.OriginalDoc;    
-       for (var k = 0; k < kwPaths.length; k++) { 
-             var kw = kwPaths[k].split('.');
-             var klen = kw.length;
-             for (z=0; z < klen; z++) {
-                 var top = kw.shift();
-                 if ( z == ( klen - 1 ) ) {
-                     if (!mo.hasOwnProperty(top) ) { 
-                         //insert empty keywords
-                         mo[top] = jb;
-                     } else { 
-                         mo = mo[top];
+               },
+               "gmd:transferOptions": {
+                  "gmd:MD_DigitalTransferOptions": {
+                     "gmd:onLine": {
+                        "gmd:CI_OnlineResource": {
+                           "gmd:linkage": {
+                              "gmd:URL": "http://cinergi.sdsc.edu/geoportal/#"
+                           },
+                           "gmd:name": {
+                              "gco:CharacterString": "Resource Description"
+                           }
+                        }
                      }
-                     return mdjson;
-                 } else {
-                   if ( mo.hasOwnProperty(top) ) {
-                        mo = mo[top];
-                   } else { 
-                       // couldnt find the path try the next one
-                       break;
-                   }
-                 }
-             }
-       }
-    }
-    return mdjson;
+                  }
+               }
+            }
+         };
+		 
+	gExtent = { "gmd:EX_Extent": {
+								"gmd:geographicElement": {
+									"gmd:EX_GeographicBoundingBox": {
+										"gmd:westBoundLongitude": { "gco:Decimal": "" },
+										"gmd:eastBoundLongitude": { "gco:Decimal": "" },
+										"gmd:southBoundLatitude": { "gco:Decimal": "" },
+										"gmd:northBoundLatitude": { "gco:Decimal": "" } } },
+								"gmd:description" : { "gco:CharacterString" : "Empty New Extent" } }
+							};
+
+    console.log('in mdkwprep !' );      
+    //if ( mdjson.hasOwnProperty("OriginalDoc") ) {
+	//	console.log('has origdoc !');
+	var mo = mdjson;
+	var top = 'gmi:MI_Metadata';
+	var rec = false;
+	if ( typeof(mo) !== "undefined" && mo.hasOwnProperty(top) ) {
+		 mo = mo[top];
+		 rec = true;
+	}
+	
+	top = 'gmd:MD_Metadata';
+	if ( !rec && typeof(mo) !== "undefined" && mo.hasOwnProperty(top) ) {
+		 mo = mo[top];
+		 rec = true;
+	}
+	
+	if  ( rec ) {
+		console.log('has ' +top);
+		var dist = 'gmd:distributionInfo';
+		var hasDist = false;
+		if ( typeof(mo) !== "undefined" && mo.hasOwnProperty(dist) ) { hasDist = true; }
+		dist = 'distributionInfo';
+		if ( typeof(mo) !== "undefined" && mo.hasOwnProperty(dist) ) { hasDist = true; }
+		
+		if ( !hasDist ) {
+			mo[dist] = gDist;
+			console.log('missing dist !' + dist);
+		}
+		
+		var idInfo = 'gmd:identificationInfo';
+		var hasExt = false;
+	
+		if ( typeof(mo) !== "undefined" && mo.hasOwnProperty(idInfo) ) { 
+			
+			mo = mo[idInfo];
+			idInfo = 'gmd:MD_DataIdentification';
+			if ( typeof(mo) !== "undefined" && mo.hasOwnProperty(idInfo) ) { 
+				mo = mo[idInfo];
+				var extItem = 'gmd:extent';
+				if ( !mo.hasOwnProperty('gmd:extent') && !mo.hasOwnProperty('extent') ) {
+					mo[extItem] = gExtent;
+					console.log('missing extent');
+				}
+			}
+		}
+	}
+		
+		
+		
+		
+		
+   return mdjson;
                           
 });
 
@@ -123,6 +224,7 @@ function nsWalk(kp, md) {
 }
 
 var found = "";
+
 
 
 function xform(d3json, mdjson) {
@@ -163,23 +265,24 @@ function altransverse(d3,kp,md) {
 	}
 
 	for (var i in d3) {
-		
+		//console.log(' Check ' + d3[i].name );
 		if (d3[i] !== null && typeof(d3[i])=="object" ) {
             var iObj = d3[i];
             if ( d3[i].ref !== "undefined" ) {
             	var mdlookup = d3[i].ref;
-         
+              
             	// If the reference lookup is an array that handles multiple jsonPaths
             	if ( typeof(mdlookup) !== "undefined" && Array.isArray(mdlookup) ) {
             		for (var k in mdlookup) {
                   var mdarrlookup;
                   found = "";
+                  //console.log(' Ref Path ' + mdlookup[k] );
          			    mdarrLookup = jsonLookup(md, ajT,mdlookup[k], false);
             		
             			if (mdarrLookup) {
             				mdlookup= mdlookup[k];
             				d3[i].RefSaveTo = mdlookup;
-            				console.log('>>> ' + d3[i].name + ' ' + d3[i].RefSaveTo);
+            				//console.log('>>> ' + d3[i].name + ' ' + d3[i].RefSaveTo);
             				break;	
             			}		
             		}
@@ -221,16 +324,22 @@ function altransverse(d3,kp,md) {
             	} else {
             		if ( typeof(mdlookup) !== "undefined" && mdlookup !== null ) {
                     	var jT;
-						var refval = jsonLookup(md, jT,mdlookup, false);
-						if ( typeof(refval) !== "undefined" && refval !== null ) {
-							// Dont stuff the object into a string, mite want to process
-							if ( typeof(refval) !== "object" ) {
-								d3[i].value = refval;	
-							} 
+						if ( typeof(d3[i].datatype) !== "undefined" && d3[i].datatype == "subschema"  ) {
+							console.log(d3[i].name + ' subschema ');
+						} else {
+							var refval = jsonLookup(md, jT,mdlookup, false);
+							if ( typeof(refval) !== "undefined" && refval !== null ) {
+								// Dont stuff the object into a string, mite want to process
+								if ( typeof(refval) !== "object" ) {
+									d3[i].value = refval;	
+								} 
+							}
 						}
 						found="";
+						
             		}
-            	    d3[i] = altransverse(d3[i],kp.concat(i),md);	
+					d3[i] = altransverse(d3[i],kp.concat(i),md);
+            	    	
             	}
             }
             
@@ -267,6 +376,7 @@ function altransverse(d3,kp,md) {
 	return d3;
 }
 
+
 // JASchema is the array template, mdjson is the array data
 
 function jsonArray(mdJson, jASchema ) {
@@ -276,6 +386,10 @@ function jsonArray(mdJson, jASchema ) {
     try {
 
 		if ( mdJson.length > 0 ) {
+            //var dd = JSON.stringify(mdJson);
+			//if ( dd.indexOf('EX_TemporalExtent') > 0 ) {
+            //    console.log('>>> mdjson - Temporal extent ' + dd);
+            //  }
 
 	        for (var i = 0; i < mdJson.length; i++) {
 
@@ -285,16 +399,39 @@ function jsonArray(mdJson, jASchema ) {
 	        	 	var tjO = {};
 	        	 	var subData = mdJson[i];
 	        	 	var trail;
-	        	 	tjO = SubObjectBuilder(subData, trail, jASchema, i); 
-	        	 	tjO.array_index = i;
-	        	 	if ( typeof(mdJson[i].datatype) !== "validationonly" ) {
-	        	 		if ( typeof(mdJson[i].validation) !== "undefined" ) {
-	        	 			tjO.validateonly = mdJson[i].validation.toString();
-	        	 		} else {
-	        	 			tjO.validateonly = "true";
-	        	 		}
-	        	 	} 
-	        	 	newArray.push(tjO);
+              //console.log(' array ' + i + ' ' +  JSON.stringify(subdata) );
+              var ddt = JSON.stringify(subData);
+              //var okys = Object.keys(subData);
+              // Hard code skip of the temporal  
+              var hasTem = false;
+              if ( subData.hasOwnProperty('gmd:EX_Extent')  ) {
+              	var tic = subData['gmd:EX_Extent'];
+              	if ( tic.hasOwnProperty('gmd:temporalElement') && !tic.hasOwnProperty('gmd:geographicElement') ) {
+              		hasTem = true;
+              	}
+              }
+             
+               if ( subData.hasOwnProperty('gmd:temporalElement') ) {
+               		hasTem = true;
+              }
+
+              if ( hasTem ) {
+              	var tempora = true;
+                console.log(' Skip the Temporal extent for now ' + JSON.stringify(subData) );
+           
+              } else {     
+  	        	 	tjO = SubObjectBuilder(subData, trail, jASchema, i); 
+  	        	 	tjO.array_index = i;
+  	        	 	if ( typeof(mdJson[i].datatype) !== "validationonly" ) {
+  	        	 		if ( typeof(mdJson[i].validation) !== "undefined" ) {
+  	        	 			tjO.validateonly = mdJson[i].validation.toString();
+  	        	 		} else {
+  	        	 			tjO.validateonly = "true";
+  	        	 		}
+  	        	 	} 
+                                    
+  	        	 	newArray.push(tjO);
+             }
 	        	} else {
 	        	 	 var tjs = {};
 	        	 	tjs = JSON.parse(JSON.stringify(jASchema)); // cheap copy
@@ -308,7 +445,7 @@ function jsonArray(mdJson, jASchema ) {
 	        	 			tjO.validateonly = "true";
 	        	 		}
 	        	 	}
-				 	newArray.push(tjs);
+				 	    newArray.push(tjs);
 	        	}
 	       
 			}
@@ -334,7 +471,7 @@ function SubObjectBuilder (jObjData, trail, iNjSchema,mCount) {
     var jSchema = JSON.parse( JSON.stringify(iNjSchema) );
     var ObX = 0;
 	var jT;
-    console.log('SobObject called ' );
+    //console.log('SobObject called ' );
 	if ( typeof(jSchema.children) != "undefined" )  {
 		for (var subkey = 0; subkey < jSchema.children.length; subkey++) {
 			var jT;
@@ -342,34 +479,37 @@ function SubObjectBuilder (jObjData, trail, iNjSchema,mCount) {
             // t2o level lookup based on schema paths
 			var  schemaChild = jSchema.children[subkey];
 			if ( typeof(schemaChild.ref) != "undefined" ) {
-				    console.log(' sob l1 ' +  ' ' + jSchema.ref + ' ' + schemaChild.ref + ' ' + subkey + ' ' + mCount);
+				    //console.log(' sob l1 -- ' +  ' ' + jSchema.name + ' ' + schemaChild.ref + ' ' + subkey + ' ' + mCount);
 
 				    if ( typeof(jSchema.ref) !== "undefined" && Array.isArray(jSchema.ref) ) {
 				    	//console.log(' base path array !');
 						for (var k in jSchema.ref) {
 							var xJt;
-						 console.log('-------------->>>>>>>>>> level 1' + jSchema.ref[k] );
+						 //console.log('>>>>>>>>>> level 1 ' + jSchema.ref[k] );
         					vJP = jPathValidate(moa, jSchema.ref[k]);
         					if (vJP) { 
+                    //console.log('-------------->>>>>>>>>> level 1 - VALID >>> ' + jSchema.name + ' ' + jSchema.ref[k] );
         						var valPath = jSchema.ref[k];
+                    jSchema.RefSaveTo = valPath;
         						break; 
         					}
         				}
         				if (!valPath) {
-        						console.log(' No valid base path !');
+							var kontinue=1;
+        						//console.log(' No valid base path !');
         				}
 					} else {
 						valPath = jSchema.ref;
 					}
 
-					//console.log(' sob l1 --2 ' +  ' ' + valPath + ' childref ' + schemaChild.ref + ' : ' + subkey + ' ' + mCount);
+					//console.log(' sob l1 --2 NEW ' +  ' Valid Path' + valPath + ' childref ' + schemaChild.ref + ' [subkey] ' + subkey + ' count: ' + mCount);
 					schemaChild = arrayRefLookup(jObjData, schemaChild.ref, schemaChild, false, valPath, mCount );
 					//  arrayRefLookup (jObjData, referTo, d3Object, refOnly, baseRef, kc) {
 					schemaChild.array_index = mCount;
 				    var vJP = false;
 
 					if ( !schemaChild.hasOwnProperty('RefSaveTo')  ) {
-						console.log(' l1-2 - RefSaveTo not built in arrary ref ');
+						//console.log(' l1-2 - RefSaveTo not built in array ref ');
                         /*
 						if ( typeof(jSchema.ref) !== "undefined" && Array.isArray(jSchema.ref) ) {
 							for (var k in jSchema.ref) {
@@ -387,24 +527,26 @@ function SubObjectBuilder (jObjData, trail, iNjSchema,mCount) {
 						*/
 
 						if ( typeof(schemaChild.ref) !== "undefined" && Array.isArray(schemaChild.ref) ) {
-							 console.log(' l1-2 - Child path array ');	
+							 //console.log(' l1-2 - Child path array ');	
             					//if ( typeof(schemaChild.ref) !== "undefined" && Array.isArray(schemaChild.ref) ) {
 									for (var sk in schemaChild.ref) {
 										var fJP = valPath + '.' + mCount + '.' + schemaChild.ref[sk];
-										console.log(' try this path ---' + fJP);
+										//console.log(' try this path ---' + fJP);
 										if ( jPathValidate(moa, fJP ) ) {
 											var fvJP = jsonLookup(md, ajT, fJP );	
 											if ( fvJP ) {
+          	            //console.log(' refsaveTo - reset here -1 >>>> ---' + schemaChild.name + ' ' + fJP);                        
 												schemaChild.RefSaveTo = fJP;
 												break;			
 											}	
 										}
 									}
 
-            				} else {
-								schemaChild.RefSaveTo = valPath + '.' + mCount + '.' + schemaChild.ref;  
+            } else {
 
-            				}
+                schemaChild.RefSaveTo = valPath + '.' + mCount + '.' + schemaChild.ref;  
+                //console.log(' refSaveTo - reset here  -2 >>>> ---' + schemaChild.name + ' ' + schemaChild.RefSaveTo);       
+            }
             			//}
                         
 						//schemaChild.RefSaveTo = jSchema.ref + '.' + mCount + '.' + schemaChild.ref;
@@ -418,7 +560,7 @@ function SubObjectBuilder (jObjData, trail, iNjSchema,mCount) {
 			if (  schemaChild.hasOwnProperty('children') && typeof(schemaChild.children) != "undefined" ) {
 				for (var sk = 0; sk < schemaChild.children.length; sk++) {
 					var  subChild = schemaChild.children[sk];
-					console.log(' sob l2 ' + schemaChild.ref);
+					//console.log(' sob l2 ' + schemaChild.ref);
 					if ( typeof(subChild.ref) != "undefined" ) {
 						if ( typeof(jSchema.ref) !== "undefined" && Array.isArray(jSchema.ref) ) {
 					    	//console.log(' base path array !');
@@ -426,7 +568,7 @@ function SubObjectBuilder (jObjData, trail, iNjSchema,mCount) {
 								var xJt;
 								
 	        					vJP = jPathValidate(moa, jSchema.ref[k]);
-	        					console.log('-------------->>>>>>>>>> level 2' + jSchema.ref[k] + ' ' + vJP );
+	        					//console.log('-------------->>>>>>>>>> level 2' + jSchema.ref[k] + ' ' + vJP );
 	        					if (vJP) { 
 	        						var valPath = jSchema.ref[k];
 	        						//console.log('-------------->>>>>>>>>> level 2 ' + valPath );
@@ -445,11 +587,11 @@ function SubObjectBuilder (jObjData, trail, iNjSchema,mCount) {
 	            				//	if ( typeof(subChild.ref) !== "undefined" && Array.isArray(subChild.ref) ) {
 										for (var ssk in subChild.ref) {
 											var sfJP = valPath + '.' + mCount + '.' + subChild.ref[ssk];
-											console.log(' slevel 2 array path ' + sfJP );
+											//console.log(' slevel 2 array path ' + sfJP );
 											if ( jPathValidate(moa, SfJP ) ) {
 												var sfvJP = jsonLookup(md, ajT, sfJP );
 												if ( sfvJP ) {
-                          console.log(' slevel 2 array saved  ' + sfJP );                              
+                          //console.log(' slevel 2 array saved  ' + sfJP );                              
 													subChild.RefSaveTo = sfJP;			
 												}
 											}
@@ -469,13 +611,13 @@ function SubObjectBuilder (jObjData, trail, iNjSchema,mCount) {
 					if (  subChild.hasOwnProperty('children') && typeof(subChild.children) != "undefined" ) {
 						for (var ssk = 0; ssk < subChild.children.length; ssk++) {
 							var  DsubChild = subChild.children[ssk];
-						  console.log(' sob l3 ' + subChild.ref);
+						  //console.log(' sob l3 ' + subChild.ref);
 							if ( typeof(DsubChild.ref) != "undefined" ) {
 									if ( typeof(jSchema.ref) !== "undefined" && Array.isArray(jSchema.ref) ) {
 								    	//console.log(' base path array !');
 										for (var k in jSchema.ref) {
 											var xJt;
-											console.log('-------------->>>>>>>>>> level 3' + jSchema.ref[k] );
+											//console.log('-------------->>>>>>>>>> level 3' + jSchema.ref[k] );
 				        					vJP = jPathValidate(moa, jSchema.ref[k]);
 				        					if (vJP) { 
 				        						var valPath = jSchema.ref[k];
@@ -544,12 +686,13 @@ function arrayRefLookup (jObjData, referTo,d3Object, refOnly, baseRef, kc) {
 
 			var valRefer = jPathValidate(moa, lp);
 
-			//console.log(' array ref lookup isArray  ' + valRefer + ' >>>> ' + baseRef + '.' + kc + '.' + referTo[k] );
+			//console.log(' array ref lookup - isArray  ' + valRefer + ' >>>> ' + baseRef + '.' + kc + '.' + referTo[k] );
 			//var trnRefer = jsonLookup(jObjData, ajT,referTo[k], true);
 			
 			//if (typeof(rtnRefer) != "undefined" && rtnRefer != "") {
 			if (valRefer) {
 				// if it has an array in the path
+       // console.log(' ARL val refer true ' + baseRef + '.' + kc + '.' + referTo[k]);
 				if ( d3Object.hasOwnProperty('subArrCat') && referTo[k].indexOf('.0.') > 4 ) {
 					var  rk = referTo[k];
 					var prePath=rk.substring(0,rk.indexOf('.0.'));
@@ -563,9 +706,13 @@ function arrayRefLookup (jObjData, referTo,d3Object, refOnly, baseRef, kc) {
 					d3Object.value = jsonLookup(jObjData, ajT,referTo[k], true);				
 				}
 				//console.log(' array ref val - applied ' + baseRef + '.' + kc + '.' + referTo[k] + ' ' + d3Object.value );
-				if (!d3Object.RefSaveTo) {d3Object.RefSaveTo = baseRef + '.' + kc + '.' + referTo[k]; }
-
+				if (!d3Object.RefSaveTo) {
+          //console.log(' ARL -- 2 refSaveTo doesnt exists so build - ' + baseRef + '.' + kc + '.' + referTo[k]);
+          d3Object.RefSaveTo = baseRef + '.' + kc + '.' + referTo[k]; 
+        }
+        //console.log(' ARL -- 2 AFTER RefSaveTo ' + d3Object.name + ' ' + d3Object.RefSaveTo);
 				return d3Object;	
+        
 			} else {
 				//console.log ( ' arf return value not defined ' + referTo[k] + ' ------------' + JSON.stringify(jObjData));
 				//return d3Object;
@@ -629,9 +776,11 @@ function ArrayNotCat(jO,jPre,jPath,dO,baseRef,keyCnt) {
 				bX.name = 'term';		
 				bX.datatype = 'string';
 				bX.ref = jPath;
+				//bx.xoffset = dO.xoffset;
+				// bx.growdown = dO.growdown;
 				bX.RefSaveTo = baseRef + '.' + keyCnt + '.' + jPre + '.' + z + '.' + jPath;
-	            console.log('>>>>>>>>>>>>>> Array Not Cat ARRAY - BX saveto >>' + bX.RefSaveTo);			
-				bX.yoffset = 280;
+	            //console.log('>>>>>>>>>>>>>> Array Not Cat ARRAY - BX saveto >>' + bX.RefSaveTo);			
+				bX.yoffset = -1;
 				bX.datatype = "typeahead";
 	            bX.dicturl ="http://ec-scigraph.sdsc.edu:9000/scigraph/vocabulary/autocomplete/%QUERY?limit=20";
 	            bX.dictparams = {"query": "%QUERY","limit":"20" };
@@ -660,6 +809,7 @@ function ArrayNotCat(jO,jPre,jPath,dO,baseRef,keyCnt) {
 
            // console.log('>>>>>>>>>>>>>> Array Not Cat BX NOT ARRAY --- saveto >>' + dO.RefSaveTo + ' lookup path ' + lPath + '--' + JSON.stringify(jO) );			
 			//dO.xoffset = 6*dO.children.length + 40;
+
 			dO.datatype = "typeahead";
             dO.dicturl ="http://ec-scigraph.sdsc.edu:9000/scigraph/vocabulary/autocomplete/%QUERY?limit=20";
             dO.dictparams = {"query": "%QUERY","limit":"20" };

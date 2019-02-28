@@ -8,7 +8,7 @@
 var dotenv = require('/home/cinergi/DDH/node_modules/dotenv').config({path: '/home/cinergi/DDH/.env'});
 process.env.NODE_PATH = __dirname;
 require('module').Module._initPaths();
-console.log(' env ' + process.env.NODE_PATH);
+console.log('Startup at ' + Date.now() +' env ' + process.env.NODE_PATH);
 
 var http = require('http'),
     fs = require("fs"),
@@ -18,8 +18,8 @@ var http = require('http'),
     urlExists = require('url-exists'),
     bodyParser = require('body-parser'),
     Path = process.env.NODE_PATH,
+    xml2js = require('xml2js'),    
     api_path = 'http://132.249.238.150:8080/foundry/api/cinergi/docs/orig/cinergi-0002'; 
-
     md_api = require(Path + "/js/cin-mdpackage.js"),
     ta_api = require(Path + "/js/typeahead.js");
 
@@ -46,11 +46,79 @@ app.use('/css', express.static(__dirname + '/public/css'));
 app.use('/jsonSchemas', express.static(__dirname + '/public/jsonSchemas'));
 
 
+function jToXML(data) {
+	var builder = new xml2js.Builder({renderOpts: {pretty: true}});
+  console.log('a - processing xml ..');
+	var xmlA = builder.buildObject(data);
+  console.log('b - processing xml ..');
+    return xmlA;
+}
+
+function XMLtoJ(data) {
+	var aj = {};
+	 var parser = new xml2js.Parser({explicitArray: false, ignoreAttrs: false, mergeAttrs: false });
+	 parser.parseString(data, function (err, result) {
+        aj = md_api.mdKwPrep(result);
+        console.log(' xml Parser !!!!' );
+    });
+	 return aj;
+}
+
+
+app.get('/v1' , function(req,res) {
+   
+     if ( req.query.docId ) {
+     console.log(' Headers for ' + req.query.docId + ' ---- ' + JSON.stringify(req.headers));
+     var rd = req.query.docId;
+     var r = require('request');
+     var rurl = "http://localhost/indexID?docId="+req.query.docId;
+     var body = '';
+     
+     console.log('Remote IP ' + req.connection.remoteAddress);
+     
+     r.get(rurl)
+       .on ('response',function(response) {           		
+      	})
+        .on ('data', function(chunk) {
+          body += chunk;
+        })
+        .on ('end', function() {
+    			var tb = JSON.parse(body);
+          console.log(' the type is ' + tb.indexID );
+		    
+  		  if ( tb.source && tb.source == 'US GIN (P)' ) {
+             console.log(' Go to XML ' + '/xml?docId='+rd);
+             res.redirect('/xml?docId='+rd);
+             //res.sendFile(Path+'/public/treeXML.htm/?docId='+rd);
+          } else {
+              console.log(' Go to JSON ' + 'docId='+rd);
+             res.sendFile(Path+'/public/treeEditorMongoDb.htm');
+          }
+    		    
+     });
+     
+   } else {
+    res.sendFile(Path+'/public/treeEditorMongoDb.htm');
+   }
+   
+});
+
+app.get('/search' , function(req,res) {
+	 console.log('Search page ' +  Date.now() + ' Remote IP ' + req.connection.remoteAddress);
+     res.sendFile(Path+'/public/searchEdit.htm');
+} );
+
 
 app.get('/' , function(req,res) {
 	 console.log('Remote IP ' + req.connection.remoteAddress);
-     res.sendFile(Path+'/public/treeEditorMongoDb.htm');
+     res.sendFile(Path+'/public/treeXML.htm');
 } );
+
+app.get('/crescent' , function(req,res) {
+	 console.log('Remote IP ' + req.connection.remoteAddress);
+     res.sendFile(Path+'/public/crescentXML.htm');
+} );
+
 
 app.get('/debug' , function(req,res) {
 	 console.log('Remote IP ' + req.connection.remoteAddress);
@@ -81,12 +149,10 @@ app.get('/publish/faq' , function(req,res) {
     res.sendFile(Path+'/public/faq.htm');
 });
 
-
 app.get('/cintest', function (req,res) {
     var schemafile = req.query.schema;
     var d3file = JSON.parse(fs.readFileSync(Path+'/public/jsonSchemas/' + schemafile, 'utf8'));
     res.send(d3file);
-
 });
 
 app.get('/getrecord', function (req,res) {
@@ -321,6 +387,7 @@ app.post('/cin_flush', function(req,res) {
 
 });
 
+
 app.get('/hasMdEdits', function(req,res) {
 // returns true if edits exist
 
@@ -344,6 +411,99 @@ app.get('/hasMdEdits', function(req,res) {
         });
       }
     });     
+});
+
+app.get('/getEditedDiffs', function(req,res) {
+// returns true if edits exist
+    console.log(' get Edited Records');
+   	MongoClient.connect(MdbSD_url, function(err, db) {
+      console.log(' connected to Edited Records');
+      var edRec = db.collection('editedRecords');
+      if (err) {
+        res.send(err);
+      } else {      
+        edRec.find( {}, { _id: 0, primaryKey: 1, metadataRecordLineageItems: 1 } ).toArray(function (err, result) {
+          console.log(' returnd from Edited Records');
+          if (err) {
+            res.send(err);
+          } else {
+            if (result) {
+              res.send( JSON.stringify(result) );
+            } else {
+              res.send( { 'editedRecords' : 'false' } );
+            }
+          }
+        });
+      }
+    });     
+});
+
+app.get('/get_foundry', function(req,res) {
+	// Working version ***
+  // This retrieves the prov from the mongoDB records collection - 
+  
+	var rid = unescape(req.query.docId);
+	var schemafile = req.query.schema;
+    var cip = req.connection.remoteAddress;
+    console.log(cip + ' Foundry Record ' + rid);
+
+	(typeof(schemafile) == "undefined") ? schemafile = "cinergi-mongodb.json" : schemafile = schemafile;
+	var d3file = JSON.parse(fs.readFileSync(Path+'/public/jsonSchemas/' + schemafile, 'utf8'));
+  
+    var errData = { "name":"Server Response", 
+				   "value":"No Database Connection", 
+				   "datatype" : "object",
+				   "xoffset" : -600,
+				   "yoffset" : 300
+				};
+	var noData = { "name":"Server Response", 
+				   "value":"No Data Found for ID: " + rid,  
+				   "datatype" : "object",
+				   "xoffset" : -600,
+				   "yoffset" : 300
+				};
+
+	var rCheck = false;
+	MongoClient.connect(MdbSD_url, function(err, db) { 
+
+	    if ( err ) {
+			console.log ('Connect error: ' +JSON.stringify(err));
+			res.send(errData);
+			return;
+		}
+		//var edRec = db.collection('editedRecords');
+		var colRec = db.collection('records');
+
+		colRec.find( { 'primaryKey' : rid }).toArray(function (err, result) {
+			
+			if (result.length) {
+				var rootrec = {};
+				var rtnRec = [];
+
+				if ( Array.isArray(result) ) {
+			  		rootrec = result[0];
+			  	} else {
+			  		rootrec = result[0];
+			  	}
+
+			  	if ( rootrec.History ) {
+			  		rtnRec = rootrec.History
+			  	} else {
+			  		rtnRec = noData;
+			  	}
+
+          res.send(JSON.stringify(rtnRec)); 
+
+			} else {
+				  res.send(JSON.stringify(errData)); 
+			  	rCheck = true;
+			  	console.log('No Data Connection');
+
+			}		
+		});
+
+	});
+
 });
 
 app.get('/getDiff', function(req,res) {
@@ -383,8 +543,65 @@ app.get('/getDiff', function(req,res) {
           }
         });
       }
-    });
-      
+    });   
+});
+
+// This function maps the docID to the geoportal index ID
+app.get('/indexID', function (req,res) {
+  var docID = unescape(req.query.docId);
+  var udi = req.query.docId;
+  //var rqSrc = req.query.getSource;
+  
+	var urlH = 'http://cinergi.sdsc.edu/geoportal/rest/metadata/search?q=fileid:%22' + udi + '%22&f=json&size=5&pretty=false';
+  console.log(urlH);
+  
+	request(urlH, function (error, response, body) {
+		
+		 if (error) {
+			res.send('ERROR: 0' + error);
+		  } else {
+			 
+        var nx = JSON.parse(body);
+        //console.log('INDEX what we got' + JSON.stringify(body) );
+        
+        if ( nx.hits ) {
+
+          console.log('index ID HITS - OK body hits ' );  
+          var h = nx.hits;
+          if ( typeof(h.total) !== "undefined" && h.total != 0 && h.hits ) { 
+          
+              console.log('index ID HITS - OK 2' );  
+             
+              if ( Array.isArray(h.hits) ) {
+              	var h2 = h.hits[0];	
+              } else {  
+              	h2 = h.hits; }
+              
+              if ( h2._id ) {
+                   var idxID = { 'indexID' : h2._id };
+                   res.send(idxID);
+               }  else {
+                 console.log('error-1'); 
+                 res.send('ERROR-1 No Id found'  ) }
+          } else {
+            console.log('error-2');
+            res.send('ERROR-2') }
+        }  else { 
+            // if no hits then a single record maybe
+            if ( nx.results ) {
+              var rb = nx.results[0];
+              var sn = { 'indexID' : rb.id };
+              if ( rb._source ) {
+                sn = { 'indexID' : rb.id, 'source' : rb._source.src_source_name_s }
+              }
+              console.log(JSON.stringify(sn) );
+              res.send(sn);
+            }
+        }
+       
+     }
+	})			
+
 });
 
 app.get('/url_header', function (req,res) {
@@ -421,6 +638,285 @@ app.get('/url_header', function (req,res) {
 
 	})			
 
+});
+
+app.post('/cin_xml_index', function(req,res) { 
+  // This route receives the json object from the app, converts back to XML and puts it to cinergi geoportal
+  
+	var pbody = req.body;
+	var respStr = { 'result': 'POST MESSAGE Received' };
+	var origD = pbody.OriginalDoc;
+	var bodyXML = jToXML(origD);
+  var docID = pbody.primaryKey;
+  var indexId = pbody.indexId;
+  console.log('The doc id is ' + docID);
+  
+	//var docID = unescape(req.query.docId);
+    //var indexID = req.query.indexId;
+    
+    console.log(' Reindex - 1 start');
+    var body = '';
+    
+	function getAuth(indexId) {
+		//var Aurl = 'http://10.208.11.160:8080/geoportal/oauth/token';
+		var Aurl = 'http://cinergi.sdsc.edu/geoportal/oauth/token';
+		
+		var ra = require('request'); 
+		var bd = 'grant_type=password&client_id=geoportal-client&username=gptadmin&password=gptadmin';
+		var options = {
+			url: Aurl,
+			headers: {
+				'Content-type' : 'application/x-www-form-urlencoded',
+				'Content-length' : 82,
+				'Connection': 'keep-alive'
+			},
+			body: bd
+		};
+	
+		ra.post(options, function (error, response ) {
+			console.log('auth ' + docID + ' ' + JSON.stringify(response) );
+		
+			var rb = response.body;
+			var jb = JSON.parse(rb);
+			var acto = jb.access_token;
+			postUp(acto,indexId);
+		});
+		
+	}
+	
+	function postUp(gat,indexId) {
+	
+		//var purl = 'http://cinergi.sdsc.edu/geoportal/rest/metadata/item/' + docID + '/xml';
+    var purl = 'http://132.249.238.169:8080/geoportal/rest/metadata/item/'+ indexId;
+		//purl = purl + '?access_token=' + gat;
+		console.log(' post url ' + purl);
+		  
+		var tfile = fs.readFileSync(Path+'/tempIdx.xml');
+		
+		 if ( tfile.length ) {
+			  var tlen = tfile.length;
+			  console.log(' Get XML Complete ' + tlen );
+		 } else {       
+		   var tlen = 0; 
+		   console.log(' Get XML empty ' );
+		 }
+	 
+		var options = {
+			  url: purl,
+			  headers: {
+				'content-type' : 'application/xml',
+				'content-length' : tlen 
+			  }
+		};
+			
+		var rpCode, cl;
+		var rp = require('request'); 
+					
+		fs.createReadStream(Path+'/tempIdx.xml').pipe(
+			rp.put(options)
+			.auth('gptadmin','gptadmin', true)
+			.on ('error', function(err) {
+				console.log('Put error ' + err);
+			})
+			.on('response', function(response) {
+				if (response.statusCode) {
+				  rpCode = response.statusCode;
+				}
+
+				if (response.request) {
+				  if (response.request.headers) {
+					 cl = response.request.headers['content-length'];
+				  }
+				}
+				
+			    if ( rpCode == '400' || rpCode == '405' ) {
+					var rpv = { 'status' : 'Error', 'code' : rpCode, 'length' : 0 };
+					console.log(' Put response ' + JSON.stringify(response) );
+					res.send(rpv);
+				}
+				console.log(' Put response ' + JSON.stringify(response) );
+			 })
+			 .on('end',function() {
+				console.log(' Reindex complete '); 
+				var rpv = { 'status' : 'Complete', 'code' : rpCode, 'length' : cl };
+				res.send(JSON.stringify(rpv));
+			 }) 
+		);				 	  
+	}
+
+	fs.writeFile(Path+'/tempIdx.xml',  bodyXML, (err) => {  
+		// throws an error, you could also catch it here
+		if (err) throw err;
+		console.log('Posted body saved to temp!');
+		getAuth(indexId);
+			
+	});
+	
+          
+});
+
+
+app.get('/md_reindex', function(req,res) {
+    // This version gets the index from cinergi (pipelined) at puts it in the index
+    
+	  var docID = unescape(req.query.docId);
+    var indexID = req.query.indexId;
+    
+    var hurl = 'http://132.249.238.151:8080/foundry/api/cinergi/docs/id/'+docID;
+    var purl = 'http://132.249.238.169:8080/geoportal/rest/metadata/item/'+ indexID;
+    console.log(' Reindex - 1 ' + hurl);
+    var body = '';
+    
+    fs.writeFile("temp.xml", "", function(err) {
+      if ( err ) {
+          return console.log('Reindex - Temp file clear Error: ' + err);
+      }
+    });
+    
+    var r = require('request');   
+    r.get(hurl)
+    	.on ('error', function(err) {
+    		console.log('Reindex - Get XML error ' + err);
+    	})
+    	.on ('response',function(response) {     
+    		console.log('Reindex Get - ' + JSON.stringify(response) );
+    	})
+      .on ('data', function(chunk) {
+        body += chunk;
+      })
+      .on ('end', function() {
+        console.log(' xml file ' + Path+'/temp.xml');
+         var tfile = fs.readFileSync(Path+'/temp.xml', 'utf8');
+        
+         if ( tfile.length ) {
+              var tlen = tfile.length;
+              console.log(' Get XML Complete' + tfile.length );
+         } else {       
+           var tlen = 0; 
+           console.log(' Get XML empty ' );
+         }
+     
+         var options = {
+              url: purl,
+              headers: {
+                'content-type' : 'text/xml',
+                'content-length' : tlen 
+              }
+            };
+        
+        var rpCode, cl;
+        fs.createReadStream(Path+'/temp.xml').pipe(
+            r.put(options)
+            .auth('gptadmin','gptadmin', true)
+            .on('response', function(response) {
+                if (response.statusCode) {
+                  rpCode = response.statusCode;
+                }
+                
+                if (response.request) {
+                  if (response.request.headers) {
+                     cl = response.request.headers['content-length'];
+                  }
+                }
+                console.log(' Put response ' + JSON.stringify(response) );
+             })
+             .on('end',function() {
+                console.log(' Reindex complete '); 
+                res.send('Complete - status' + rpCode + ' Length ' + cl );
+             }) 
+        );    
+         
+      })
+      .pipe(fs.createWriteStream(Path+'/temp.xml'));
+                  
+});
+
+app.get('/cin_xml', function(req,res) { 
+    var qt = unescape(req.query.qt);
+  	var docID = unescape(req.query.pid);
+    var schemafile = unescape(req.query.schema);
+    var indx = req.query.idx;
+    
+	//console.log('/cin_xml index ' + indx);
+    if ( qt == 'f' ) { 
+      var hurl = 'http://132.249.238.151:8080/foundry/api/cinergi/docs/id/'+docID;
+    } else {
+      var hurl = 'http://cinergi.sdsc.edu/geoportal/rest/metadata/item/'+indx+'/xml';
+    }
+    
+	console.log(' schema file ' + schemafile + ' ' + hurl);
+	
+    (typeof(schemafile) == "undefined") ? schemafile = "cinergi-mongodb.json" : schemafile = schemafile;
+    var d3file = JSON.parse(fs.readFileSync(Path+'/public/jsonSchemas/' + schemafile, 'utf8'));
+    
+    var r = require('request');
+  	var body = '';
+ 	var rtnRec = [];
+    var rootRec = {};
+    //console.log('Schema loaded --->>>  ' + schemafile); 
+  	r.get(hurl)
+  	    .on ('error', function(err) {
+      		console.log('Get XML error ' + err);
+      	})
+      	.on ('response',function(response) {           		
+      	})
+        .on ('data', function(chunk) {
+          body += chunk;
+        })
+        .on ('end', function() {
+        
+          var tj = XMLtoJ(body.trim());
+          //console.log(' In the cin_xml ' + JSON.stringify(tj) );
+          // rootRec = tj;
+          rootRec._id = docID;
+          rootRec.primaryKey = docID;
+          rootRec.Version = 1;
+          rootRec.CrawlDate = "2018-03-02T23:00:15.343Z";
+          rootRec.OriginalDoc = tj;
+          rootRec.Data = {};
+          rootRec.metadataRecordLineageItems = {};
+        //  console.log('cin_xml rootRec ' + rootRec._id + ' ' + rootRec.CrawlDate  );
+  
+         	var d3proc = md_api.altmap(d3file, rootRec);
+       
+         	rtnRec.push(d3proc);
+					rtnRec.push(rootRec);
+          res.send(rtnRec);         
+     });
+         
+});
+
+
+app.post('/cin_xml_save2', function(req,res) { 
+  //var docID = unescape(req.query.docId);
+  //var indexID = req.query.indexId;
+  
+  var pbody = req.body;
+ 	var rootRec = pbody.body;
+  console.log('xml_save-1'+rootRec.length);
+  var respStr = { 'result': 'POST MESSAGE Received' };
+  //var rid = pbody.primaryKey; //unescape(req.query.pid);
+  //var src = pbody.SourceID;
+  var origD = rootRec.OriginalDoc;
+  //var edStatus = pbody.editStatus;
+  //var pData = pbody.Data;
+  //var mDiff = pbody.metadataRecordLineageItems;
+  //var purl = 'http://132.249.238.169:8080/geoportal/rest/metadata/item/'+ indexID;
+ 
+  var bx = jToXML(origD);
+  
+  respStr = { 'result': bx };
+  console.log('xml_save-length ' + bx.length ); 
+  //res.header('Content-Type', 'text/xml');
+  console.log('res header'); 
+  res.set({ 'content-type': 'application/json; charset=utf-8' })
+  res.send(respStr);
+  //res.send(bx);  
+  
+   console.log('xml_save-2'+typeof(bx));
+  //respStr = { 'result': bx };
+  //res.send(respStr);  
+  
 });
 
 app.get('/cin_get', function(req,res) {
@@ -470,9 +966,10 @@ app.get('/cin_get', function(req,res) {
 
 				if ( Array.isArray(result) ) {
 			  		rootrec = result[0];
-			  	} else { rootrec = result }
+	  	  } else { rootrec = result }
 			  	rid = '"' + rid + '"';
-				edRec.find( { 'primaryKey' : rid }).toArray(function (ederr, edresult) {
+				  
+          edRec.find( { 'primaryKey' : rid }).toArray(function (ederr, edresult) {
 					console.log(' edit records exist ' + JSON.stringify(edresult) + ' ' + ederr);
 
 					if (edresult.length) { 
@@ -617,6 +1114,58 @@ app.get('/cin_getEdRec', function(req,res) {
 
 });
 
+/* Cinergi DDH GetRecords Search with elastic */
+
+app.get('/DDH-GetRecords-Qry' , function(req,res) {
+	  var baseRef="http://132.249.238.169:8080/geoportal/csw?service=CSW&request=GetRecords&f=json&size=20";
+	  var baseRef="http://132.249.238.169:8080/geoportal/elastic/metadata/item/_search?from=0&size=10&sort=sys_modified_dt%3Adesc"
+	  var baseRef="http://132.249.238.169:8080/geoportal/elastic/metadata/item/_search?size=10"
+	  var inp = req.query.q;
+	  var  startP = req.query.from;
+	  var gpq = { "query": {
+				        "bool" : {
+				            "must" : {
+				                "match_all" : {}
+				            },
+				            "filter" : {
+				                "geo_polygon" : {
+				                    "person.location" : {
+				                        "points" : [
+				                        {"lat" : 40, "lon" : -70},
+				                        {"lat" : 30, "lon" : -80},
+				                        {"lat" : 20, "lon" : -90}
+				                        ]
+				                    }
+				                }
+				            }
+				        }
+				    }
+				};
+
+	  var gpStr = JSON.stringify(gpq);
+
+	  var inParams = '&from='+startP+'&q='+inp;
+	  console.log('cinergi base ' + baseRef + ' ' + inParams);
+
+      var optPack = {};
+
+	  request(baseRef+inParams, 
+	  	function (error, response, body) {
+	      console.log(' error ' + error + ' ' + response.statusCode);
+
+	      if (!error && response.statusCode == 200) {
+	          var mdbody = JSON.parse(body);
+	          console.log(' md_get_package body ' + body.length );
+	          res.send(mdbody);
+	      } else {
+	          res.send('error: ' + error);
+	      }
+
+	    });
+
+} );
+
+ 
 
 /* Cinergi DDH Save */
 
@@ -654,7 +1203,10 @@ app.post('/update_cinRec' , function(req,res) {
 			var colRec = db.collection('editedRecords');
 			// Save whole record not parts
             colRec.update(	{ 'primaryKey' : pK }, 
-            				{ 'primaryKey' : pK , 'sourceID' : sID,'editStatus': edStatus, 'OriginalDoc' : origD, 'Data' : pData, 'metadataRecordLineageItems' : mDiff }, 
+            				{ 'primaryKey' : pK , 'sourceID' : sID, 
+                      'editStatus': edStatus, 
+                      'Data' : pData, 
+                      'metadataRecordLineageItems' : mDiff }, 
             				{ upsert: true },
             	function(err, object) {
 			      if (err){
@@ -678,7 +1230,7 @@ app.post('/update_cinRec' , function(req,res) {
 app.get('/md_extract', function(req,res) {
   /// NGDS route - this route receives a request from the editor page
   /// Three step process - get the full package, strip the md_package, then translate to an editor page
-  // the d3 json wants a url to pull in the formated json from
+  // the d3 json wants a url to pull in the formated json 
  
 	var rootObj = 'empty',
       rootType,
@@ -775,7 +1327,7 @@ app.post('/save_fullpackage' , function(req,res) {
 app.get('/url_status', function(req, res){
 	 var urlToCheck = req.query.url;
 
-	  console.log(' Url Check ' + urlToCheck )
+	  //console.log(' Url Check ' + urlToCheck )
 
 	 	urlExists(urlToCheck, function(err,exists) {
 	 		res.send(exists);
@@ -815,8 +1367,6 @@ app.get('/place', function(req,res) {
       }
     });
 });
-
-
 
 app.get('/data.json' , function(req,res) {
     res.sendFile(Path+'/data.json');

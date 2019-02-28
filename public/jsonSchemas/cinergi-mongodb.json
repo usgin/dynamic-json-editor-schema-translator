@@ -9,7 +9,8 @@
                     "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.0.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
                    "OriginalDoc.gmi:Mi_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
                    "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.citation.CI_Citation.title.gco:CharacterString._$",
-                   "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$"
+                   "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
+                   "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString"
                     ],
    "titleval" : "",
    "rootType" : "object",
@@ -84,9 +85,10 @@
                     "xoffset": -560,
                     "yoffset" : 220,
                     "xadjust" : "false",
-                    "ref": [ "OriginalDoc.gmd:MD_Metadata.gmd:fileIdentifier.gco:CharacterString._$" ,
+                    "ref": [  "OriginalDoc.gmd:MD_Metadata.gmd:fileIdentifier.gco:CharacterString._$" ,
                               "OriginalDoc.MD_Metadata.fileIdentifier.gco:CharacterString._$",
-                              "OriginalDoc.gmi:MI_Metadata.gmd:fileIdentifier.gco:CharacterString._$" ]
+                              "OriginalDoc.gmi:MI_Metadata.gmd:fileIdentifier.gco:CharacterString._$",
+                              "OriginalDoc.gmi:MI_Metadata.gmd:fileIdentifier.gco:CharacterString" ]
                   },
                   {   "name": "docId",
                       "display" : "Doc ID",
@@ -124,7 +126,8 @@
                          "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.0.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
                        "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.citation.CI_Citation.title.gco:CharacterString._$",
                        "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.0.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
-                       "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$" ]
+                       "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$",
+                       "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString" ]
               },
               { "name": "DescriptiveKeywords",
                 "display" : "Go To >> Orignal Doc > Descriptive Keywords Editor",
@@ -210,7 +213,9 @@
                 "ref":  [ "OriginalDoc.gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString._$",
                           "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.0.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString._$",
                           "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString._$",
-                          "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.abstract.gco:CharacterString._$" ],
+                          "OriginalDoc.MD_Metadata.identificationInfo.MD_DataIdentification.abstract.gco:CharacterString._$",
+                          "OriginalDoc.gmi:MI_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString"
+                           ],
                 "value" : "Abstract"
               }
             ]
@@ -223,17 +228,8 @@
           "yoffset" : -80,
           "ref":  "children.Data",
           "children": [
-            
-              {   "name": "KeywordEditor",
-                "display" : "Go To > Pipeline Keywords",
-                "datatype" : "subschema",
-                "required" : "false",
-                "xoffset": -360,
-                 "yoffset" : -100,
-                "ref":  "/jsonSchemas/cinergi-keywords-editor.json"
-              },
               {   "name": "Enhanced Keywords",
-                "display" : "Go To > Pipeline Enhanced Keywords",
+                "display" : "Go To > Pipeline Enhanced Keywords (for validation)",
                 "datatype" : "subschema",
                 "required" : "false",
                 "xoffset": -350,

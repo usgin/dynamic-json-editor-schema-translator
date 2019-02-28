@@ -109,20 +109,21 @@ var cin_editObjBld = function(ejo, newVal, action,sibs) {
             var initMU = { "UpdateSequenceNo" : 0 }
             console.log(' init MU ');
         }
-        /*
-        for(var i = 0; i < EdA.length; i++) {
-          var edObj = EdA[i];
-          if ( ejo.ref == edObj.jsonPath) {
-            edObj.jsonPath = ejo.ref;
-            edObj.oldValue = ejo.oldValue;
-            edObj.newValue = ejo.value;
-            edObj.type = action;
-            edObj.name = ejo.name;
-            amINew = false;
-          }
-        }
-        */
         
+        if ( ejo.datatype == 'validateonly' && ejo.newValidation == "true" ) {
+           // New validation - override action
+           gCinEditIdx++;
+           var ej = { "UpdateSequenceNo" : gCinEditIdx };
+           ej.updatePath = ejo.RefSaveTo + '.validation';
+           // ej.type = 'insert'; -- per burak 2/14
+           ej.type = 'update';
+           ej.name = ejo.name;
+           ej.oldValue = "";
+           ej.newValue = newVal;
+           EdA.push(ej);
+           action = "no action";
+        }
+         
         if ( action == 'insertPath' ) {
             
                 for (var k = 0; k < cEdObj.length; k++) {
@@ -133,6 +134,7 @@ var cin_editObjBld = function(ejo, newVal, action,sibs) {
                   ej.name = ejo.name; 
                   ej.newValue = cEP.value;
                   ej.insertPath = cEP.path;
+                  ej.oldValue = "";
                   EdA.push(ej);
                 }
                 cEdObj = [];        
@@ -158,14 +160,16 @@ var cin_editObjBld = function(ejo, newVal, action,sibs) {
                
             if ( action == 'updatePath') {          
                
-                if ( ejo.datatype == 'validateonly') {
+                if ( ejo.datatype == 'validateonly' && ejo.newValidation != "true") {
                     ej.updatePath = refer + '.validation';
                 } else { 
                   ej.updatePath = refer;
                 }
+                
                 ej.type = 'update';
                 ej.newValue = newVal;   
                 ej.originalValue = ejo.oldValue;
+                
             }
             
             if ( action == 'deletePath') {
@@ -508,6 +512,107 @@ function delSrc ( dob ) {
 
 }
 
+
+function fpath(lookup,name) {
+  var tk = lookup;
+  var tko = lookup.split('.');
+  var repair = "";
+  
+  for (a =0;  a < tko.length; a++ ) {
+    
+    for (var i in gFlat) {
+        var pn = gFlat[i].Path;
+        var pla = pn.split('.');
+        var pln = pla.pop();
+        var pc = 'OriginalDoc.' + gFlat[i].Path;
+        if ( pln.indexOf(name) != -1 && pc.indexOf(tk) != -1 ) {
+        //if ( gFlat[i].type == "endpoint" && pc.indexOf(tk) != -1 ) {
+        // Found
+          if ( repair.length ) {
+            fixPath = pc + '.' + repair;
+          } else {
+            fixPath = pc;
+          }  
+          return fixPath;
+        }
+    }
+    if ( repair.length ) {
+      repair = tko.pop() + '.' + repair;
+    } else { 
+      repair = tko.pop();
+    }
+    tk = tko.join('.');
+  }
+   return "";
+
+}
+
+function insertSchema(paths, otype) {
+
+    var OrigDoc = gCKAN_package;
+
+     if ( gSchemaStack[otype] ) {
+        if ( (Array.isArray( paths ) ) ) {
+
+             for (zd =0;  zd < paths.length; zd++ ) {
+                var path = paths[zd];
+                var elemA = path.split('.');
+                var eLen = elemA.length;
+                for (v =0;  v < eLen; v++ ) {
+
+                    var elem = elemA[v];
+                    if (OrigDoc.hasOwnProperty(elem) ) {
+                      if ( v == ( eLen - 1 )  ) {
+                        // We found the end  -- attach it
+                        OrigDoc[elem] = gSchemaStack[otype];
+                        return path;
+                      } else {
+                        OrigDoc = OrigDoc[elem];
+                      }
+
+                    } else {
+                      // Not correct path
+                      break;
+                    }
+                  }
+              }
+              return "";
+
+        } else {
+          // single path
+          var path = paths[zd];
+          var elemA = path.split('.');
+          var eLen = elemA.length;
+          for (v =0;  v < eLen; v++ ) {
+
+              var elem = elemA[v];
+              if (OrigDoc.hasOwnProperty(elem) ) {
+                if ( v == ( eLen - 1 )  ) {
+                  // We found the end  -- attach it
+                  OrigDoc[elem] = gSchemaStack[otype];
+                  gFlat = JSON.flatten(gCKAN_package.OriginalDoc);
+                  return path;
+                } else { 
+                  // Keep descending
+                  OrigDoc = OrigDoc[elem];
+                }
+
+              } else {
+                // Not correct path
+               return "";
+              }
+          }
+          return "";
+
+        }
+
+
+     } else {
+      // couldnt find schemaobject
+      return "";
+     }
+
+}
 // XXX - to be called directly from menus
 // can be used by any object type
 function upSrc2( dob, value ) {
@@ -520,10 +625,50 @@ function upSrc2( dob, value ) {
         var mPath = dob.RefSaveTo;
    
     } else if ( (Array.isArray( dob.ref) ) ) {
-
+         // This reconstructs the path up to the object name 
          for (v =0;  v < dob.ref.length; v++ ) {
             var tk = dob.ref[v];
+            
+            var fixpath = fpath(tk,dob.name);
+            if ( fixpath.length ) {
+              dob.RefSaveTo = fixpath;
+              mPath = fixpath;
+              break;
+            }
+          }  
+          
+          // Build a missing schema object from template
+          if ( typeof(mPath) == "undefined" ) {
+
+            if ( typeof(dob.pathInsert) != "undefined")  {
+                var pip = dob.pathInsert;
+                var otype = dob.insertType;
+                var sces = insertSchema(pip, otype);
+
+                if ( sces.length ) {
+                  for (v =0;  v < dob.ref.length; v++ ) {
+                      var tk = dob.ref[v];
+                      var fixpath = fpath(tk,dob.name);
+                      if ( fixpath.length ) {
+                        dob.RefSaveTo = fixpath;
+                        mPath = fixpath;
+                        reak;
+                      }
+                  }
+                }
+            }
+          }
+
+            /*
             var tko = tk.split('.');
+            var gf = gFlat;
+            
+             for (var i in gFlat) {
+                jView = gFlat[i];
+                if ( jflat[i].type == "endpoint" &&  jflat[i].type  
+          
+             }
+            
             if ( lob.hasOwnProperty(tko) ) {
               if ( jPathValidate(lob, tk) ) {
                   mPath = tk;
@@ -533,10 +678,11 @@ function upSrc2( dob, value ) {
                var dontknowwhatodo;
          
             }
-        }
+            */
+        
 
         // doesnt exist so find the valid parent path 
-
+/*
         if ( typeof(mPath) == "undefined" ) {
             for (v =0;  v < dob.ref.length; v++ ) {
                 var tk = dob.ref[v];
@@ -544,7 +690,7 @@ function upSrc2( dob, value ) {
                 var tkey = tak[tak.length - 1];
 
                 tak.pop();
-                var ntk = tak.join();
+                var ntk = tak.join('.');
 
                 if ( jPathValidate(lob, ntk) ) {
                     mPath = tak;
@@ -557,9 +703,18 @@ function upSrc2( dob, value ) {
             if ( typeof(mPath) == "undefined" ) {
                 mPath = dob.ref[0];
             }
+*/
 
     } else {
-        mPath = dob.ref;
+    
+          var fixpath = fpath(dob.ref);
+          if ( fixpath.length ) {
+              dob.RefSaveTo = fixpath;
+              mPath = fixpath;
+
+          }
+            
+        //mPath = dob.ref;
         // think about validating this
 
     }
@@ -573,7 +728,7 @@ function upSrc2( dob, value ) {
         }
     }
     var kPath = mPath;
-	var upPath = kPath;
+    var upPath = kPath;
     mPath = mPath.split('.');
     
     var mPlen = mPath.length;
@@ -583,6 +738,11 @@ function upSrc2( dob, value ) {
             // end point logic
             if ( z == (mPlen - 1)  ) {
                 if ( voStatus ) {
+                    if ( lob[top].validation ) {
+                      dob.newValidation = "false";
+                    } else {
+                      dob.newValidation = "true";
+                    }
                     lob[top].validation = vo;
                 } else {
                       
@@ -620,10 +780,18 @@ function upSrc2( dob, value ) {
 			} 
 					
             if ( z == (mPlen - 1)  ) {
+            
                 if ( voStatus ) {
+                    if ( lob[top].validation ) {
+                      dob.newValidation = "false";
+                    } else {
+                      dob.newValidation = "true";
+                    }
+                    
                     lob[top].validation = vo;
                 } else {
                     lob[top] = value; 
+					dob.RefSaveTo = upPath;
 					var rI = travObj(lob[top], kPath, upPath, true);
                 }
             } else {
@@ -1316,7 +1484,7 @@ d3.contextMenu = function (d, menuSel, openCallback) {
                         var initExtent = L.latLngBounds([nb, wb], [sb , eb]);
                         var center = new L.LatLng(sb + (nb - sb)/2 ,eb + (wb - eb)/2);
                          
-                          // load a tile layer
+                        // load a tile layer
 
                         L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeWh1ZG1hbiIsImEiOiJjaW14dnV2ZzAwM2s5dXJrazlka2Q2djhjIn0.NOrl8g_NpUG0TEa6SD-MhQ';
                         map = L.mapbox.map('boxmap', 'mapbox.outdoors', 
@@ -1351,12 +1519,20 @@ d3.contextMenu = function (d, menuSel, openCallback) {
                                                   
                         
                         // create an orange rectangle
-                         gRect = L.rectangle(initExtent, {color: "#ff7800", weight: 1}).addTo(map);
-                         var drawnItems = L.featureGroup().addTo(map);
-                         gLG = drawnItems;
-                         map.addLayer(drawnItems);
-
-                         var drawControl = new L.Control.Draw({
+						if (  eb == -80 && wb == -120 ) {
+							gRect = L.rectangle(initExtent, {color: "#ff7800", weight: 0}).addTo(map);
+							var drawnItems = L.featureGroup().addTo(map);
+							gLG = drawnItems;
+							map.addLayer(drawnItems);
+						} else {
+							gRect = L.rectangle(initExtent, {color: "#ff7800", weight: 1}).addTo(map);
+							var drawnItems = L.featureGroup().addTo(map);
+							gLG = drawnItems;
+							map.addLayer(drawnItems);
+                         
+						}
+						
+						var drawControl = new L.Control.Draw({
                                 edit: {
                                     featureGroup: drawnItems
                                 },
@@ -1369,9 +1545,10 @@ d3.contextMenu = function (d, menuSel, openCallback) {
                                   }
                             });
                         map.addControl(drawControl);
-                        map.on('draw:created', showRectArea);
-                        map.on('draw:edited', showRectEdited);
-
+						
+						map.on('draw:created', showRectArea);
+						map.on('draw:edited', showRectEdited);
+							
                         function showRectEdited(e) {
                           e.layers.eachLayer(function(layer) {
                             showRectArea({ layer: layer });
@@ -1502,8 +1679,13 @@ d3.contextMenu = function (d, menuSel, openCallback) {
                             if (valen < 15) {
                                 valen = 15;
                             }
-
-                            data.value = data.value.replace(/"/g,""); 
+	
+							if ( d.title == 'Go to ...' ) {
+								var lStr = '<a  href="' + data.value + '" target="_blank">' + d.title + '</a>';
+								return lStr;
+							}
+							
+							data.value = data.value.replace(/"/g,""); 
                             var editStr = d.title + ' <b>' + data.name + '</b></br> <input class="d3str" type="text" '
                                     + 'size="' + valen + '" value="' + data.value + '"></input>';
                             return ( d.title == 'Edit' ) ? editStr : d.title;
@@ -1552,8 +1734,9 @@ d3.contextMenu = function (d, menuSel, openCallback) {
                                 }
                                 if ( data.value ) { data.value = data.value.replace(/"/g,""); } 
                                 else { data.value = ""; }
-                                
-                                var editStr = d.title + ' <b>' + data.name + '</b></br> <input class="d3str" type="text" '
+                             
+								
+								var editStr = d.title + ' <b>' + data.name + '</b></br> <input class="d3str" type="text" '
                                     + 'size="' + valen + '" value="' + data.value + '"></input>';
                                 return ( d.title == 'Edit' ) ? editStr : d.title;
                             }
@@ -1847,9 +2030,11 @@ var mapMenu = [{ title: 'Bounding Box',
         }   
         
         if ( d.value != rexedit ) { dataEdits = true; }
-           
-        upSrc2(d, rexedit);
-        cin_editObjBld(d,rexedit, 'updatePath');
+        
+		if ( d.RefSaveTo ) {
+			upSrc2(d, rexedit);
+			cin_editObjBld(d,rexedit, 'updatePath');
+		}
        
         d.value = rexedit;
 
@@ -2204,6 +2389,31 @@ var menu = [{
         //if ( d.value != rexedit ) { 
         //    d.value = rexedit;
         //}
+        var z = urlCheck(d.value, function(isReal) {
+            console.log('call me back');
+            if ( isReal == 'OK') {
+                d.urlvalid = 'true';
+            } else {
+                d.urlvalid = 'false';
+            }
+
+            console.log('inside cb Check the url ' + isReal);
+            update(root);
+
+        });
+
+        console.log('outside cb Check the url ' + z);
+        //console.log('Check the url ' + d.value);
+      
+      }
+    },
+	{
+      title: 'Go to ...',
+      action: function(elm, d, i) {
+        //if ( d.value != rexedit ) { 
+        //    d.value = rexedit;
+        //}
+		
         var z = urlCheck(d.value, function(isReal) {
             console.log('call me back');
             if ( isReal == 'OK') {

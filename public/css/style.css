@@ -1,11 +1,25 @@
 h2 {
     font-size:20px; 
-    font-family:arial, sans-serif; 
+    font-family: "Avenir Next","Avenir",arial, sans-serif; 
     color: #558;
   }
-  p {
+h5 {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-size:14px; 
+    font-family: "Avenir Next","Avenir",arial, sans-serif; 
+    color: #555;
+}
+h6 {
+    margin-top: 2px;
+    margin-bottom: 2px;
     font-size:12px; 
-    font-family:arial, sans-serif; 
+    font-family: "Avenir Next","Avenir",arial, sans-serif; 
+    color: #558;
+}
+p {
+    font-size:12px; 
+    font-family: "Avenir Next","Avenir",arial, sans-serif; 
     color: #550;
   }
 
@@ -16,8 +30,45 @@ table {
 }
 td { font-size: 12px;
   font-weight: normal;
-  font-family:arial, sans-serif;
+  font-family: "Avenir Next","Avenir",arial, sans-serif;
   color: #550; 
+}
+
+.st {
+    border-spacing: 1;
+    border: 1px solid black;
+}
+
+.s-hdr { font-size: 11px;
+  vertical-align: middle;
+  font-weight: normal;
+  font-family: "Avenir Next","Avenir",Copperplate / Copperplate Gothic Light, sans-serif;
+  color: #1E84A8;
+  height: 20px;
+  width: 60px;
+  border-collapse: collapse;
+  border-spacing: 0; 
+  border-right:1px;
+  border-left:1px;
+  padding:1px 1px 1px 1px;
+  cellspacing: 0px;
+  background-color: #dadada; 
+}
+
+.td-s { font-size: 8px;
+  vertical-align: middle;
+  font-weight: normal;
+  width: 200px;
+  font-family: "Avenir Next","Avenir", Copperplate / Copperplate Gothic Light, sans-serif;
+  color: #222222;
+  height: 20px;
+  border-collapse: collapse;
+  border-spacing: 0; 
+  border-right:1px;
+  border-left:1px;
+  padding:2px 2px 2px 2px;
+  cellspacing: 0px;
+  background-color: #fafafa; 
 }
 
 ul {
@@ -31,7 +82,7 @@ li {
   font-size: 12px;
   font-weight: normal;
   font-style: italic;
-  font-family: Copperplate / Copperplate Gothic Light, sans-serif;
+  font-family: "Avenir Next","Avenir",Copperplate / Copperplate Gothic Light, sans-serif;
   border-bottom: 1px solid #ccc;
 }
  
@@ -46,7 +97,7 @@ li a {
   vertical-align: middle;
   font-weight: normal;
   font-style: italic;
-  font-family: Copperplate / Copperplate Gothic Light, sans-serif;
+  font-family: "Avenir Next","Avenir",Copperplate / Copperplate Gothic Light, sans-serif;
   color: #dddddd;
   height: 40px;
   width: 300px;
@@ -56,7 +107,7 @@ li a {
   border-left:0px;
   padding:8px 8px 8px 8px;
   cellspacing: 0px;
-  background-color: #196fa6; 
+  background-color: #1E84A8; 
 }
 
 .tr-hdr { font-size: 12px;
@@ -67,7 +118,7 @@ li a {
   padding:0px 0px 0px 0px;
   cellspacing: 0px;
   font-weight: bold;
-  font-family: 'Pacifico', cursive;
+  font-family: "Avenir Next","Avenir",'Pacifico', cursive;
   color: #dddddd; 
   background-color: #444444;
 }
@@ -125,7 +176,7 @@ input[type=password],
         border-radius: 3px;  
     font-weight: 200;
     font-size: 12px;
-    font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-family: "Avenir Next","Avenir","Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
 
@@ -142,12 +193,12 @@ input[type=password],
   }
 
   .node text {
-    font-size:14px; 
+    font-size:10px; 
     font-family:sans-serif;
   }
 
   .nodeTextVal {
-    font-size:12px; 
+    font-size:11px; 
     font-family:sans-serif;
     color:#484;
   }
@@ -177,6 +228,16 @@ input[type=password],
   .ghostCircle, .activeDrag .ghostCircle{
        display: block;
   }
+
+.nodeText { 
+   font-size:11px; 
+    font-family:sans-serif;
+}
+
+.nodeLabel { 
+   font-size:12px; 
+    font-family:sans-serif;
+}
 
 .animate
 {
@@ -211,7 +272,7 @@ input[type=password],
         padding: 0px 22.6px;
         font-weight: 300;
         font-size: 14px;
-        font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        font-family: "Avenir Next","Avenir","Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
         margin: 0;
         text-decoration: none;
         text-align: center;
@@ -252,7 +313,7 @@ td-hdr {
   float: right;
   background-color: #ffffff;
   border-radius: 4px;
-  font-family: Arial, sans-serif;
+  font-family: Avenir Next,Avenir, Arial, sans-serif;
   font-size: 14px;
   min-width: 150px;
   border: 2px solid #d4d4d4;
@@ -322,7 +383,7 @@ td-hdr {
 
 .container-1 .icon{
   position: absolute;
-  top: 50%;
+  top: 0%;
   margin-left: 2px;
   margin-top: 2px;
   z-index: 1;
@@ -381,6 +442,7 @@ td-hdr {
     padding-top: 5px;
     margin-top: 5px;
     color: #ffffff;
+    font-size: 12px;
     font-family: "Avenir Next W01","Avenir Next","Avenir","Helvetica Neue","Helvetica","Arial",sans-serif;
     border:1px solid #dcdcdc;
     background-color: #29fa6;
@@ -388,20 +450,99 @@ td-hdr {
 }
 
 .nav-link:active {
-  color:  #dcdcdc;
-  background-color: #196fa6;
+  color:  #00ff00;
+  background-color: #1E84A8;
+}
+
+.nav-link:hover {
+  color:  #29fa6;
+  background-color:#ffffff;
 }
 
 .nav-link:visited {
+  color:  #000000;
+  background-color:#1E84A8;
+}
+
+.sel-link {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    margin-right: 0px;
+    margin-bottom: 1px;
+    color: #ffffff;
+    font-size: 12px;
+    font-family: "Avenir Next W01","Avenir Next","Avenir","Helvetica Neue","Helvetica","Arial",sans-serif;
+    border:1px solid #5c7cbc;
+    background-color: #89bab6;
+
+}
+
+.sel-link-state {
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    margin-right: 0px;
+    color: #ffffff;
+    font-size: 12px;
+    font-family: "Avenir Next W01","Avenir Next","Avenir","Helvetica Neue","Helvetica","Arial",sans-serif;
+    border:1px solid #4c4cdc;
+    background-color: #89bab6;
+
+}
+
+.sel-link:active {
+  color:  #dcdcdc;
+  background-color: #1E84A8;
+}
+
+.sel-link:visited {
   color:  #44aaaa;
-  background-color:#196fa6;
+  background-color:#1E84A8;
 }
 
-
-.nav-link:hover {
+.sel-link:hover {
   color: #000000;
-  background-color:#196fa6;
+  background-color:#1E84A8;
 }
+
+.sed-btn{
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    margin-top: 3px;
+    color: #4477ff;
+    font-size: 11px;
+    font-family: "Avenir Next W01","Avenir Next","Avenir","Helvetica Neue","Helvetica","Arial",sans-serif;
+    border:1px solid #dcdcdc;
+    background-color: #29fa6;
+
+}
+
+.sed-btn:active {
+  padding-left: 8px;
+  padding-right: 8px;
+  color: #ff7744;
+  background-color: #1E84A8;
+  font-size: 11px;
+  border:1px solid #8c8cdc;
+  font-family: "Avenir Next W01","Avenir Next","Avenir","Helvetica Neue","Helvetica","Arial",sans-serif;
+}
+
+.sed-btn:visited {
+  color:  #44aaaa;
+  background-color:#1E84A8;
+}
+
+
+.sed-btn:hover {
+  color: #000000;
+  background-color:#1E84A8;
+}
+
 
 
 
@@ -446,6 +587,12 @@ td-hdr {
   top:1px;
 }
 
+#mousebox {
+  font-size: 9px; 
+  background-color: rgb(204, 204, 136); 
+  color: rgb(34, 34, 34); 
+  margin: 5px;
+}
 #xport {
     background-color: #fff;
     display: block;
@@ -457,6 +604,7 @@ td-hdr {
 }
 
 #save {
+     border:1px solid #dcdcdc;
     background-color: #fff;
     display: block;
     position: absolute;
@@ -465,22 +613,29 @@ td-hdr {
     font-size: 16px;
 }
 
-#shojson, #savejson {
-    background-color: #196fa6;
+#shojson, #savejson, #trigproc, #faq {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    background-color: #1E84A8;
     display: block;
-    position: absolute;
+    border:1px solid #dcdcdc;
+    font-size: 14px;
     top: 18px;
-    right: 100px;
-    font-size: 16px;
 }
 
-#faq {
-    background-color: #196fa6;
+#fa2q {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    border:1px solid #dcdcdc;
+    background-color: #1E84A8;
     display: block;
     position: absolute;
     color: #ffffff;
     top: 18px;
-    right: 40px;
     z-index: 2;
     font-size: 16px;
 }
@@ -533,6 +688,53 @@ td-hdr {
   z-index: 999;
 }
 
+
+#showList {
+  position: absolute;
+  display: none;
+  background-color: #d2d2d2;
+  border-color: #d2d2d2;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  left: 300px;
+  max-width:  1000px;
+  min-height: 220px;
+  width: 100%;
+  opacity: 1;
+  border: 12px solid #d4d4d4;
+  z-index: 999;
+}
+
+#showDDH {
+  position: absolute;
+  display: none;
+  background-color: #d2d2d2;
+  border-color: #d2d2d2;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  left: 12px;
+  top: 280px;
+  max-width:  800px;
+  min-height: 220px;
+  width: 100%;
+  opacity: 1;
+  border: 12px solid #d4d4d4;
+  z-index: 999;
+}
+
+#showMV {
+    cursor: move;
+    min-height: 60px;
+    z-index: 1000;
+}
+
+#showDDHdr {
+    cursor: move;
+    min-height: 62px;
+    z-index: 1000;
+}
 
 .d3-context-menu {
   position: absolute;
@@ -674,7 +876,7 @@ a:hover {
 }
 
 .node text {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bolder;
   font-family:arial, sans-serif; 
   left:15px;
@@ -682,7 +884,7 @@ a:hover {
 }
 
 .node title {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bolder;
   font-family:arial, sans-serif; 
   left:15px;
@@ -727,9 +929,15 @@ tspan:nth-child(2n) {
   color:#333333;
   padding:3px;
   width: 600px;
+  cursor: text;
   margin-right:2px;
   margin-bottom:2px;
+  font-size: 12px;
+  font-style: italics;
   font-family:tahoma, arial, sans-serif;
+   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 select {

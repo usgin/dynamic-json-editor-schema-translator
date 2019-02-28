@@ -60,11 +60,18 @@ function visu (error, treeData) {
         var viewerHeight = $(document).height()*.9;
     }
 
+    /*
+    var tree = d3.layout.indent()
+        .children(function(d) { return d.values; })
+        .nodeSize([20,100])
+        .separation(function(a, b) { return (a.parent == b.parent ? 200 : 125); });
+    */
+    
     var tree = d3.layout.tree()
         .size([viewerHeight, viewerWidth])
         .nodeSize([30,100])
         .separation(function(a, b) { return (a.parent == b.parent ? 150 : 125); });
-
+    
     // define a d3 diagonal projection for use by the node paths later on.
     var diagonal = d3.svg.diagonal()
         .projection(function(d) {
@@ -401,21 +408,25 @@ function visu (error, treeData) {
 
             // Update the select box
             gD3_Schema = d.ref;
-            var zed = document.getElementById('schemaPick');
-            for(var i=0; i < zed.options.length; i++)
-              {
-                if(zed.options[i].value === gD3_Schema) {
-                  zed.selectedIndex = i;
-                  break;
-                }
-              }
-        
-            d3.select("svg").remove();
+			
+			//var zed = document.getElementById('schemaPick');
+			//if ( zed.length) {
+			/*	for(var i=0; i < zed.options.length; i++)
+				  {
+					if(zed.options[i].value === gD3_Schema) {
+					  zed.selectedIndex = i;
+					  break;
+					}
+				  }
+			
+				d3.select("svg").remove();
 
-            if ( bmap ) {
-                bmap.off();
-                bmap.remove();
-            }
+				if ( bmap ) {
+					bmap.off();
+					bmap.remove();
+				}
+			*/
+			//}
             //map = null;
 
             if ( typeof(gCKAN_pid) !== "undefined" &&  gCKAN_pid.length >= 1) {
@@ -506,24 +517,26 @@ function visu (error, treeData) {
              var wb = Number(0.0);
              var nb = Number(0.0);
              var sb = Number(0.0);
-
-    	if ( d.children ) {
+		/*
+    	if ( !typeof( d.children ) == "undefined" && d.children ) {
                     d.children.forEach(function(d) {
                         if ( d.value ) {
-                            if (d.name == "eastBoundLongitude") { eb = Number(d.value) }
-                            if (d.name == "westBoundLongitude") { wb = Number(d.value) }
-                            if (d.name == "northBoundLatitude") { nb = Number(d.value) }
-                            if (d.name == "southBoundLatitude") { sb = Number(d.value) }       
+                            if (d.name == "gmd:eastBoundLongitude") { eb = Number(d.value) }
+                            if (d.name == "gmd:westBoundLongitude") { wb = Number(d.value) }
+                            if (d.name == "gmd:northBoundLatitude") { nb = Number(d.value) }
+                            if (d.name == "gmd:southBoundLatitude") { sb = Number(d.value) }       
                         }
                     });
     	}
+		*/
+		
     	if ( d._children ) {
                     d._children.forEach(function(d) {
                         if  (d.value ) {
-                            if (d.name == "eastBoundLongitude") { eb = Number(d.value) }
-                            if (d.name == "westBoundLongitude") { wb = Number(d.value) }
-                            if (d.name == "northBoundLatitude") { nb = Number(d.value) }
-                            if (d.name == "southBoundLatitude") { sb = Number(d.value) }       
+                            if (d.name == "gmd:eastBoundLongitude") { eb = Number(d.value) }
+                            if (d.name == "gmd:westBoundLongitude") { wb = Number(d.value) }
+                            if (d.name == "gmd:northBoundLatitude") { nb = Number(d.value) }
+                            if (d.name == "gmd:southBoundLatitude") { sb = Number(d.value) }       
                         }
                     });
     	}
@@ -533,7 +546,7 @@ function visu (error, treeData) {
         var ebx = eb-0.2*eb;
     	var wbx = wb+0.2*wb;
 
-        if ( eb !== 0.0 && nb !== 0.0 ) {
+        if ( eb !== 0.0 || nb !== 0.0 ) {
 
             $("#showMap").show();
 
@@ -541,13 +554,43 @@ function visu (error, treeData) {
             var rectExtent = L.latLngBounds([nb, wb], [sb , eb]);
             var center = new L.LatLng(sbx + (nbx - sbx)/2 ,ebx + (wbx - ebx)/2);
 
-            try {
+           // try {
 
                if ( MapReady == 0 ) {
-                    $("#showMap").empty();
-
-                    L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeWh1ZG1hbiIsImEiOiJjaW14dnV2ZzAwM2s5dXJrazlka2Q2djhjIn0.NOrl8g_NpUG0TEa6SD-MhQ';
-                    bmap = L.mapbox.map('showMap', 'mapbox.outdoors', 
+				     
+				    if ( bmap != null ) {
+						//bmap.off();
+						//bmap.remove();
+						bmap.remove();
+						bmap = undefined;
+				    }
+					
+					if ( bmap != 'undefined' ) {
+						//bmap.remove();
+						bmap = undefined;
+					}
+					
+					var container = L.DomUtil.get('showMap');
+					  if(container != null){
+						  if ( container._leaflet ) {
+							container._leaflet = null;
+						
+							$("#showMap").empty();
+							//$("#tree-container").append($('<div>')
+							//	.attr('id','showMap'));
+							//document.getElementById('showMap').innerHTML = "<div id='showMap' style='width: 100%; height: 100%;'></div>";
+						  }
+					  }
+					
+					
+				   // if  ( L ) { L = {} }
+					    console.log(' empty ' + d.name);
+					
+						//$("#showMap").empty();
+						//document.getElementById('showMap').innerHTML = "<div id='showMap' style='width: 100%; height: 100%;'></div>";
+						L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeWh1ZG1hbiIsImEiOiJjaW14dnV2ZzAwM2s5dXJrazlka2Q2djhjIn0.NOrl8g_NpUG0TEa6SD-MhQ';
+					
+						bmap = L.mapbox.map('showMap', 'mapbox.outdoors', 
                         {   infoControl: false,
                             legendControl: false,
                             zoomControl: false, 
@@ -566,7 +609,8 @@ function visu (error, treeData) {
                             console.log('ready map')
                             })
                         .on('resize',function() { console.log('resize map')});
-                    MapReady = 1;
+						MapReady = 1;
+					
                } else {
                    /*
                    if ( MapReady == 0 )  {
@@ -595,13 +639,13 @@ function visu (error, treeData) {
                         MapReady = 1;                       
                    }
                    */
-                   console.log(' map ready or not null ')
+                   //console.log(' map ready or not null ')
 
                }
-            } catch(err) {
-                console.log("Map Error" + err);
-            }
-            console.log('Display map' + MapReady);
+          //  } catch(err) {
+          //      console.log("Map Error" + err);
+         //   }
+            //console.log('Display map' + MapReady);
         } else {
             bmap=null;
             $("#showMap").hide(); 
@@ -644,7 +688,8 @@ function visu (error, treeData) {
     var mouseOverDisplay = function(node) {
 
             var tXt = "";
-            
+            console.log('mod' + node.display);
+
             if ( typeof(node.display) !== "undefined" ) {
                 tXt = node.display + " :";
             } else {
@@ -699,14 +744,12 @@ function visu (error, treeData) {
                 }
 
             }
-
-            $("#mousebox").html ( tXt);
+            //tXt = node.id + ' ' + node.siblings + ' ' + node.xoffset + ' ' + node.savedX + ' ' +  node.growdown + ' ' + node.RefSaveTo;
+            $("#mousebox").html (tXt);
+            $("#mousebox") .css("font-size", "10px");
             $("#mousebox") .css("background-color", "#cccc88");
             $("#mousebox") .css("color", "#222222");
             $("#mousebox") .css("margin", "5px");
-
-
-        
               
     }
 
@@ -715,6 +758,7 @@ function visu (error, treeData) {
         var colr = "#ccc",
                     reqCS = false,
                     hvCS  = false,
+                    ekCS = false,
                     hasChild = false;
                     reqCSchild = "#ccc",
                     hvCSchild  = "#ccc";
@@ -734,8 +778,40 @@ function visu (error, treeData) {
                               ( typeof(child.value) != "undefined" && child.value == "") ? hvCSchild = "#dda": hvCSchild = hvCSchild;
                             }
                         }
+                        if ( child.name == d.target.stateChild ) {						
+							//if ( child.value != 'None' ) {
+							if ( child.value.slice(0,7) == 'Cinergi' ) {
+								colr = '#7698cc';
+								ekCS = true;
+							}					
+						}
+
                     }); 
                 }
+
+				if ( typeof(d.target._children) != "undefined" && d.target._children != null && d.target._children.length > 0 ) {
+                    hasChild = true;
+                    d.target._children.forEach(function(child) {
+                        if ( typeof(child.required) != "undefined" && child.required == "true") {
+                            if ( typeof(child.value) != "undefined" && child.value != "")  {
+                                reqCSchild = "#ada";
+                            } else {  reqCSchild = "#daa"; }
+                        } else {
+                           if ( reqCSchild != "#ccc" )  {
+                              ( typeof(child.value) != "undefined" && child.value == "") ? hvCSchild = "#dda": hvCSchild = hvCSchild;
+                            }
+                        }
+                        if ( child.name == d.target.stateChild ) {						
+							//if ( child.value != 'None' ) {
+							if ( child.value.slice(0,7) == 'Cinergi' ) {
+								colr = '#7698cc';
+								ekCS = true;
+							}					
+						}
+
+                    }); 
+                }
+
 
                 if ( reqCS && hvCS ) { 
                     if ( hasChild ) {
@@ -748,13 +824,17 @@ function visu (error, treeData) {
                         ( reqCSchild != "#ccc" ) ? colr = reqCSchild : colr = hvCSchild;
                     } else { colr = "#d99" }  
                 }
-                else if ( !reqCS ) { 
-                     if ( hasChild ) {
+                else if ( !reqCS && !ekCS ) { 
+                	
+                	if ( hasChild ) {
+
                         ( reqCSchild != "#ccc" ) ? colr = reqCSchild : colr = "#dda";
 
-                       } else { 
+                    } else { 
                         ( hvCS ) ? colr = "#dda" : colr = "#ccc";
-                       }  
+                    } 	
+                	
+             
                 } 
                 
                 return colr;
@@ -772,6 +852,10 @@ function visu (error, treeData) {
         var levelWidth = [1],
             maxdepth = 0;
 
+		var mapNode;
+    //var newCount = 0,
+    //    newLinkC  = 0;
+		
         var childCount = function(level, n) {
             if (n.children && n.children.length > 0) {
                 if (levelWidth.length <= level + 1) levelWidth.push(0);
@@ -808,7 +892,15 @@ function visu (error, treeData) {
 
             var scale = 7;
            
-            if (d.xoffset) {d.x = d.x + d.xoffset }; 
+		    if ( typeof(d.Cloned) !== "undefined" && d.xoffset ) {
+				d.x = d.xoffset;
+			} else if (d.xoffset) { 
+				
+            //if (d.xoffset) { 
+				d.x = d.x + d.xoffset 
+				
+			}
+				
            
             if  (d.depth == 0 ) { d.y = 25; }
             else {
@@ -825,11 +917,11 @@ function visu (error, treeData) {
 
         });
 
-        // Update the nodes…
+        // Update the nodes
         node = svgGroup.selectAll("g.node")
-       
             .data(nodes, function(d) {
                 if ( maxId < d.id ) { maxId = d.id };
+				
                 if ( d.viewstate == 'parent-collapse' ) {
                   
                     return d.id || (d.id = ++i);
@@ -838,26 +930,50 @@ function visu (error, treeData) {
                  
                 }
                 
-                
             });
 
         // Enter any new nodes at the parent's previous position.
         
         var nodeEnter = node.enter().append("g") 
             .attr("class", "node")
-            .attr("childvalues","0")
+			.style("visibility", function (d) {
+				return d.hidden  ? "hidden" : "visible";
+			})
+            .attr("childvalues","0")	
             .attr("transform", function(d) {
                 
                if ( d.children ) {
                      d.children.forEach(function(child) { 
                         child.siblings = d.children.length;
+                        if ( !child.xoffset && d.xoffset ) {
+                            child.xoffset = d.xoffset;
+                        }
+                        //sub array set to -1 on server
+                        if ( (!child.yoffset || child.yoffset == -1) && d.yoffset ) {
+							
+							if (  d.value ) {
+								child.yoffset = d.yoffset + d.value.length*8;
+							} else {
+								child.yoffset = d.yoffset;
+							}
+                        }
+                        if ( !child.growdown && d.growdown ) {
+                            child.growdown = d.growdown;
+                        }
                      });
                }
-
+			   var xoff = 0;
+               //if ( typeof ( d.siblings ) ) { var xoff = d.siblings*50; }
+			   if ( typeof(d.savedX) == "undefined" ) {
+				    d.new = true;
+            //newCount++;
+           // newLinkC++;
+          
+			   }
                if ( maxId < d.id ) { maxId = d.id };
                
-                return "translate(" + d.y + "," + d.x + ")"; 
-                
+                return "translate(" + d.y + "," + d.x +  ")"; 
+                /*
                 if ( d.viewstate == 'parent-collapse' ) {
                     var dx = d.x;          
                     return "translate(" + d.y + "," + dx + ")"; 
@@ -865,6 +981,7 @@ function visu (error, treeData) {
                     
                     return "translate(" + d.y + "," + dx + ")"; 
                 }
+				*/
 
             })
             .on('click', click) 
@@ -902,21 +1019,48 @@ function visu (error, treeData) {
              return textLen;
           })
           .style("fill", function(d) {
+          		var fc='#ccc';
+
+          		if ( typeof(d.stateChild) != "undefined" ) {
+					if ( d.children ) {
+						d.children.forEach(function(child) { 
+							if ( child.name == d.stateChild ) {						
+								//if ( child.value != 'None' ) {
+								if ( child.value.slice(0,7) == 'Cinergi' ) {
+                                    d.pipelineEnhanced = true;
+                                    d.validState = true;
+									fc = '#8ea5d1';
+								}					
+							}
+						});
+					}
+					if ( d._children ) {
+						d._children.forEach(function(child) { 
+							if ( child.name == d.stateChild ) {
+								if ( child.value.slice(0,7) == 'Cinergi' ) {
+                                    d.pipelineEnhanced = true;
+                                    d.validState = true;
+									fc = '#8ea5d1';
+								}
+							}
+						});
+					}
+				}
 
                 if (  typeof(d.readonly) != "undefined" && d.readonly == "true" ) {
-                        return '#ff8';
+                        fc = '#ff8';
                     } else if ( typeof(d.datatype) != "undefined" && d.datatype == "validateonly" ) {
                         if (  typeof(d.validateonly) != "undefined" && d.validateonly == "true" ) {
-                              return '#8f8';
+                           fc= '#8f8';
                         } else if (  typeof(d.validateonly) != "undefined" && d.validateonly == "false" ) {
-                            return '#f88';
+                            fc= '#f88';
                         } else {
-                            return '#888';
+                            fc=  '#888';
                         }
-                } else {
-                    return '#ccc';
-                }
-                
+                } 
+
+                return fc;
+
             }).attr('pointer-events', 'mouseover')
             .on("mouseover", function(node) {
 
@@ -937,7 +1081,10 @@ function visu (error, treeData) {
             .text(function(d) {
                 var mz;
                 ( d.datatype == "subschema" || d.children || d._children  ) ? mz = "" : mz = d.value; 
-
+				if ( d.datatype == "subschema" ) {
+					console.log('sub');
+					mz = d.value;
+				}
                 if ( typeof(d.value) != "undefined" && typeof(d.displayChild) != 'undefined' ) {
                     mz = d.value;
                 } 
@@ -1072,7 +1219,8 @@ function visu (error, treeData) {
                                             rtnVal = child.value; 
                                             
                                             if ( d.datatype == "bbox" ) {
- 						                                     dispNavMap(d);
+													//console.log('child map');	
+ 						                                    // dispNavMap(d);
                                                  if ( d.value.length == 0 ) {
                                                    rtnVal = 'Edit'; 
                                                    d.value = child.value;
@@ -1097,7 +1245,8 @@ function visu (error, treeData) {
                                             rtnVal = child.value; 
                                         
                                             if ( d.datatype == "bbox" ) {
-						                                    dispNavMap(d);
+												//console.log('_child map');	
+						                            //dispNavMap(d);
                                                 var zx = d.value;
                                                 if ( zx.length == 0 ) {
                                                    rtnVal = 'Edit';
@@ -1125,9 +1274,10 @@ function visu (error, treeData) {
                             }                 
                     }
                     
-                    if ( d.datatype == "bbox" & MapReady == 0 ) {
-                      dispNavMap(d);
-                    }
+                    //if ( d.datatype == "bbox" & MapReady == 0 ) {
+					//	console.log('obscure map call ' + d.id);
+                      // dispNavMap(d);
+                    //}
                
                    
                     return rtnVal;
@@ -1152,7 +1302,11 @@ function visu (error, treeData) {
         
                 var rtnVal;                
                 ( d.datatype == "subschema" || d.children || d._children  ) ? rtnVal = "" : rtnVal = d.value;
-
+				if ( d.datatype == "subschema" ) {
+					console.log('sub 2');
+					rtnVal = d.value;
+				}
+				
                 if ( typeof(d.datatype) != "undefined" && d.datatype == "textarea" ) {
                     if ( typeof(d.value) != "undefined" && d.value.length > 1 ) {
                      
@@ -1241,8 +1395,10 @@ function visu (error, treeData) {
                     var linecount = (d.value.length / txtAreaLineSize) + 1;
                     if ( linecount <= 1 ) {
                         return 25;
+					} else if (linecount > 12) {
+						return (linecount+1)*12;
                     } else {
-                        return (linecount+1)*15;
+                        return (linecount+1)*13;
                     }
                 }
                 else {
@@ -1250,32 +1406,58 @@ function visu (error, treeData) {
                 }
         })
         .style("fill", function(d) {
-            
-                if (  typeof(d.readonly) != "undefined" && d.readonly == "true" ) {
-                        return '#ff8';
-                } else if ( typeof(d.datatype) != "undefined" && d.datatype == "validateonly" ) {
-                        if (  typeof(d.validateonly) != "undefined" && d.validateonly == "true" ) {
-                              return '#8f8';
-                        } else if (  typeof(d.validateonly) != "undefined" && d.validateonly == "false" ) {
-                            return '#f88';
-                        } else {
-                            return '#888';
-                        }
-                } else if (  typeof(d.urlvalid) != "undefined" ) {
-                    
-                    if ( d.urlvalid == "true" ) {
-                        return '#8f8';
-                    } else if ( d.urlvalid == "false" )  {
-                         return '#f88';
-                    } else {
-                         return '#ccc';
-                    }
-                    
-                } else {
-                    return '#ccc';
-                }
-            });
 
+        	var fc='#ccc';
+
+    		if ( typeof(d.stateChild) != "undefined" ) {
+				if ( d.children ) {
+					d.children.forEach(function(child) { 
+						if ( child.name == d.stateChild ) {						
+							//if ( child.value != 'None' ) {
+							if ( child.value.slice(0,7) == 'Cinergi' ) {
+								fc = '#8ea5d1';
+                                d.pipelineEnhanced = true;
+                                d.validState = true;
+							}					
+						}
+					});
+				}
+				if ( d._children ) {
+					d._children.forEach(function(child) { 
+						if ( child.name == d.stateChild ) {
+							//if ( child.value != 'None' ) {
+							if ( child.value.slice(0,7) == 'Cinergi' ) {
+								fc = '#8ea5d1';
+                                d.pipelineEnhanced = true;
+                                d.validState = true;
+							}
+						}
+					});
+				}
+			}
+        
+            if (  typeof(d.readonly) != "undefined" && d.readonly == "true" ) {
+                    fc =  '#ff8';
+            } else if ( typeof(d.datatype) != "undefined" && d.datatype == "validateonly" ) {
+                    if (  typeof(d.validateonly) != "undefined" && d.validateonly == "true" ) {
+                        fc = '#8f8';
+                    } else if (  typeof(d.validateonly) != "undefined" && d.validateonly == "false" ) {
+                        fc =  '#f88';
+                    } else {
+                        fc =  '#888';
+                    }
+            } else if (  typeof(d.urlvalid) != "undefined" ) {
+                
+                if ( d.urlvalid == "true" ) {
+                    fc =  '#8f8';
+                } else if ( d.urlvalid == "false" )  {
+                     fc =  '#f88';
+                } else {
+                    fc =  '#ccc';
+                }
+            }
+            return fc;
+        });
 
         // Change the circle fill depending on whether it has children and is collapsed
         node.select("circle.nodeCircle")
@@ -1343,43 +1525,63 @@ function visu (error, treeData) {
                     if ( d.siblings < 10 ) {
                         growX = d.siblings*gd;     
                     } else {
-                        growX = d.siblings* gd*1.2; 
+                        growX = d.siblings* gd*1.1; 
                     }
+                } else {
+                   growX = 10;
                 }
-
+				
+				    if ( d.datatype == "bbox" & MapReady == 0 ) {
+						//console.log('update transition map assign ' + d.id);
+                      // dispNavMap(d);
+					    mapNode = d;
+                    }
+					
                var yOff = 0;
                if ( d.parent && d.parent.value ) {
                     yOff = d.parent.value.length*6;
 					
                }
-			   if ( d.siblings > 3 ) { yOff = yOff + 80; }
+               
+			  if ( d.siblings > 3 ) { yOff = yOff + 80; }
 			
-               if ( d.x > maxHeight ) { maxHeight = d.x; }
-               if ( d.viewstate == 'parent-collapse') {
-                     var Xoff = d.x;
-                     if ( typeof(ta_id) != "undefined" & d.id < ta_id ) {
-                        Xoff = Xoff + (ta_lines-1)*ta_lineHght;   
-                     } 
-                   
-                    return "translate(" + (d.y + yOff)  + "," + (Xoff + growX) + ")"; 
+        if ( d.x > maxHeight ) { maxHeight = d.x; }
+        if ( d.viewstate == 'parent-collapse') {
+            var Xoff = d.x;
+            if ( typeof(ta_id) != "undefined" & d.id < ta_id ) {
+                   Xoff = Xoff + (ta_lines-1)*ta_lineHght;   
+            } else if ( typeof(d.Cloned) !== "undefined" ) {
+            Xoff = Xoff + (ta_lines-1)*ta_lineHght;   
+            }
 
-                } else {
-                     var Xoff = d.x;
-                     if ( typeof(ta_id) != "undefined" & d.id < ta_id ) {
-                        Xoff = Xoff + (ta_lines-1)*ta_lineHght;   
-                     } 
-                     //if (d.growdown) { Xoff = Xoff + growX }    
+            d.savedX = Xoff + growX;
+            //d.savedX = d.savedX + 15*newCount;
+            //if ( d.new  ) {
+            //  if (newCount > 0 ) {newCount--; }
+            //}
+           
+            return "translate(" + (d.y + yOff)  + "," + d.savedX + ")"; 
 
-                    //if ( typeof(ta_id) != "undefined" & d.id < ta_id ) {
-                    //    var ta_off = (ta_lines-1)*ta_lineHght;
-                    //    if (d.growdown) { ta_off = ta_off + d.growdown } 
-                     //   return "translate(" + d.y  + "," + (d.x + ta_off) + ")";
-                    //} else {
-                        return "translate(" + (d.y + yOff)  + "," + (Xoff + growX) + ")";    
-                    //}
-                }
+        } else {
+          var Xoff = d.x;
+          if ( typeof(ta_id) != "undefined" & d.id < ta_id ) {
+              Xoff = Xoff + (ta_lines-1)*ta_lineHght;  
+						 d.savedX = Xoff + growX;
+          } else if ( typeof(d.Cloned) !== "undefined" ) {		    
+               d.savedX = Xoff;
+					 } else {
+						     d.savedX = Xoff + growX;
+					 }					        
+				  //d.savedX = d.savedX + 15*newCount;		
+          //if ( d.new  ) {
+          //   if (newCount > 0 ) {newCount--; }
+          //}
+         
+          return "translate(" + (d.y + yOff)  + "," + d.savedX + ")";    
+
+        }
     
-            });
+        });
         
         // Fade the text in
         nodeUpdate.select("text")
@@ -1435,16 +1637,19 @@ function visu (error, treeData) {
                     if ( d.target.siblings < 10 ) {
                         growX = d.target.siblings* gd;     
                     } else {
-                        growX = d.target.siblings* gd*1.2; 
+                        growX = d.target.siblings* gd*1.1; 
                     }
                 }
                 if ( d.target.viewstate == 'parent-collapse' || d.source.viewstate == 'parent-collapse') {
                    
                     var Xoff = d.target.x;
                     if ( typeof(ta_id) != "undefined" & d.target.id < ta_id ) {
-                        Xoff = Xoff + (ta_lines-1)*ta_lineHght;   
-                    } 
-                    Xoff = Xoff + growX;
+                        Xoff = Xoff + (ta_lines-1)*ta_lineHght + growX;   
+                    } else if ( typeof(d.target.Cloned) !== "undefined"  ) {
+					    Xoff = Xoff;   
+					} else {
+                       Xoff = Xoff + growX;
+					}
                      //if (d.target.growdown) { Xoff = Xoff + d.target.growdown }   
 
                     d.target.x = Xoff/3;
@@ -1453,9 +1658,13 @@ function visu (error, treeData) {
                 } else {
                     var Xoff = d.target.x;
                      if ( typeof(ta_id) != "undefined" & d.target.id < ta_id ) {
-                        Xoff = Xoff + (ta_lines-1)*ta_lineHght;   
-                     } 
-                    Xoff = Xoff + growX; 
+                        Xoff = Xoff + (ta_lines-1)*ta_lineHght + growX;   
+                     } else if ( typeof(d.target.Cloned) !== "undefined"  ) {
+					    Xoff = Xoff;   
+					} else {
+                       Xoff = Xoff + growX;
+					}
+                    //Xoff = Xoff + growX; 
                     d.target.x = Xoff;
                     d.target.y =  d.target.y + yOff;
                    // if ( typeof(ta_id) != "undefined" &  d.target.id < ta_id ) {
@@ -1464,6 +1673,9 @@ function visu (error, treeData) {
                     //} 
                 }
             })
+			.style("visibility", function (d) {
+				return d.target.hidden  ? "hidden" : "visible";
+			})
             .style("stroke-width", function(d) {
                  var baseWidth = (maxdepth - d.target.depth) + 2,
                  wid = baseWidth + "px",
@@ -1537,26 +1749,38 @@ function visu (error, treeData) {
                     if ( d.target.siblings < 10 ) {
                         growX = d.target.siblings* gd;     
                     } else {
-                        growX = d.target.siblings* gd*1.2; 
+                        growX = d.target.siblings* gd*1.1; 
                     }
                 }
 
                 if ( d.target.viewstate == 'parent-collapse' ) {
                      var Xoff = d.target.x;
-                     if ( typeof(ta_id) != "undefined" & d.target.id < ta_id ) {
-                        Xoff = Xoff + (ta_lines-1)*ta_lineHght;   
-                     } 
-                    Xoff = Xoff + growX;   
+                     //if ( typeof(ta_id) != "undefined" & d.target.id < ta_id ) {
+                     //   Xoff = Xoff + (ta_lines-1)*ta_lineHght;   
+                     //} 
+					 
+					if ( typeof(ta_id) != "undefined" & d.target.id < ta_id ) {
+                        Xoff = Xoff + (ta_lines-1)*ta_lineHght + growX;   
+                    } else if ( typeof(d.target.Cloned) !== "undefined"  ) {
+					    Xoff = Xoff;   
+					} else {
+                       Xoff = Xoff + growX;
+					}
+					
+                    //Xoff = Xoff + growX;   
                     d.target.x = Xoff/3;
                     d.target.y =  d.target.y + yOff;
                    
                 } else {
 
                      var Xoff = d.target.x;
-                     if ( typeof(ta_id) != "undefined" & d.target.id < ta_id ) {
-                        Xoff = Xoff + (ta_lines-1)*ta_lineHght;   
-                     } 
-                     Xoff = Xoff + growX;   
+                      if ( typeof(ta_id) != "undefined" & d.target.id < ta_id ) {
+                        Xoff = Xoff + (ta_lines-1)*ta_lineHght + growX;   
+                    } else if ( typeof(d.target.Cloned) !== "undefined"  ) {
+					    Xoff = Xoff;   
+					} else {
+                       Xoff = Xoff + growX;
+					} 
                      d.target.x = Xoff;
                      d.target.y =  d.target.y + yOff;
 
@@ -1576,6 +1800,9 @@ function visu (error, treeData) {
                 if ( typeof(d.target.value) != "undefined" && d.target.value != "") 
                     {return 1.0; } else  { return .6; }
             })
+			.style("visibility", function (d) {
+				return d.target.hidden  ? "hidden" : "visible";
+			})
             .style("stroke-width", function(d) {
             
                 var baseWidth = (maxdepth - d.target.depth) + 2;
@@ -1672,8 +1899,10 @@ function visu (error, treeData) {
             }
    
         });
-
-       jData = json_xporter();
+		
+		dispNavMap(mapNode);
+		
+        jData = json_xporter();
     }
 
     // Append a group which holds all nodes and which the zoom Listener can act upon.
@@ -1689,3 +1918,68 @@ function visu (error, treeData) {
   
 }
 
+(function() {
+  d3.layout.indent = function() {
+    var hierarchy = d3.layout.hierarchy(),
+        separation = d3_layout_indentSeparation,
+        nodeSize = [1, 1];
+
+    function position(node, previousNode) {
+      var children = node.children;
+      node.y = previousNode ? previousNode.y + nodeSize[1] * separation(node, previousNode) : 0;
+      node.x = node.depth * nodeSize[0];
+      if (children && (n = children.length)) {
+        var i = -1,
+            n;
+        while (++i < n) {
+          node = position(children[i], node);
+        }
+      }
+      return node;
+    }
+
+    function indent(d, i) {
+      var nodes = hierarchy.call(this, d, i);
+      position(nodes[0]);
+      return nodes;
+    }
+
+    indent.nodeSize = function(value) {
+      if (!arguments.length) return nodeSize;
+      nodeSize = value;
+      return indent;
+    };
+
+    indent.separation = function(value) {
+      if (!arguments.length) return separation;
+      separation = value;
+      return indent;
+    };
+
+    return d3_layout_hierarchyRebind(indent, hierarchy);
+  };
+
+  function d3_layout_indentSeparation() {
+    return 1;
+  }
+
+  // A method assignment helper for hierarchy subclasses.
+  function d3_layout_hierarchyRebind(object, hierarchy) {
+    d3.rebind(object, hierarchy, "sort", "children", "value");
+
+    // Add an alias for nodes and links, for convenience.
+    object.nodes = object;
+    object.links = d3_layout_hierarchyLinks;
+
+    return object;
+  }
+
+  // Returns an array source+target objects for the specified nodes.
+  function d3_layout_hierarchyLinks(nodes) {
+    return d3.merge(nodes.map(function(parent) {
+      return (parent.children || []).map(function(child) {
+        return {source: parent, target: child};
+      });
+    }));
+  }
+})();

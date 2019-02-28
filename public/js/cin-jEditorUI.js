@@ -4,8 +4,111 @@ Array.prototype.contains = function(obj) {
         if (this[i] == obj) {
             return true;
         }
+
     }
     return false;
+}
+
+JSON.flatten = function(data) {
+    var result = {};
+    var idxID = 0;
+    function recurse (cur, prop) {
+        if (Object(cur) !== cur) {
+        
+            var mo ={};
+            mo.Path = prop;
+            mo.sPath = pathFilter(prop);
+            mo.Value = cur; //'not object ' + idxID;
+            result[idxID] = mo;
+            mo.type = 'endpoint';
+            idxID++;
+            //result[prop] = cur;
+        } else if (Array.isArray(cur)) {
+        
+            var mo ={};
+            mo.Path = prop;
+            mo.sPath = pathFilter(prop);
+            mo.Value = idxID;
+			      mo.type = 'array';
+            result[idxID] = mo;
+            idxID++;
+            
+            for(var i=0, l=cur.length; i<l; i++) {
+                 recurse(cur[i], prop ? prop+"."+i : ""+i);
+            }
+            /*
+            if (l == 0) {
+                var mo ={};
+                mo.Path = prop;
+                mo.sPath = pathFilter(prop);
+                mo.Value = idxID + 'empty' ;
+                result[idxID] = mo;
+                idxID++;
+            }
+            */
+                //result[prop] = [];
+        } else {
+            var isEmpty = true;
+            for (var p in cur) {
+                isEmpty = false;
+                var mo ={};
+                mo.Path = prop;
+                mo.sPath = pathFilter(prop);
+                mo.Value = idxID; //cur;
+                mo.type = 'object';
+                result[idxID] = mo;
+                idxID++;
+                recurse(cur[p], prop ? prop+"."+p : p);
+            }
+            if (isEmpty) {
+                var mo ={};
+                mo.Path = prop;
+                mo.sPath = pathFilter(prop);
+                mo.Value = "empty";
+                mo.type = 'object';
+                //mo[prop] = "";
+                result[idxID] = mo;
+                idxID++;
+            }
+                //result[prop] = {};
+        }
+    }
+    recurse(data, "");
+    return result;
+}
+
+// cleanup schema diffs
+
+var pathFilter = function(origPath) {
+  
+    var nameSpace = [ "gmd:", "gmi:", "gco:", "gmx:" ];
+    var preFix = [ "MD_", "MI_", "EX_", "CI_" ];
+    
+    var origA = origPath.split(".");
+    var torg = "";
+    
+    for (z = 0; z < origA.length; z++) {
+       var torg = origA[z];
+       torg = rAEliS(nameSpace,torg);
+       torg = rAEliS(preFix,torg);
+       origA[z] = torg;
+    }
+    
+    var rp = origA.join(".");
+    return rp;
+}
+
+// remove Array element in String
+var rAEliS = function(A, StrX) {
+  if ( typeof(StrX) == "string" && StrX.length > 0 ) {
+    for (i = 0; i < A.length; i++) {
+       var elm = A[i];
+       if ( StrX.indexOf(elm) !== -1 ) {
+         StrX = StrX.slice(0, StrX.indexOf(elm)) + StrX.slice(StrX.indexOf(elm)+ elm.length);
+       }
+    }
+  }
+  return StrX;
 }
 
 var showEdits = function () {
@@ -50,8 +153,10 @@ var showFullPack = function () {
       
       gCin_edit.dateTime = new Date($.now());
       gCin_edit.editedBy = getCookie('editorName');
-      var xft = JSON.stringify(gCKAN_package,null,'   ');
+      //var jflat = JSON.flatten(gCKAN_package);
+      //var xft = JSON.stringify(jflat,null,'   ');
 
+      var xft = JSON.stringify(gCKAN_package,null,'   ');
       if ( xft.length > 1 ) {
   
         var w = window.open();
@@ -238,35 +343,43 @@ function save_fullpackage() {
   });
 }
 
-function trigProc() {
+function startPipelineProcess() {
   
- 
-  if ( confirm('Do you really mean it ?') ) {
+  if ( confirm('Do you want to reindex ?') ) {
        console.log('I certainly do');
+       
        var noodel = JSON.stringify(gCKAN_package);
-       var inid = '999';
-       alert('Not yet implemented');
-       /*
+       var pdata = { "primaryKey" : gCKAN_package.primaryKey,
+                    "sourceID" : gCKAN_package.SourceInfo.SourceID,
+                    "apiKey" : "5d7a38c85d280ae20b28c38c2ece8481"
+                  };
+                  
+       var docid = gCKAN_package.primaryKey;
+       var purl = "http://132.249.238.151:8080/foundry/api/cinergi/editing/process?primaryKey=" + encodeURIComponent(docid) + 
+                  "&sourceID=" + gCKAN_package.SourceInfo.SourceID + "&apiKey=5d7a38c85d280ae20b28c38c2ece8481";
+       var inp = JSON.stringify(pdata);
+       
        $.ajax({ 
-        type: 'PUT',
-        url: 'http://132.249.238.169:8080/geoportal/rest/metadata/item/999',
-        processData: false,
-        username: 'gptadmin',
-        password: 'gptadmin',
-        in: noodel,
-        dataType: "json",
-        contentType: "application/json",  
-        success: function(data) {
+        type: 'POST',
+        url: purl,
+        contentType: "text/plain;charset=UTF-8",  
+        success: function(data, status, xhr) {
           
-          console.log(' came back as ' + data);
-          
-
+          console.log(' came back as ' + data + ' ' + status + ' ' + xhr);
+          getIndexID();
+        
         },
-        error: function (jqXHR, status, err) { alert('Trigger  Error : ' + status + ' ' + err)}
+        error: function (jqXHR, status, err) {
+          var statCode = jqXHR.status;
+          var msg = jqXHR.responseText;
+          
+          console.log('Pipeline Process Error : ' + statCode + ' ' + msg );
+          alert('Pipeline Process Error : ' + statCode + ' ' + msg );
+          
+          }
 
       });
       
-      */
   
   } else {
   
@@ -274,7 +387,58 @@ function trigProc() {
   }
 }
 
+var getIndexID = function( ) {
+// This retrieves the index ID and then callss the reindex request (trigIndex)
 
+  var hurl = '/indexID/?' + 'docId='+ gCKAN_pid ;
+  console.log('get the index ID' );
+    $.ajax({
+        type: 'GET',
+        url: hurl,
+        dataType: 'json',
+        contentType: "application/json",
+        success: function(data, status) {
+          if ( data ) {         
+           if ( data.indexID ) {
+               gIndxID = data.indexID;
+               ElasticIndex(gIndxID);
+               console.log(' index id ' + gIndxID);
+           } else {
+               console.log('index err');
+               gIndxID = '';
+           }            
+          } else {
+            console.log('index ID - BAD');       
+          }     
+        }, 
+        error: function (jqXHR, status, err) {  
+          console.log('index lookup error' + status + err);  
+        }
+    });
+}
+
+function ElasticIndex(idxID) {
+ // Sends it to the mdeditor server for processing
+ 
+   var hurl = '/md_reindex?' + 'docId='+gCKAN_package.primaryKey+'&indexId='+idxID;
+    console.log('start reindex check');
+    $.ajax({
+        type: 'GET',
+        url: hurl,
+        success: function(data, status) {
+          if ( data ) {
+            console.log('url check - OK ' + data + ' ' + status);
+            alert(data);
+          } else {
+            console.log('url check - BAD');
+          }
+        }, 
+        error: function (jqXHR, status, err) {
+          alert(err);  
+          console.log('url check error' + err);   
+        }
+    });
+}
 
 function saveMdb() {
       // Curent Cinergi Save 
@@ -291,8 +455,7 @@ function saveMdb() {
       
       gDDH_edit.push(gCinEditSession);
       gCIN_saveDoc.metadataRecordLineageItems = gDDH_edit;
-          
-      //}  
+  
       
       if ( gCKAN_package.SourceInfo ) {
          gCIN_saveDoc.SourceID = gCKAN_package.SourceInfo.SourceID;
@@ -326,7 +489,6 @@ function saveMdb() {
       //} else { 
       //  alert('No edits to save ');
       //}
-      
       
 
 }
@@ -594,12 +756,14 @@ function loadD3() {
            // if ( !gDDH_edit ) { gDDH_edit = packageObj.item.metadataRecordLineageItems;  }
             if ( gDDH_edit  && Array.isArray(gDDH_edit )) {
               var iac = gDDH_edit.length;
+              // added global step# feb13/18
+              gEditStepSeq  = gDDH_edit.length;
               listEditHistory();
               
-            } else { iac = 0 }
+            } else { gEditStepSeq = 0 }
             // modify 9/11 - removed item
             gCinEditSession =  { 
-                                  "stepSequenceNo" : iac, 
+                                  "stepSequenceNo" : gEditStepSeq, 
                                   "stepProcessors" : [ { "personName": gEdName } ],  
                                   "stepDateTime" : new Date($.now()),
                                   "metadataUpdates": []
@@ -1026,6 +1190,13 @@ function listEditStack() {
 
 function clearEdits() {
      //var EdA = gCin_edit.changes;
+      gCinEditIdx = 0;
+      gEditStepSeq++;
+      gCinEditSession = { "stepSequenceNo" :  gEditStepSeq, 
+                          "stepProcessors" : [ { "personName": gEdName } ],  
+                          "stepDateTime" : new Date($.now()),
+                          "metadataUpdates": [] };   
+      /* this is for previous schema - changed 2/13/18                    
       if ( typeof( gCinEditSession.item ) !== "undefined" ) {
         var EdA = gCinEditSession.item.metadataUpdates;
       }
@@ -1035,6 +1206,7 @@ function clearEdits() {
       for(var i = 0; i <= EdA.length; i++) {
           EdA.splice(0,1);
       }
+      */
       listEditStack();
 }
 
